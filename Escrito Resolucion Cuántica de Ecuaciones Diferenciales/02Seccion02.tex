@@ -1,0 +1,1141 @@
+% !TEX root = 0000.tex
+% Capítulo 1: About Partial Differential Equations
+% Contenido tomado de main_2.tex (líneas 434-1565) sin cambios de texto.
+
+% El texto está en inglés: reglas de corte de palabra del inglés
+\begin{hyphenrules}{english}
+
+\chapter{About Partial Differential Equations}\label{ch:pdes}
+
+It is now well established that partial differential equations (PDEs) are the primary tool for
+modeling phenomena in physics and engineering, and that there is no general method for solving them,
+since each case has its own particularities. Modern theory divides them into two broad categories:
+evolution equations and stationary equations. Traditional hyperbolic and parabolic equations are
+classified as evolution equations, whereas elliptic equations are classified as stationary equations.
+Consequently, numerical analysis treats the solution process separately for each case.
+
+This chapter reviews the theoretical aspects that are fundamental when working with PDEs. In particular, as previously mentioned, each case presents its own characteristics; one of these, which we analyze throughout the chapter, is regularity. The degree of smoothness that the solution acquires, retains, or loses in relation to the initial data and source functoin. This question is not only theoretical. A physics-informed neural
+network (Chapter~\ref{ch:pinns}) is a smooth function that is trained by evaluating derivatives of the
+solution, so the regularity of the theorical solution decides how difficult the problem
+is for the network. For that reason, every equation of Section~\ref{sec:linear-pdes} ends with a short
+paragraph about its regularization, Section~\ref{sec:modern-theory} introduces the spaces where non-smooth
+solutions live, Section~\ref{sec:second-order} classifies the three families that appear in our benchmark
+(elliptic, parabolic and hyperbolic), and Sections~\ref{sec:regularity-bridge} and \ref{sec:klein-gordon} explain why we
+chose the Klein--Gordon equation as the case study of this thesis.
+
+The conceptual framework of this chapter is based fundamentally on the theory of partial differential
+equations developed by Evans~\cite{evans2010}. Unless otherwise stated, the definitions, notations, and
+theorems presented in this chapter follow the exposition of that work.
+
+% =====================================================================
+\section{Linear Partial Differential Equations}\label{sec:linear-pdes}
+% =====================================================================
+
+The four equations of this section are the prototypes of the theory: the transport equation (first
+order, hyperbolic), Laplace's equation (elliptic), the heat equation (parabolic) and the wave equation
+(hyperbolic). For each of them we look at the same three things: the homogeneous problem, the
+non-homogeneous problem through Duhamel's principle, and the regularity of the solution.
+The complete derivations of the formulas of this section, with all the intermediate steps, are in
+Appendix~\ref{app:classical}. Here we present the statement of each problem, its solution, and, above all, what the solution indicates about regularity.
+
+% ---------------------------------------------------------------------
+\subsection{Transport Equation}\label{subsec:transport}
+
+The transport equation is a natural starting point for the study of first-order partial differential
+equations: it is simple enough to solve explicitly, yet it already exhibits the main features of the
+theory \cite{evans2010}. It models the propagation of a physical quantity in space. Here, we only
+consider a constant velocity $\mathbf{b}\in\mathbb{R}^n$ for its introduction.
+
+The pure homogeneous or non-homogeneous transport problem is represented by a first-order differential
+operator $L$, which is hyperbolic and describes the propagation or advection of a profile along
+characteristic curves. Its solution, whether classical or weak, is given by a rigid translation of the
+initial data, $u(\mathbf{x},t)=g(\mathbf{x}-t\mathbf{b})$.
+
+\subsubsection{Homogeneous case}
+Let $u\in C^1(\mathbb{R}^n\times[0,\infty))$ and consider the initial condition for the homogeneous problem:
+\begin{equation}
+  \begin{cases}
+    \partial_t u(\mathbf{x},t)+\mathbf{b}\cdot\nabla u(\mathbf{x},t)=0 & \text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in(0,\infty),\\
+    u(\mathbf{x},0)=g(\mathbf{x}) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=0\}.
+  \end{cases}
+  \label{eq:transport-hom}
+\end{equation}
+Writing the equation in matrix form with the constant space--time vector field
+$\mathbf{V}=(\mathbf{b},1)^{T}\in\mathbb{R}^{n+1}$ (Appendix~\ref{app-sec:transport}), it reads
+$D_{\mathbf{V}}u=\nabla_{\mathbf{x},t}u\cdot\mathbf{V}=0$, which establishes that the directional derivative of $u$ in the direction of the vector $\mathbf{V}$ is
+identically zero throughout the space--time domain. This means that the velocity vector is perpendicular
+to the gradient and tangent to $u$. In other words, if one moves in the direction of
+$\mathbf{V}$, the value of $u$ remains constant along the characteristic trajectory. The solution to
+$D_{\mathbf{V}}u=0$ is $u(\mathbf{x},t)=g(\mathbf{x}-t\mathbf{b})$.
+
+\subsubsection{Non-homogeneous case}
+To analyze the non-homogeneous case:
+\begin{equation}
+  \begin{cases}
+    \partial_t u(\mathbf{x},t)+\mathbf{b}\cdot\nabla u(\mathbf{x},t)=f(\mathbf{x},t) & \text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in(0,\infty),\\
+    u(\mathbf{x},0)=g(\mathbf{x}) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=0\},
+  \end{cases}
+  \label{eq:transport-nonhom}
+\end{equation}
+we can apply the same approach as in the homogeneous case: following the characteristic curve
+$z(s)=u(\mathbf{x}+s\mathbf{b},t+s)$, $s\in[-t,0]$, whose derivative is $\,d z/\,d s=f(\mathbf{x}+s\mathbf{b},t+s)$,
+and integrating from $-t$ to $0$ (Appendix~\ref{app-sec:transport}), we obtain the expression
+\begin{equation}
+  u(\mathbf{x},t)=g(\mathbf{x}-t\mathbf{b})+\int_{0}^{t}f\big(\mathbf{x}+(\tau-t)\mathbf{b},\tau\big)\,d\tau.
+  \label{eq:transport-duhamel}
+\end{equation}
+Through Duhamel's principle, this result means that the solution is the sum of the transported initial
+value $g(\mathbf{x}-t\mathbf{b})$ and the values accumulated from the source $f$, generated in the past times $\tau$
+along the same characteristic curve.
+
+\subsubsection{Regularization of transport operators}
+The transport operator $L=\partial_t+\mathbf{b}\cdot\nabla$ has no regularizing effect in the interior of the
+domain. This means that it conserves any roughness, sharp edge, or discontinuity of the initial
+condition $g$ along the characteristic curves. To handle this problem, one can regularize the data
+through mollification, or the operator through the vanishing viscosity method, which allows working
+smoothly in the Sobolev spaces $W^{k,p}$ or the Lebesgue spaces $L^p$ (Section~\ref{sec:modern-theory}). We
+will explore mollification here; for the vanishing viscosity method, which adds a small diffusion
+$\varepsilon\Delta u$ and therefore turns the transport equation into a parabolic one, the reader is
+referred to Evans~\cite{evans2010}. Given $g\in L^p(\mathbb{R}^n)$ and a standard mollifier
+$\eta_\epsilon\in C_c^\infty(\mathbb{R}^n)$, we define the mollified initial condition
+$g^\epsilon\in C^\infty(\mathbb{R}^n)\cap L^p(\mathbb{R}^n)$ through the convolution
+\begin{equation}
+  g^{\epsilon}(\mathbf{x})=(\eta_\epsilon*g)(\mathbf{x})=\int_{\mathbb{R}^n}\eta_\epsilon(\mathbf{x}-\mathbf{y})\,g(\mathbf{y})\,d\mathbf{y},
+  \label{eq:mollifier}
+\end{equation}
+and the corresponding regularized solution
+\begin{equation}
+  u^{\epsilon}(\mathbf{x},t)=g^{\epsilon}(\mathbf{x}-t\mathbf{b})=(\eta_\epsilon*g)(\mathbf{x}-t\mathbf{b}).
+  \label{eq:transport-mollified}
+\end{equation}
+As $\epsilon\to0$, the mollified $g^\epsilon$ converges to $g$ in $L^p(\mathbb{R}^n)$ for $1\le p<\infty$. That
+is, mollification solves the regularization problem through the smoothing function $\eta$, and $u$ is also in $L^p$. The
+smoothness depends only on the regularity of the initial data $g$; the operator itself does not add any.
+% ---------------------------------------------------------------------
+\subsection{Laplace's Equation}\label{subsec:laplace}
+
+To introduce Laplace's equation, we define the Laplacian operator $\Delta u:=\nabla^2u$. Laplace's
+equation is used to model equilibrium in the stationary state. Let
+the flux be $\mathbf{F}(\mathbf{x},t)=-b\nabla u(\mathbf{x},t)$ with $b>0$, and let $u(\mathbf{x},t)$ represent a physical scalar
+variable such as temperature, an electrostatic potential, or a mass density. In stationary equilibrium,
+there is no temporal change of $u$; thus, the term $\partial_t u(\mathbf{x},t)$ is zero. For convenience, we
+write $u(\mathbf{x},t)=u(\mathbf{x})$ for any value of $t>0$.
+The conservation of mass requires that the flux divergence be zero, $\operatorname{div}(\mathbf{F})=0$;
+consequently, the divergence of $\mathbf{F}$ is expressed as $-b\Delta u=0$. By the divergence theorem, the
+integral of the Laplacian can be expressed in terms of the flux through the boundary $\partial U$ of any
+subregion $U$:
+\begin{equation}
+  \int_U\Delta u\,d\mathbf{x}=\int_{\partial U}\nabla u\cdot\mathbf{n}\,d S,
+  \label{eq:laplace-flux}
+\end{equation}
+which gives meaning to the Laplacian operator $\Delta$ as a measure of local disequilibrium, based on the properties of the Laplace operator. On the other hand, this means that the function $u$ in the interior of the domain neither adds nor removes flux;
+that is, as we will see later, $u$ is the average of its surrounding points.
+
+\subsubsection{Homogeneous case}
+In searching for a solution to $\Delta u(\mathbf{x})=0$ for $\mathbf{x}\in\mathbb{R}^n$, Evans~\cite{evans2010} describes the
+\emph{fundamental solution of Laplace's equation}, defined by
+\begin{equation}
+  \Phi(\mathbf{x})=
+  \begin{cases}
+    -\dfrac{1}{2\pi}\log\norm{\mathbf{x}}_2 & (n=2),\\[2mm]
+    \dfrac{1}{n(n-2)\alpha(n)}\dfrac{1}{\norm{\mathbf{x}}_2^{\,n-2}} & (n\ge3),
+  \end{cases}
+  \label{eq:laplace-fundamental}
+\end{equation}
+where $\alpha(n)$ is the volume of the unit ball in $\mathbb{R}^n$ (for $n=1$ the analogous function is
+$-\tfrac12\abs{x}$). Some important aspects to analyze are:
+\begin{enumerate}
+  \item The function $\Phi$ has a singular point at $\mathbf{0}$ for $n\ge2$.
+  \item $\Delta\Phi=0$ for $\mathbf{x}\in\mathbb{R}^n\setminus\{\mathbf{0}\}$, but not at the point $\mathbf{0}$.
+    Conceptually, $\Phi$ represents the fundamental building block; thus, at the singular point the
+    fundamental solution must be understood as a distribution that contains the information of the
+    point, and with the sign convention of Evans~\cite{evans2010} it satisfies $-\Delta\Phi=\delta_{\mathbf{0}}$.
+  \item Equation~\eqref{eq:laplace-fundamental} does not contain boundary information, which is essential for
+    engineering and science applications.
+\end{enumerate}
+
+Consequently, it is necessary to introduce more information from the problem itself through a
+Dirichlet boundary condition, which specifies the values of the function on the boundary through an
+arbitrary function $g(\mathbf{x})$. Thus, consider the following boundary value problem for
+$\Omega\subset\mathbb{R}^n$ bounded and $u\in C^2(\bar\Omega)$:
+\begin{equation}
+  \begin{cases}
+    \Delta u(\mathbf{x})=0 & \text{in } \mathbf{x}\in\Omega,\\
+    u(\mathbf{x})=g(\mathbf{x}) & \text{on } \mathbf{x}\in\partial\Omega.
+  \end{cases}
+  \label{eq:laplace-dirichlet}
+\end{equation}
+
+The main idea is to find the solution $u$ using $\Phi$. In stationary problems, the value of $u$ is the
+result of relaxing the system; in this case no source of perturbation exists, and the only information
+that acts as a perturbation source is the boundary data $g$. Thus, the solution may be expressed as an
+integral of $g$ over the boundary. Following Evans~\cite{evans2010}, Green's second identity applied to
+$u$ and $\Phi$ gives a representation of $u$ that still contains the unknown normal derivative
+$\partial u/\partial\mathbf{n}$ on the boundary. To eliminate it, it is necessary to build an auxiliary
+(corrector) function $\phi^{\mathbf{x}}$ that is harmonic in $\Omega$ and matches the fundamental solution on
+the boundary (the complete derivation is in Appendix~\ref{app-sec:laplace}). The unknown normal derivative
+cancels and we finally find the solution $u$ through Green's function
+$G(\mathbf{x},\mathbf{y})=\Phi(\mathbf{y}-\mathbf{x})-\phi^{\mathbf{x}}(\mathbf{y})$:
+\begin{equation}
+  u(\mathbf{x})=-\int_{\partial\Omega}g(\mathbf{y})\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y})\,d S(\mathbf{y}),
+  \label{eq:laplace-green}
+\end{equation}
+where $\partial G/\partial\mathbf{n}=\nabla_{\mathbf{y}}G\cdot\mathbf{n}$. Finally, we have an analytical solution through an
+auxiliary function that imposes the cancellation on the boundary:
+\begin{equation}
+  \begin{cases}
+    -\Delta_{\mathbf{y}}G(\mathbf{x},\mathbf{y})=\delta(\mathbf{x}-\mathbf{y}) & \text{in } \mathbf{y}\in\Omega,\\
+    G(\mathbf{x},\mathbf{y})=0 & \text{on } \mathbf{y}\in\partial\Omega.
+  \end{cases}
+  \label{eq:green-function}
+\end{equation}
+
+\subsubsection{Non-homogeneous case}
+The non-homogeneous case is the \emph{Poisson equation}. Consider the bounded domain $\Omega$; the
+problem is given by
+\begin{equation}
+  \begin{cases}
+    -\Delta u(\mathbf{x})=f(\mathbf{x}) & \text{in } \mathbf{x}\in\Omega,\\
+    u(\mathbf{x})=h(\mathbf{x}) & \text{on } \mathbf{x}\in\partial\Omega.
+  \end{cases}
+  \label{eq:poisson}
+\end{equation}
+The source term $f$ acts as a local curvature generator and induces the perturbation of a local point
+$\mathbf{x}$. With respect to the homogeneous problem, the source is added as a new term to the previous
+equation by the same Green method:
+\begin{equation}
+  u(\mathbf{x})=\int_\Omega G(\mathbf{x},\mathbf{y})f(\mathbf{y})\,d\mathbf{y}-\int_{\partial\Omega}h(\mathbf{y})\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y})\,d S(\mathbf{y}).
+  \label{eq:poisson-green}
+\end{equation}
+
+\subsubsection{Regularity and some properties}
+The Green's function and the Laplacian operator smooth the function through the mean-value property.
+Applying Equation~\eqref{eq:laplace-green} to a ball $B(\mathbf{x},r)\subset\Omega$ centered at a point $\mathbf{x}$
+inside the domain, where the normal derivative of $G$ is constant on the sphere $\partial B(\mathbf{x},r)$ and
+its denominator is the surface area $\abs{\partial B(\mathbf{x},r)}=n\alpha(n)r^{n-1}$
+(Appendix~\ref{app-sec:laplace}), we obtain
+\begin{equation}
+  u(\mathbf{x})=\frac{1}{\abs{\partial B(\mathbf{x},r)}}\int_{\partial B(\mathbf{x},r)}u(\mathbf{y})\,d S(\mathbf{y})
+  =\fint_{\partial B(\mathbf{x},r)}u\,d S \qquad\text{(mean-value property)}.
+  \label{eq:mvp}
+\end{equation}
+This argument is a heuristic version of the proof; the rigorous proof differentiates the spherical
+average with respect to $r$ \cite[Section 2.2.2]{evans2010}. The mean-value property is
+responsible for the smoothness of $u$ in $\Omega$, because the value of $u$ at any point $\mathbf{x}$ is
+averaged over its neighborhood. The smoothness theorem for Laplace's equation states that if
+$u\in C(\bar\Omega)$ satisfies the mean-value property for each ball $B(\mathbf{x},r)\subset\Omega$, then
+$u\in C^\infty(\Omega)$. Furthermore, its derivatives are controlled by the derivative estimates in
+Evans~\cite{evans2010}: with $k=\abs{\alpha}$, if $u$ is harmonic in $\Omega$ then
+\begin{equation}
+  \abs{D^\alpha u(\mathbf{x})}\le\frac{C_k}{r^{n+k}}\norm{u}_{L^1(B(\mathbf{x},r))},
+  \label{eq:harmonic-estimate}
+\end{equation}
+which means that the $\alpha$-order derivatives of $u$ are bounded by the $L^1$ norm on the ball
+$B(\mathbf{x},r)$ and the constant $C_k$. An aspect of interest to analyze is the factor $r^{-n-k}$: if $\alpha$
+is of high order, the bound grows as a power of $1/r$, so the scale $r$ acts as a penalization term.
+In other words, harmonic functions are infinitely smooth, but measuring finer and finer variations on a
+fixed scale requires larger and larger constants.
+
+% ---------------------------------------------------------------------
+\subsection{Heat Equation}\label{subsec:heat}
+
+Consider an open domain $\Omega\subset\mathbb{R}^n$ that contains a continuous conductor. Let $\mathbf{F}$ be the flux
+vector of the scalar function $u(\mathbf{x},t)$, which changes for $t>0$. The conservation of energy yields
+$u_t+\operatorname{div}\mathbf{F}=0$. If $\mathbf{F}$ is defined as $-b\nabla u$ with $b>0$, the equation is transformed
+to $u_t-b\Delta u=0$, obtaining the homogeneous heat equation (in what follows $b=1$).
+
+The temporal derivative is of first order while the spatial derivative is of second order. Looking for
+solutions of the form $u(\mathbf{x},t)=t^{-\alpha}v(\mathbf{x}/t^{\beta})$, invariant under the scaling
+$(\mathbf{x},t)\mapsto(\lambda^{\beta}\mathbf{x},\lambda t)$, that also conserve the thermal mass
+(Appendix~\ref{app-sec:heat}), Evans~\cite{evans2010} shows that $\beta=1/2$ and $\alpha=n/2$. Thus, we obtain
+\emph{the fundamental solution of the heat equation}, defined as
+\begin{equation}
+  \Phi(\mathbf{x},t)=
+  \begin{cases}
+    \dfrac{1}{(4\pi t)^{n/2}}\,e^{-\frac{\norm{\mathbf{x}}_2^2}{4t}} & (\mathbf{x}\in\mathbb{R}^n,\ t>0),\\[2mm]
+    0 & (\mathbf{x}\in\mathbb{R}^n,\ t<0).
+  \end{cases}
+  \label{eq:heat-fundamental}
+\end{equation}
+In this manner, this function works similarly to the Laplace fundamental solution; that is, it also has
+a singular point at $(\mathbf{0},0)$, and $\Phi(\cdot,t)\to\delta_{\mathbf{0}}$ in the sense of
+distributions as $t\to0^+$.
+
+\subsubsection{Homogeneous case}
+As we saw in Laplace's equation, additional information (here, an initial condition) is necessary to
+find a unique solution which is not trivial. Let $u\in C^{2,1}(\mathbb{R}^n\times(0,\infty))$ and consider the
+Cauchy problem
+\begin{equation}
+  \begin{cases}
+    \partial_t u(\mathbf{x},t)-\Delta u(\mathbf{x},t)=0 & \text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in(0,\infty),\\
+    u(\mathbf{x},0)=h(\mathbf{x}) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=0\}.
+  \end{cases}
+  \label{eq:heat-cauchy}
+\end{equation}
+As a first approach, the solution is given by the convolution of the fundamental solution $\Phi$ and
+the initial condition $h$:
+\begin{equation}
+  u(\mathbf{x},t)=(\Phi(\cdot,t)*h)(\mathbf{x})=\frac{1}{(4\pi t)^{n/2}}\int_{\mathbb{R}^n}h(\mathbf{y})\,
+  e^{-\frac{\norm{\mathbf{x}-\mathbf{y}}_2^2}{4t}}\,d\mathbf{y}\qquad(\mathbf{x}\in\mathbb{R}^n,\ t>0).
+  \label{eq:heat-convolution}
+\end{equation}
+However, we need a closed analytical form for a bounded domain $\Omega\subset\mathbb{R}^n$:
+\begin{equation}
+  \begin{cases}
+    \partial_t u(\mathbf{x},t)-\Delta u(\mathbf{x},t)=0 & \text{in } \mathbf{x}\in\Omega,\ t\in(0,\infty),\\
+    u(\mathbf{x},0)=h(\mathbf{x}) & \text{on } \mathbf{x}\in\Omega,\ \{t=0\},\\
+    u(\mathbf{x},t)=g(\mathbf{x},t) & \text{on } \mathbf{x}\in\partial\Omega,\ t\in(0,\infty),
+  \end{cases}
+  \label{eq:heat-ibvp}
+\end{equation}
+which the previous formula does not include. Again, we must appeal to a Green's function. Applying the
+second Green's identity to the heat operator $L=\partial_s-\Delta$ and to its adjoint (backward) operator
+$L^{*}=-\partial_s-\Delta$, and building, as in Laplace's equation, an auxiliary function
+$\phi^{\mathbf{x}}(\mathbf{y},\tau)$ that solves the heat equation with boundary values
+$\Phi(\mathbf{x}-\mathbf{y},\tau)$ (Appendix~\ref{app-sec:heat}), we define the Green's function
+$G(\mathbf{x},\mathbf{y},\tau)=\Phi(\mathbf{x}-\mathbf{y},\tau)-\phi^{\mathbf{x}}(\mathbf{y},\tau)$, which vanishes for
+$\mathbf{y}\in\partial\Omega$, and the unknown term disappears. We obtain the closed form
+\begin{equation}
+  u(\mathbf{x},t)=\int_\Omega h(\mathbf{y})G(\mathbf{x},\mathbf{y},t)\,d\mathbf{y}
+  -\int_0^t\!\!\int_{\partial\Omega}g(\mathbf{y},s)\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y},t-s)\,d S(\mathbf{y})\,d s,
+  \label{eq:heat-green}
+\end{equation}
+where $\partial G/\partial\mathbf{n}=\nabla_{\mathbf{y}}G\cdot\mathbf{n}$. The structure is exactly the same as
+Equation~\eqref{eq:laplace-green}: an integral of the data against a kernel that already knows the boundary.
+
+\subsubsection{Non-homogeneous equation -- Duhamel's principle}
+Consider the non-homogeneous problem
+\begin{equation}
+  \begin{cases}
+    \partial_t u(\mathbf{x},t)-\Delta u(\mathbf{x},t)=f(\mathbf{x},t) & \text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in(0,T],\\
+    u(\mathbf{x},0)=h(\mathbf{x}) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=0\}.
+  \end{cases}
+  \label{eq:heat-nonhom}
+\end{equation}
+Duhamel's principle interprets the forcing term $f(\mathbf{x},t)$ as an accumulation of initial conditions for
+the homogeneous problem. The solution is constructed from
+\begin{equation}
+  u(\mathbf{x},t)=\int_{\mathbb{R}^n}\Phi(\mathbf{x}-\mathbf{y},t)h(\mathbf{y})\,d\mathbf{y}+\int_0^t\!\!\int_{\mathbb{R}^n}\Phi(\mathbf{x}-\mathbf{y},t-s)f(\mathbf{y},s)\,d\mathbf{y}\,d s,
+  \label{eq:heat-duhamel}
+\end{equation}
+where, for example, $f\in C_1^2(\mathbb{R}^n\times[0,\infty))$ with compact support guarantees that this
+formula is a classical solution \cite{evans2010}. In a bounded domain we encounter the same issue
+as in the homogeneous case, and the Green's function is used again to finally obtain
+\begin{multline}
+  u(\mathbf{x},t)=\int_\Omega h(\mathbf{y})G(\mathbf{x},\mathbf{y},t)\,d\mathbf{y}
+  -\int_0^t\!\!\int_{\partial\Omega}g(\mathbf{y},s)\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y},t-s)\,d S(\mathbf{y})\,d s\\
+  +\int_0^t\!\!\int_\Omega f(\mathbf{y},s)G(\mathbf{x},\mathbf{y},t-s)\,d\mathbf{y}\,d s.
+  \label{eq:heat-green-full}
+\end{multline}
+
+\subsubsection{Regularization and some properties}
+The fundamental solution of the heat equation is a Gaussian function (the heat kernel). Some of its
+properties are smoothness, boundedness, and decay to $0$ as $\norm{\mathbf{x}}\to\infty$. For those reasons,
+the heat kernel propagates with apparently infinite velocity: a change in the value of $u$ at a point
+$\mathbf{x}$ has an immediate effect at any point $\mathbf{y}$ with $\operatorname{dist}(\mathbf{x},\mathbf{y})>0$, as if it were
+moving with infinite velocity.
+
+This kernel acts as a filter for corners, edges, and discontinuities. To see it, take a compact set $K$
+inside an open set $V$ of space--time, $K\subset\subset V$, and a cutoff function
+$\zeta\in C_c^\infty(\mathbb{R}^n\times(0,T))$ that equals one in $K$ and zero outside $V$. The function
+$v=u\zeta$ solves the heat equation with a source that only contains $u$, $\nabla u$ and the derivatives
+of $\zeta$. Writing the Duhamel solution \eqref{eq:heat-duhamel} for $v$ and moving the derivative from $u$
+to the known functions (Appendix~\ref{app-sec:heat}), we arrive at
+\begin{equation}
+  v(\mathbf{x},t)=\int_0^t\!\!\int_{\mathbb{R}^n}u(\mathbf{y},s)\,\mathcal{K}(\mathbf{x},\mathbf{y},t,s)\,d\mathbf{y}\,d s,
+  \qquad\mathcal{K}=\Phi\,(\partial_s\zeta+\Delta\zeta)+2\nabla\Phi\cdot\nabla\zeta,
+  \label{eq:cut-9}
+\end{equation}
+where $\Phi=\Phi(\mathbf{x}-\mathbf{y},t-s)$ and all derivatives act on $\mathbf{y}$. Here is the key point: the kernel $\mathcal{K}$ only contains derivatives of $\zeta$, which vanish
+near $K$. Therefore, for $(\mathbf{x},t)$ inside $K$ the kernel never touches the singularity of $\Phi$ and
+$\mathcal{K}$ is $C^\infty$ in $(\mathbf{x},t)$. Since $v=u$ in $K$, Equation~\eqref{eq:cut-9} says that $u$ is
+infinitely smooth there, whatever the roughness of $u$ outside. The estimation theorem in the heat
+equation section of Evans~\cite{evans2010} establishes, moreover, that its derivatives are bounded on
+parabolic cylinders $C(\mathbf{x},t;r)$:
+\begin{equation}
+  \max_{C(\mathbf{x},t;r/2)}\abs{D_{\mathbf{x}}^{k}D_t^{l}u}\le\frac{C_{kl}}{r^{k+2l+n+2}}\norm{u}_{L^1(C(\mathbf{x},t;r))}.
+  \label{eq:heat-estimate}
+\end{equation}
+Equation~\eqref{eq:heat-estimate} offers a clear perspective on the regularization of the heat equation. The
+structure here takes the form of
+\[
+  \begin{gathered}
+  \text{Maximum change in some region}\\
+  \le\ \text{Total heat of a bigger region}\times\text{Geometric constant};
+  \end{gathered}
+\]
+the space--time derivatives of $u$ on a parabolic cylinder are bounded by the local $L^1$ norm of $u$
+and a constant $C_{kl}$, meaning that the variation of $u$ at an arbitrary point of $C(\mathbf{x},t;r/2)$ is
+governed by the total heat of the region where it is contained. The bound depends on the geometric factor
+$r^{-(k+2l+n+2)}$; taking higher derivatives makes this factor increasingly larger, reflecting that
+measuring finer variations requires a larger bound when the scale $r$ is fixed. This is how the
+equation handles any irregular behavior of the data $g$ or $h$: after any positive time, it has been
+filtered out.
+
+% ---------------------------------------------------------------------
+\subsection{Wave Equation}\label{subsec:wave}
+
+The heat equation introduces a first-order time derivative alongside the Laplacian operator, giving
+rise to a local property: the update of the local disequilibrium measure, that is to say, a continuous
+adaptation to the surrounding points (diffusion). Increasing the order of the time derivative by one
+causes a wave propagation phenomenon:
+\begin{equation}
+  \partial_t^2u(\mathbf{x},t)-\Delta u(\mathbf{x},t)=0\qquad\text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in[0,T].
+  \label{eq:wave}
+\end{equation}
+
+\subsubsection{Homogeneous case}
+Let $u\in C^2(\mathbb{R}^n\times[0,\infty))$ be a function that solves the wave equation for $\mathbf{x}\in\mathbb{R}^n$ and
+$t>0$. Given the initial data $g$ and $h$, the homogeneous problem is defined as
+\begin{equation}
+  \begin{cases}
+    \partial_t^2u(\mathbf{x},t)-\Delta u(\mathbf{x},t)=0 & \text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in(0,T],\\
+    u(\mathbf{x},0)=g(\mathbf{x}) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=0\},\\
+    \partial_t u(\mathbf{x},0)=h(\mathbf{x}) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=0\}.
+  \end{cases}
+  \label{eq:wave-cauchy}
+\end{equation}
+With the aim of solving this, Evans~\cite{evans2010} shows that the closed forms depend on the dimension.
+
+\textbf{Case $n=1$: d'Alembert's formula.}
+D'Alembert's formula takes advantage of the factorization of the wave operator into two transport
+operators, $\Box=\partial_t^2-\partial_x^2=(\partial_t+\partial_x)(\partial_t-\partial_x)$. Solving one
+homogeneous and one non-homogeneous transport problem with Equation~\eqref{eq:transport-duhamel}
+(Appendix~\ref{app-sec:wave}), we obtain
+\begin{equation}
+  u(x,t)=\frac12\big[g(x+t)+g(x-t)\big]+\frac12\int_{x-t}^{x+t}h(y)\,d y.
+  \label{eq:dalembert}
+\end{equation}
+This is d'Alembert's formula.
+
+\textbf{Case $n\ge2$: spherical averages.}
+For finding a solution in dimensions $n\ge2$, it is necessary to return to the concept of average
+introduced in Laplace's equation, to analyze what happens with the surrounding points of a particular
+point. Evans~\cite{evans2010} works with the mean value of $u$ over the sphere $\partial B(\mathbf{x},r)$,
+which satisfies the Euler--Poisson--Darboux equation (Appendix~\ref{app-sec:wave}), and distinguishes the
+solution between odd and even dimensions.
+
+\textbf{Solution for odd $n$.}
+Suppose $u\in C^2(\mathbb{R}^n\times[0,\infty))$ is a solution to the Cauchy problem for the wave equation for
+$\mathbf{x}\in\mathbb{R}^n$ and $t>0$, where $n\ge3$ is odd. Also suppose that $g\in C^{m+1}(\mathbb{R}^n)$ and
+$h\in C^m(\mathbb{R}^n)$, where $m=(n+1)/2$. The closed-form analytical expression that solves this case is
+given by \cite{evans2010}
+\begin{multline}
+  u(\mathbf{x},t)=\frac{1}{\gamma_n}\Bigg[\partial_t\Big(\frac1t\partial_t\Big)^{\frac{n-3}{2}}
+    \Big(t^{n-2}\fint_{\partial B(\mathbf{x},t)}g\,d S\Big)\\
+    +\Big(\frac1t\partial_t\Big)^{\frac{n-3}{2}}\Big(t^{n-2}\fint_{\partial B(\mathbf{x},t)}h\,d S\Big)\Bigg],
+  \label{eq:wave-odd}
+\end{multline}
+where $\gamma_n=1\cdot3\cdot5\cdots(n-2)$. It only requires knowing the functions $g$ and $h$ over the
+sphere $\partial B(\mathbf{x},t)=\{\mathbf{y}\in\mathbb{R}^n\mid\norm{\mathbf{y}-\mathbf{x}}_2=t\}$, which is the base of the backward light
+cone with vertex $(\mathbf{x},t)$. This represents a light front because the Minkowski space--time interval is
+$s^2=(ct)^2-\norm{\mathbf{y}-\mathbf{x}}_2^2$. For a light-like path the interval of wave propagation is $s^2=0$,
+assuming the wave speed is $c=1$. This means that the distance between two points of the spatial domain
+is equal to the time. Geometrically, this boundary is a sphere in the spatial domain, centered at $\mathbf{x}$
+with radius $t$. The fact that the solution depends only on this surface, and not on the interior of
+the ball, is the mathematical statement of Huygens' principle: information propagates exactly at the
+speed $c$ without leaving a residual trail. Whatever happens inside the ball does not affect $u(\mathbf{x},t)$.
+
+\textbf{Solution for even $n$.}
+Suppose $u\in C^2(\mathbb{R}^n\times[0,\infty))$ is a solution to the Cauchy problem for the wave equation for
+$\mathbf{x}\in\mathbb{R}^n$ and $t>0$, where $n$ is even. Also suppose that $g\in C^{m+1}(\mathbb{R}^n)$ and $h\in C^m(\mathbb{R}^n)$,
+where $m=(n+2)/2$. The closed-form analytical expression that solves this case is given by the method
+of descent \cite{evans2010}:
+\begin{multline}
+  u(\mathbf{x},t)=\frac{1}{\gamma_n}\Bigg[\partial_t\Big(\frac1t\partial_t\Big)^{\frac{n-2}{2}}
+    \Big(t^{n}\fint_{B(\mathbf{x},t)}\frac{g(\mathbf{y})}{(t^2-\norm{\mathbf{y}-\mathbf{x}}_2^2)^{1/2}}\,d\mathbf{y}\Big)\\
+    +\Big(\frac1t\partial_t\Big)^{\frac{n-2}{2}}
+    \Big(t^{n}\fint_{B(\mathbf{x},t)}\frac{h(\mathbf{y})}{(t^2-\norm{\mathbf{y}-\mathbf{x}}_2^2)^{1/2}}\,d\mathbf{y}\Big)\Bigg],
+  \label{eq:wave-even}
+\end{multline}
+where $\gamma_n=2\cdot4\cdots(n-2)\cdot n$. It requires knowing the functions $g$ and $h$ over the
+entire volume of the solid ball $B(\mathbf{x},t)$; here, what happens inside the solid ball does affect
+$u(\mathbf{x},t)$. This is reflected in the non-zero weight given by $(t^2-\norm{\mathbf{y}-\mathbf{x}}_2^2)^{-1/2}$ inside the
+ball. Thus, $s^2=(ct)^2-\norm{\mathbf{y}-\mathbf{x}}_2^2>0$, meaning that the elapsed time is greater than the spatial
+distance. This implies that the wave leaves a wake and interacts with points inside the solid ball.
+
+\subsubsection{Non-homogeneous case}
+By the linearity of the wave operator $\Box=\partial_t^2-\Delta$, the solution to the non-homogeneous
+Cauchy problem can be decomposed by superposition as $u=u_{\mathrm{hom}}+u_{\mathrm{part}}$, where
+$u_{\mathrm{hom}}$ solves the homogeneous problem determined by the initial data $g$ and $h$, and
+$u_{\mathrm{part}}$ solves the problem with source $f$ and zero initial conditions. To construct
+$u_{\mathrm{part}}$, we apply Duhamel's principle. Rather than treating the source $f$ as a global
+function in time, we interpret it as a continuous superposition of instantaneous impulses. For each
+instant $s\in[0,t]$, consider the following auxiliary initial value problem:
+\begin{equation}
+  \begin{cases}
+    \partial_t^2u(\mathbf{x},t;s)-\Delta u(\mathbf{x},t;s)=0 & \text{in } \mathbf{x}\in\mathbb{R}^n,\ t\in(s,\infty),\\
+    u(\mathbf{x},s;s)=0 & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=s\},\\
+    \partial_t u(\mathbf{x},s;s)=f(\mathbf{x},s) & \text{on } \mathbf{x}\in\mathbb{R}^n,\ \{t=s\}.
+  \end{cases}
+  \label{eq:wave-duhamel-aux}
+\end{equation}
+By Duhamel's principle, the solution to the non-homogeneous problem is obtained by integrating all
+these auxiliary solutions over all past times $s$. The micro-source $f(\mathbf{x},s)$ can be seen as a local
+property: a micro-perturbation occurring at time $s$ gives a pulse to the system that is converted into
+velocity, while the position at that instant is not changed (the initial position of each auxiliary
+problem is zero). The solution is expressed as
+\begin{equation}
+  u_{\mathrm{part}}(\mathbf{x},t)=\int_0^t u(\mathbf{x},t;s)\,d s.
+  \label{eq:wave-duhamel}
+\end{equation}
+
+\subsubsection{About the problem of solutions with closed forms}
+Commenting on closed forms, Evans \cite[p.~82]{evans2010} argues: ``the explicit formulas demonstrate the necessity of making more and more smoothness assumptions upon the data $g$ and $h$ to ensure the existence of a $C^2$ solution of the wave equation for larger and larger $n$''. The wave operator, unlike the Laplace
+and heat operators, does not produce a smoothing estimate like the ones in
+Equations~\eqref{eq:harmonic-estimate} and \eqref{eq:heat-estimate}, the regularity of $\uxt$ is exactly the regularity
+of the initial data, and singularities travel along the light cone. Thus, the modern theory of PDEs is needed
+to handle problems without so many assumptions about the regularity of the initial data $g$ and $h$,
+and of course about $u$.
+
+% =====================================================================
+\section{Modern Theory of Partial Differential Equations}\label{sec:modern-theory}
+% =====================================================================
+
+The classical theory of PDEs faces limitations when handling real problems. As discussed in the
+previous sections, the existence of classical $C^2$ solutions imposes strict regularity requirements on
+the initial data and boundary data. For the wave equation, highly smooth data $g\in C^{m+1}$ and
+$h\in C^m$ are required. For Laplace's equation, the domain boundaries must be smooth enough for the
+Green's function to exist, and corners produce singularities. Even for the heat equation, discontinuous
+initial data or sources prevent the existence of a classical solution at $t=0$. These strict
+requirements fail to represent most cases that science or engineering must address, where data often
+present discontinuities, geometric corners, or lack high regularity. It is necessary to formulate a more
+flexible framework. To respond to that, modern PDE theory requires tools that can handle them. In this
+section, we address this through Hölder spaces, Lebesgue spaces, weak derivatives, Sobolev spaces and
+weak solutions.
+
+% ---------------------------------------------------------------------
+\subsection{Hölder Spaces}\label{subsec:holder}
+
+Some functions are perfect candidates for the classical framework, but irregular functions are better
+suited to represent the real world. How can one measure the derivative of a function that is not
+differentiable? To address this question, the Hölder norm avoids differentiation and measures, instead,
+how fast the function can oscillate \cite{evans2010}:
+
+\begin{definicion}{Hölder norm.}\label{def:holder-norm}
+Let $\Omega\subset\mathbb{R}^n$ be an open set and $u:\Omega\to\mathbb{R}$ a bounded and continuous function. The
+supremum norm is defined as
+\[
+  \norm{u}_{C^0(\bar\Omega)}:=\sup_{\mathbf{x}\in\Omega}\abs{u(\mathbf{x})}.
+\]
+The Hölder seminorm of $u$ with exponent $0<\gamma\le1$ is given by
+\[
+  [u]_{C^{0,\gamma}(\bar\Omega)}:=\sup_{\substack{\mathbf{x},\mathbf{y}\in\Omega\\ \mathbf{x}\neq\mathbf{y}}}
+  \frac{\abs{u(\mathbf{x})-u(\mathbf{y})}}{\abs{\mathbf{x}-\mathbf{y}}^{\gamma}},
+\]
+and the Hölder norm is then defined as
+$\norm{u}_{C^{0,\gamma}(\bar\Omega)}:=\norm{u}_{C^0(\bar\Omega)}+[u]_{C^{0,\gamma}(\bar\Omega)}$.
+\end{definicion}
+
+\begin{definicion}{Hölder space.}\label{def:holder-space}
+The Hölder space $C^{k,\gamma}(\bar\Omega)$ consists of all functions $u\in C^k(\bar\Omega)$ for which
+the norm
+\begin{equation}
+  \norm{u}_{C^{k,\gamma}(\bar\Omega)}:=\sum_{\abs{\alpha}\le k}\norm{D^\alpha u}_{C^0(\bar\Omega)}
+  +\sum_{\abs{\alpha}=k}[D^\alpha u]_{C^{0,\gamma}(\bar\Omega)}
+  \label{eq:holder-norm}
+\end{equation}
+is finite.
+\end{definicion}
+
+The case $\gamma=1$ is Lipschitz continuity, so Hölder continuity is a generalization of it in which the
+``slope'' is allowed to blow up in a controlled way. Evans~\cite{evans2010} establishes that every space
+$C^{k,\gamma}(\bar\Omega)$ is a Banach space, that is, it is complete, which is what one needs for
+convergence and fixed-point arguments. However, this is not enough. Having a function that is smooth
+everywhere except at a few points relaxes the rigid regularity assumptions on the initial and boundary
+data, but it does not resolve the PDE problem, because the equation still asks for classical
+derivatives. A Hölder norm only gives knowledge of the local oscillations of the function and of its
+supremum value. We will meet the Hölder seminorm again in Chapter~\ref{ch:pinns}, where it is used to
+regularize the loss function of a PINN \cite{shin2020convergence}.
+
+% ---------------------------------------------------------------------
+\subsection{Lebesgue Spaces $L^p$}\label{subsec:lp}
+
+To rigorously define the modern formulation, we introduce the Lebesgue spaces, following
+Castillo~\cite{castillo2014}.
+
+\begin{definicion}{$L^p$ space.}\label{def:lp}
+Let $\Omega\subset\mathbb{R}^n$ be an open domain and $p\in[1,\infty)$. The space $L^p(\Omega)$ consists of all
+(classes of) measurable functions whose $p$-th power is Lebesgue integrable:
+\begin{equation}
+  L^p(\Omega):=\Big\{f:\Omega\to\mathbb{R}\ \Big|\ \int_\Omega\abs{f(\mathbf{x})}^p\,d\mathbf{x}<\infty\Big\}.
+  \label{eq:lp}
+\end{equation}
+\end{definicion}
+
+In particular, the space $L^2(\Omega)$ is a Hilbert space equipped with the inner product
+$\langle f,g\rangle_{L^2}=\int_\Omega fg\,d\mathbf{x}$, meaning that it contains functions with finite energy that
+may present discontinuities. This is exactly the space in which the loss functions of
+Chapter~\ref{ch:pinns} are measured.
+
+% ---------------------------------------------------------------------
+\subsection{Weak Derivatives}\label{subsec:weak}
+
+Consider the Poisson equation \eqref{eq:poisson} with $h=0$. From Evans~\cite{evans2010}, the solution uses
+the Green's function $G$ and integrates it against the source $f$:
+\[
+  u(\mathbf{x})=\int_\Omega G(\mathbf{x},\mathbf{y})f(\mathbf{y})\,d\mathbf{y}.
+\]
+However, this representation requires knowledge of the auxiliary function $\phi^{\mathbf{x}}$ (the corrector),
+which is not an easy task because geometries are complex and finding such functions is difficult. Even
+if a solution can be found, we must solve a homogeneous Dirichlet problem infinitely many times, one
+for each point $\mathbf{x}$, which requires a high computational cost. Moreover, since $\Phi$ is a singular
+function, the source $f$ must be regular enough (for example, Hölder continuous) for $u$ to be a
+classical $C^2$ solution.\verificar{precise hypothesis on $f$, e.g.\ Gilbarg--Trudinger}
+
+Instead of looking for $u$ through the kernel $G$, we test the equation against a smooth function
+$\phi$ that is compactly supported, $\phi\in C_c^\infty(\Omega)$ \cite{reyna_sobolev}:
+\begin{equation}
+  \int_\Omega-\Delta u(\mathbf{y})\,\phi(\mathbf{y})\,d\mathbf{y}=\int_\Omega f(\mathbf{y})\phi(\mathbf{y})\,d\mathbf{y}.
+  \label{eq:poisson-tested}
+\end{equation}
+For the identity $\phi\Delta u=\operatorname{div}(\phi\nabla u)-\nabla u\cdot\nabla\phi$:
+\begin{align*}
+  \int_\Omega\nabla u\cdot\nabla\phi\,d\mathbf{y}-\int_\Omega\operatorname{div}(\phi\nabla u)\,d\mathbf{y}
+    &=\int_\Omega f\phi\,d\mathbf{y},\\
+  \int_\Omega\nabla u\cdot\nabla\phi\,d\mathbf{y}-\int_{\partial\Omega}\phi\frac{\partial u}{\partial\mathbf{n}}\,d S(\mathbf{y})
+    &=\int_\Omega f\phi\,d\mathbf{y}.
+\end{align*}
+Since $\phi=0$ on the boundary,
+\begin{equation}
+  \int_\Omega\nabla u\cdot\nabla\phi\,d\mathbf{y}=\int_\Omega f\phi\,d\mathbf{y}.
+  \label{eq:poisson-weak1}
+\end{equation}
+If we now use $u\Delta\phi=\operatorname{div}(u\nabla\phi)-\nabla u\cdot\nabla\phi$ and apply it,
+\[
+  \int_\Omega u\Delta\phi\,d\mathbf{y}=\int_{\partial\Omega}u\frac{\partial\phi}{\partial\mathbf{n}}\,d S(\mathbf{y})
+  -\int_\Omega\nabla u\cdot\nabla\phi\,d\mathbf{y}=-\int_\Omega\nabla u\cdot\nabla\phi\,d\mathbf{y},
+\]
+and finally it comes to
+\begin{equation}
+  \int_\Omega u\Delta\phi\,d\mathbf{y}=-\int_\Omega f\phi\,d\mathbf{y}.
+  \label{eq:poisson-weak2}
+\end{equation}
+In Equation~\eqref{eq:poisson-weak2} there is no derivative of $u$ at all: all of them were transferred to the
+test function. And, applying the Cauchy--Schwarz inequality \cite{castillo2014},
+\begin{equation}
+  \Big|\int_\Omega f\phi\,d\mathbf{y}\Big|\le\Big(\int_\Omega f^2\,d\mathbf{y}\Big)^{1/2}\Big(\int_\Omega\phi^2\,d\mathbf{y}\Big)^{1/2}
+  =\norm{f}_{L^2(\Omega)}\norm{\phi}_{L^2(\Omega)},
+  \label{eq:cauchy-schwarz}
+\end{equation}
+so the right-hand side makes sense as soon as $f\in L^2(\Omega)$. Here we observe that this weak
+formulation relaxes the regularity requirements: instead of requiring a classical $C^2$ solution and a
+Hölder continuous source $f$, as demanded by the classical Green's function representation, the weak
+theory only requires $f\in L^2(\Omega)$ (or even $f\in H^{-1}(\Omega)$) and seeks the solution $u$ in a
+Sobolev space \cite{castillo2014}. Being able to represent the solution through a source $f$
+residing in a less regular space, while still guaranteeing the existence of a solution, is a major
+advance of the modern theory. What we did with $\Delta$ is a particular case of the following
+definition.
+
+\begin{definicion}{Weak derivative (derivative in the sense of distributions).}\label{def:weak-derivative}
+Given $u\in L^1_{\mathrm{loc}}(\Omega)$ and a multi-index $\alpha$, we say that
+$v_\alpha\in L^1_{\mathrm{loc}}(\Omega)$ is the $\alpha$-th weak derivative of $u$, and we write
+$D^\alpha u:=v_\alpha$, if for every test function $\phi\in C_c^\infty(\Omega)$ it holds that
+\cite{reyna_sobolev}
+\begin{equation}
+  \int_\Omega u\,D^\alpha\phi\,d\mathbf{y}=(-1)^{\abs{\alpha}}\int_\Omega v_\alpha\,\phi\,d\mathbf{y}.
+  \label{eq:weak-derivative}
+\end{equation}
+\end{definicion}
+
+In our Poisson case we already have this result, but seen in another way. If we organize it a little,
+with $\abs{\alpha}=2$ the sign is $(-1)^2=1$ and
+\begin{equation}
+  \int_\Omega u\Delta\phi\,d\mathbf{y}=(-1)^2\int_\Omega\Delta u\,\phi\,d\mathbf{y}=-\int_\Omega f\phi\,d\mathbf{y},
+  \label{eq:weak-poisson-again}
+\end{equation}
+which is Equation~\eqref{eq:poisson-weak2}. The weak Laplacian of $u$ is $-f$, even if $u$ has no classical second
+derivatives.
+
+% ---------------------------------------------------------------------
+\subsection{Sobolev Spaces}\label{subsec:sobolev}
+
+While the Lebesgue spaces $L^p(\Omega)$ provide a framework for functions with finite energy, they do
+not account for the behavior of their derivatives. To rigorously measure the regularity of a function
+alongside its weak derivatives, we introduce the Sobolev spaces.
+
+\begin{definicion}{Sobolev spaces.}\label{def:sobolev}
+Let $\Omega\subset\mathbb{R}^n$ be an open domain, $k\in\mathbb{N}$ and $1\le p<\infty$. The Sobolev space
+$W^{k,p}(\Omega)$ consists of all functions $u\in L^p(\Omega)$ whose weak derivatives $D^\alpha u$ up to
+order $k$ also belong to $L^p(\Omega)$. That is:
+\begin{equation}
+  W^{k,p}(\Omega):=\big\{u\in L^p(\Omega)\ \big|\ D^\alpha u\in L^p(\Omega)\ \ \forall\,\abs{\alpha}\le k\big\}.
+  \label{eq:sobolev}
+\end{equation}
+In the specific case $p=2$, we denote this space as $H^k(\Omega):=W^{k,2}(\Omega)$. The space
+$H^1(\Omega)$ is a Hilbert space equipped with the inner product
+\begin{equation}
+  \langle u,v\rangle_{H^1(\Omega)}:=\int_\Omega uv\,d\mathbf{y}+\int_\Omega\nabla u\cdot\nabla v\,d\mathbf{y}.
+  \label{eq:h1-inner}
+\end{equation}
+\end{definicion}
+
+The space $H^1_0(\Omega)$ is defined as the closure of $C_c^\infty(\Omega)$ in $H^1(\Omega)$. It means
+that every function of $H^1_0(\Omega)$ can be approximated, in the energy norm, by smooth functions with
+compact support; this is how the space encodes the zero boundary condition (in the sense of traces)
+without asking the function to be smooth: it may have corners or kinks, as long as its energy does not
+blow up. Since the weak formulation Equation~\eqref{eq:poisson-weak1} involves the gradients $\nabla u$ and
+$\nabla\phi$, $H^1_0(\Omega)$ is the natural space for the solution of the Poisson problem with zero
+boundary data. On the other hand, the space $H^2(\Omega)$ consists of functions whose weak derivatives
+up to second order belong to $L^2(\Omega)$; this is the natural space for operators involving the
+Laplacian $\Delta u$ or second temporal derivatives $\partial_{tt}u$ in strong form, as it guarantees
+that both the function and its curvature have finite energy. Finally, $H^{-1}(\Omega)$ denotes the
+topological dual space of $H^1_0(\Omega)$. While $H^1_0(\Omega)$ is the space of states with finite
+energy, $H^{-1}(\Omega)$ is the space of forces or sources.
+
+This difference between $H^1$ (weak form) and $H^2$ (strong form) will be important later: a standard
+PINN minimizes the \emph{strong} residual in $L^2$ (Chapter~\ref{ch:pinns}), which implicitly asks the
+solution to live in $H^2$, while the weak theory only needs $H^1$.
+
+% =====================================================================
+\section{Second-Order Partial Differential Equations}\label{sec:second-order}
+% =====================================================================
+
+The four prototypes of Section~\ref{sec:linear-pdes} are particular cases of three general families. In this
+section we write each family in divergence form, with variable coefficients, and we collect the
+properties that Evans~\cite{evans2010} proves for their weak solutions: existence, regularity, maximum
+principle and spectral representation. Throughout, $\Omega\subset\mathbb{R}^n$ is a bounded open set with
+smooth boundary and $\Omega_T=\Omega\times(0,T]$.
+
+% ---------------------------------------------------------------------
+\subsection{Second-Order Elliptic Equations}\label{subsec:elliptic}
+
+\subsubsection{The mathematical definition of ellipticity}
+Let us consider the second-order linear operator in divergence form
+\begin{equation}
+  Lu:=-\nabla\cdot\big(A(\mathbf{x})\nabla u\big)+\mathbf{b}(\mathbf{x})\cdot\nabla u+c(\mathbf{x})u,
+  \label{eq:elliptic-op}
+\end{equation}
+where the first term, with the symmetric matrix $A(\mathbf{x})=[a_{ij}(\mathbf{x})]$ that measures the conductivity or
+tension of the medium at the point $\mathbf{x}$, is responsible for diffusion; the second term,
+with $\mathbf{b}(\mathbf{x})$, is responsible for the drift of the medium; and finally, the third term, with $c(\mathbf{x})$,
+acts as a local source or absorption. We say that $L$ is \emph{uniformly elliptic} if there exists a
+constant $\theta>0$ such that
+\begin{equation}
+  \sum_{i,j=1}^{n}a_{ij}(\mathbf{x})\xi_i\xi_j\ge\theta\abs{\bm\xi}^2\qquad
+  \text{for almost every }\mathbf{x}\in\Omega\text{ and }\forall\,\bm\xi\in\mathbb{R}^n.
+  \label{eq:uniform-ellipticity}
+\end{equation}
+The ellipticity condition ensures that the medium exhibits a baseline stiffness $\theta$ in all
+directions. This means there are no preferred directions where the diffusion or tension drops to zero,
+which prevents the operator from degenerating. Laplace's and Poisson's equations correspond to $A=I$,
+$\mathbf{b}=0$, $c=0$.
+
+\subsubsection{Some properties of elliptic theory}
+Once the problem $Lu=f$, $u=0$ on $\partial\Omega$, is tested against $v\in H^1_0(\Omega)$, we obtain
+the bilinear form
+\begin{equation}
+  B[u,v]=\int_\Omega\Big((A(\mathbf{x})\nabla u)\cdot\nabla v+(\mathbf{b}(\mathbf{x})\cdot\nabla u)v+c(\mathbf{x})uv\Big)\,d\mathbf{x},
+  \label{eq:elliptic-bilinear}
+\end{equation}
+and $u\in H^1_0(\Omega)$ is a weak solution if $B[u,v]=(f,v)_{L^2}$ for all $v\in H^1_0(\Omega)$. Some
+properties are \cite{evans2010}:
+\begin{enumerate}
+  \item \textbf{Existence and uniqueness (Lax--Milgram).} If the drift is zero ($\mathbf{b}\equiv0$) and
+    $c(\mathbf{x})\ge0$, ellipticity directly implies coercivity:
+    \[
+      B[u,u]=\int_\Omega\big((A\nabla u)\cdot\nabla u+c\,u^2\big)\,d\mathbf{x}
+      \ge\int_\Omega(A\nabla u)\cdot\nabla u\,d\mathbf{x}
+    \]
+    \[
+      \ge\theta\int_\Omega\abs{\nabla u}^2\,d\mathbf{x}=\theta\norm{\nabla u}_{L^2(\Omega)}^2,
+    \]
+    and, by Poincaré's inequality, $\norm{\nabla u}_{L^2}$ controls the whole $H^1_0$ norm. By the
+    Lax--Milgram theorem, this guarantees that for any source $f\in L^2(\Omega)$ there exists a unique
+    weak solution $u\in H^1_0(\Omega)$.
+  \item \textbf{Regularity.} A weak solution $u\in H^1_0(\Omega)$ starts with low regularity: only one
+    weak derivative in $L^2$. The elliptic operator gains two derivatives with respect to the source. If
+    the coefficients are smooth and $f\in L^2(\Omega)$, interior regularity guarantees
+    $u\in H^2_{\mathrm{loc}}(\Omega)$; that is, its second derivatives are controlled in the Sobolev norm.
+    More generally, $f\in H^m$ gives $u\in H^{m+2}_{\mathrm{loc}}$, and smooth data give smooth solutions.
+  \item \textbf{The weak maximum principle.} If $c\equiv0$ and $Lu\le0$ in $\Omega$, the solution
+    cannot have a strict interior maximum: $\max_{\bar\Omega}u=\max_{\partial\Omega}u$ (for $c\ge0$ the
+    same holds for $u^+$). The maximum must be achieved at the boundary.
+  \item \textbf{Functional bases.} In elliptic theory, solutions can be built using functional bases.
+    For the symmetric operator ($\mathbf{b}\equiv0$), these basis functions $\phi_k$ arise by solving the
+    eigenvalue problem associated with the operator,
+    \begin{equation}
+      L\phi_k=\lambda_k\phi_k,\qquad 0<\lambda_1\le\lambda_2\le\cdots\to\infty,
+      \label{eq:eigen}
+    \end{equation}
+    and $\{\phi_k\}$ is an orthonormal basis of $L^2(\Omega)$. Solving this problem is typically
+    performed through the method of separation of variables \cite{evans2010} or via projection
+    methods like Galerkin and finite elements in complex geometries \cite{zienkiewicz2013}. Once
+    the basis is known, the full solution is simply a linear combination of these functional bases,
+    $u(\mathbf{x})=\sum_k c_k\phi_k(\mathbf{x})$ with $c_k=(f,\phi_k)/\lambda_k$.
+\end{enumerate}
+
+% ---------------------------------------------------------------------
+\subsection{Second-Order Parabolic Equations}\label{subsec:parabolic}
+
+\subsubsection{The mathematical definition of parabolicity}
+Let us now consider the second-order linear operator in divergence form, with coefficients that may
+depend on time,
+\begin{equation}
+  Lu:=-\nabla\cdot\big(A(\mathbf{x},t)\nabla u\big)+\mathbf{b}(\mathbf{x},t)\cdot\nabla u+c(\mathbf{x},t)u,
+  \label{eq:parabolic-op}
+\end{equation}
+where the matrix $A(\mathbf{x},t)=[a_{ij}(\mathbf{x},t)]$ measures the diffusion at the point $\mathbf{x}$ and time $t$, the
+vector $\mathbf{b}(\mathbf{x},t)$ represents a drift or convection, and the function $c(\mathbf{x},t)$ acts as a local reaction
+or absorption term. We say that the evolution operator $\partial_t+L$ is \emph{uniformly parabolic} if
+there exists a constant $\theta>0$ such that
+\begin{equation}
+  \sum_{i,j=1}^{n}a_{ij}(\mathbf{x},t)\xi_i\xi_j\ge\theta\abs{\bm\xi}^2\qquad
+  \text{for almost every }(\mathbf{x},t)\in\Omega_T\text{ and }\forall\,\bm\xi\in\mathbb{R}^n.
+  \label{eq:uniform-parabolicity}
+\end{equation}
+Similarly to the elliptic case, this condition ensures that the medium exhibits a baseline diffusion
+$\theta$ in all spatial directions. The heat equation corresponds to $A=I$, $\mathbf{b}=0$, $c=0$.
+
+\subsubsection{Some properties of parabolic theory}
+Consider the problem $\partial_t u+Lu=f$ in $\Omega_T$, $u=0$ on $\partial\Omega\times[0,T]$,
+$u=g$ on $\Omega\times\{t=0\}$. We formulate it in the weak sense by looking for
+$u\in L^2(0,T;H^1_0(\Omega))$ with $\partial_t u\in L^2(0,T;H^{-1}(\Omega))$, tested against functions
+$v\in H^1_0(\Omega)$. For almost every time $t\in(0,T]$, the associated bilinear form is
+\begin{equation}
+  B[u,v;t]=\int_\Omega\Big((A(\mathbf{x},t)\nabla u)\cdot\nabla v+(\mathbf{b}(\mathbf{x},t)\cdot\nabla u)v+c(\mathbf{x},t)uv\Big)\,d\mathbf{x}.
+  \label{eq:parabolic-bilinear}
+\end{equation}
+And some fundamental properties are \cite{evans2010}:
+\begin{enumerate}
+  \item \textbf{Existence and uniqueness (Galerkin method).} Unlike the elliptic case, where we use
+    Lax--Milgram directly, evolution equations require more construction. The basic idea is to
+    approximate the solution through the basis functions $\{w_k\}_{k=1}^\infty$ of $H^1_0(\Omega)$,
+    $u_m(t)=\sum_{k=1}^m d_k(t)w_k$, and substitute them into the weak form of the PDE to convert it
+    into a system of first-order ordinary differential equations (ODEs) for the coefficients $d_k(t)$.
+    Energy estimates, uniform in $m$, allow passing to the limit $m\to\infty$.
+  \item \textbf{Regularity.} Here the situation is even better than in the elliptic case. For smooth
+    coefficients and any strictly positive time $t>0$, the solution becomes infinitely differentiable
+    in space, $u(\cdot,t)\in C^\infty(\Omega)$, even if the initial data are irregular. The spatial
+    derivatives are regularized instantly as time moves forward; this is the general version of
+    Equation~\eqref{eq:heat-estimate}.
+  \item \textbf{The weak maximum principle.} If $c\equiv0$ and $\partial_t u+Lu\le0$ in $\Omega_T$, the
+    solution cannot have a strict local maximum in the interior of the space--time domain. The maximum
+    must be on the parabolic boundary $\Gamma_T=(\bar\Omega\times\{t=0\})\cup(\partial\Omega\times[0,T])$.
+    Physically, heat cannot spontaneously concentrate in the middle of the domain; it must originate
+    from a boundary or from the initial data.
+  \item \textbf{Functional bases and spectral decomposition.} In parabolic theory, solutions are also
+    built using functional bases. By separation of variables, we solve the eigenvalue problem
+    Equation~\eqref{eq:eigen} for the spatial operator (time-independent and symmetric), and once the basis is
+    found, the full solution is a linear combination where each mode decays exponentially in time:
+    \begin{equation}
+      u(\mathbf{x},t)=\sum_{k=1}^{\infty}c_k\,e^{-\lambda_k t}\phi_k(\mathbf{x}).
+      \label{eq:parabolic-modes}
+    \end{equation}
+    This spectral decay is the mathematical reason why the higher frequencies (the roughness)
+    disappear almost instantly: the larger $\lambda_k$, the faster the mode is killed.
+\end{enumerate}
+
+% ---------------------------------------------------------------------
+\subsection{Second-Order Hyperbolic Equations}\label{subsec:hyperbolic}
+
+\subsubsection{The mathematical definition of hyperbolicity}
+Let us now study the second great class of evolution equations: the second-order hyperbolic model,
+whose prototypical example is the wave equation. Let $L$ be the spatial second-order differential
+operator in divergence form,
+\begin{equation}
+  Lu:=-\nabla\cdot\big(A(\mathbf{x},t)\nabla u\big)+\mathbf{b}(\mathbf{x},t)\cdot\nabla u+c(\mathbf{x},t)u.
+  \label{eq:hyperbolic-op}
+\end{equation}
+The evolution operator is defined as $\partial_t^2+L$. We say that this operator is \emph{uniformly
+hyperbolic} if the spatial operator $L$ satisfies the uniform ellipticity condition, that is, there
+exists a constant $\theta>0$ such that
+\begin{equation}
+  \sum_{i,j=1}^{n}a_{ij}(\mathbf{x},t)\xi_i\xi_j\ge\theta\abs{\bm\xi}^2\qquad
+  \text{for almost every }(\mathbf{x},t)\in\Omega_T\text{ and }\forall\,\bm\xi\in\mathbb{R}^n.
+  \label{eq:uniform-hyperbolicity}
+\end{equation}
+The wave equation corresponds to $A=I$, $\mathbf{b}=0$, $c=0$, and the Klein--Gordon equation of
+Section~\ref{sec:klein-gordon} to $A=I$, $\mathbf{b}=0$, $c=m^2$. Unlike parabolic equations, which describe
+irreversible diffusion and dissipate energy, hyperbolic equations govern propagation. The total energy is
+conserved, and initial singularities are rigidly transported along characteristic curves at a finite
+speed.
+
+\subsubsection{Some properties of hyperbolic theory}
+Consider the space--time cylinder $\Omega_T=\Omega\times(0,T]$. The problem requires two initial
+conditions because of the second-order time derivative: an initial position $u(0)=g$ and an initial
+velocity $\partial_t u(0)=h$. The weak formulation seeks a function $u\in L^2(0,T;H^1_0(\Omega))$ with
+$\partial_t u\in L^2(0,T;L^2(\Omega))$ and $\partial_t^2u\in L^2(0,T;H^{-1}(\Omega))$, such that for
+almost every $t\in(0,T]$
+\begin{equation}
+  \langle\partial_t^2u(t),v\rangle+B[u(t),v;t]=(f(t),v)_{L^2(\Omega)}\qquad\forall\,v\in H^1_0(\Omega),
+  \label{eq:hyperbolic-weak}
+\end{equation}
+where $B[u,v;t]$ is the spatial bilinear form Equation~\eqref{eq:parabolic-bilinear} and $\langle\cdot,\cdot\rangle$
+is the pairing between $H^{-1}$ and $H^1_0$. Some fundamental properties are \cite{evans2010}:
+\begin{enumerate}
+  \item \textbf{Existence and uniqueness (Galerkin method).} Projecting the PDE onto a
+    finite-dimensional subspace spanned by basis functions $\{w_k\}_{k=1}^{m}$, whose coefficients
+    change with time, transforms the problem into a system of second-order ODEs in time. Thanks to the
+    energy structure, the energy estimates are uniform in $m$. This bounds the sequence of Galerkin
+    approximations, allowing us to take the limit $m\to\infty$ and recover the unique weak solution.
+  \item \textbf{Regularity.} This is where the hyperbolic model contrasts sharply with the parabolic
+    one. The hyperbolic operator does not add any order of differentiability to the solution. If the
+    initial position is $g\in H^1_0(\Omega)\setminus H^2(\Omega)$, meaning that $g$ vanishes on
+    $\partial\Omega$ and the energy of its first-order weak derivatives is finite but its second-order
+    weak derivatives are not square integrable, the solution $u(t)$ remains in
+    $H^1_0(\Omega)\setminus H^2(\Omega)$ for all $t>0$ (the equation is reversible in time, so it cannot
+    gain regularity). Spatial irregularities do not dissolve; they remain tied to the energy norm and
+    propagate through space indefinitely.
+  \item \textbf{Energy conservation and finite propagation speed.} For the homogeneous case
+    $f\equiv0$, with $\mathbf{b}\equiv0$, $c\equiv0$ and coefficients independent of $t$, the total energy is
+    strictly conserved:
+    \begin{equation}
+      E(t):=\frac12\int_\Omega\Big(\abs{\partial_t u(\mathbf{x},t)}^2+(A(\mathbf{x})\nabla u)\cdot\nabla u\Big)\,d\mathbf{x}=E(0)
+      \qquad\forall\,t\in(0,T).
+      \label{eq:energy-conservation}
+    \end{equation}
+    (With $c\ge0$ constant, the term $c\,u^2$ is added inside the integral.) A localized version of
+    this identity on cones shows that the speed of propagation is finite: the wave cannot travel faster
+    than the coefficients of the medium allow.
+  \item \textbf{Functional bases and spectral decomposition.} Just like in the previous models,
+    solutions are built using functional bases $\phi_k$ obtained from the spatial eigenvalue problem
+    $L\phi_k=\lambda_k\phi_k$. The crucial difference is the time evolution of each mode. Instead of
+    the exponential decay of the parabolic case, the hyperbolic modes oscillate harmonically over time:
+    \begin{equation}
+      u(\mathbf{x},t)=\sum_{k=1}^{\infty}\Big(c_k\cos\big(\sqrt{\lambda_k}\,t\big)+d_k\sin\big(\sqrt{\lambda_k}\,t\big)\Big)\phi_k(\mathbf{x}).
+      \label{eq:hyperbolic-modes}
+    \end{equation}
+\end{enumerate}
+This oscillatory behavior, combined with the preservation of high frequencies, is precisely what makes
+hyperbolic equations the ultimate stress test for physics-informed neural networks (PINNs), as standard
+architectures often suffer from spectral bias and struggle to capture traveling wavefronts
+\cite{wang2021eigenvector,wang2022ntk}.
+
+% =====================================================================
+\section[Regularity and its Consequences for Learning]{Regularity Across the Three Classes and its Consequences for Learning}\label{sec:regularity-bridge}
+% =====================================================================
+
+While the classical representation formulas (Green, Poisson, Kirchhoff) provide exact solutions for
+smooth data, neural networks approximate solutions by minimizing a loss function evaluated in $L^2$
+norms. This is why the modern Sobolev spaces introduced in this chapter are the natural framework for
+analyzing PINNs: they allow us to measure the approximation error of the network in terms of weak
+derivatives, bridging the gap between the classical theory of Evans~\cite{evans2010} and the machine
+learning architectures discussed in the next chapter. Table~\ref{tab:second-order} summarizes the three
+classes, and Table~\ref{tab:weak-forms} summarizes the weak formulations of the four prototypes.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Comparison of second-order linear PDEs.}
+  \label{tab:second-order}
+  \small
+  \begin{tabularx}{\linewidth}{@{}lXXX@{}}
+    \toprule
+    Property & Elliptic & Parabolic & Hyperbolic \\
+    \midrule
+    Operator        & $Lu=f$             & $\partial_t u+Lu=f$  & $\partial_t^2u+Lu=f$ \\
+    Physics         & Equilibrium        & Diffusion            & Propagation \\
+    Existence       & Lax--Milgram       & Galerkin (1st-order ODEs) & Galerkin (2nd-order ODEs) \\
+    Regularity      & Gains 2 derivatives & Instant smoothing   & No smoothing \\
+    Max.\ principle & Yes (on $\partial\Omega$) & Yes (on $\Gamma_T$) & No (energy is conserved) \\
+    Time evolution of modes & --       & Decay $e^{-\lambda_k t}$ & Oscillation $\cos(\sqrt{\lambda_k}t)$ \\
+    Propagation speed & --             & Infinite             & Finite \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption[Weak formulations via distributional derivatives]{Weak formulations via distributional derivatives, with
+  $\phi\in C_c^\infty(\Omega)$ or $\phi\in C_c^\infty(V)$, $V=\Omega\times(0,\infty)$.}
+  \label{tab:weak-forms}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Equation & Classical form & Weak formulation \\
+    \midrule
+    Transport & $\partial_t u+\mathbf{b}\cdot\nabla u=f$ & $\displaystyle\int_V u\,(-\partial_t\phi-\mathbf{b}\cdot\nabla\phi)\,d\mathbf{x}\,d t=\int_V f\phi\,d\mathbf{x}\,d t$ \\[3mm]
+    Laplace   & $-\Delta u=0$ & $\displaystyle-\int_\Omega u\Delta\phi\,d\mathbf{x}=0$ \\[3mm]
+    Poisson   & $-\Delta u=f$ & $\displaystyle-\int_\Omega u\Delta\phi\,d\mathbf{x}=\int_\Omega f\phi\,d\mathbf{x}$ \\[3mm]
+    Heat      & $\partial_t u-\Delta u=f$ & $\displaystyle\int_V u\,(-\partial_t\phi-\Delta\phi)\,d\mathbf{x}\,d t=\int_V f\phi\,d\mathbf{x}\,d t$ \\[3mm]
+    Wave      & $\partial_t^2u-\Delta u=f$ & $\displaystyle\int_V u\,(\partial_t^2\phi-\Delta\phi)\,d\mathbf{x}\,d t=\int_V f\phi\,d\mathbf{x}\,d t$ \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip
+  \parbox{0.92\linewidth}{\footnotesize\emph{Note.} The formulation applies the distributional definition
+  $\int_\Omega uD^\alpha\phi\,d\mathbf{y}=(-1)^{\abs{\alpha}}\int_\Omega(D^\alpha u)\phi\,d\mathbf{y}$. For second-order
+  derivatives $\abs{\alpha}=2$, so the sign is positive; for first-order derivatives $\abs{\alpha}=1$, so
+  the sign is negative. Initial data enter as additional boundary terms when $\phi$ does not vanish at
+  $t=0$.}
+\end{table}
+
+Reading Table~\ref{tab:second-order} from the point of view of a neural network, we can extract three
+intuitions that guide the rest of this thesis.
+\begin{enumerate}
+  \item \textbf{Smoothing helps the learner.} In elliptic and parabolic problems the operator itself
+    filters out high frequencies (gain of two derivatives, decay $e^{-\lambda_k t}$). A smooth
+    approximator such as a neural network with $\tanh$ activations is well suited to represent such
+    solutions. In hyperbolic problems, on the contrary, every frequency present in the data survives
+    for all times (Equation~\eqref{eq:hyperbolic-modes}), so the network must represent high frequencies along the
+    whole space--time domain. This is where the spectral bias of neural networks
+    \cite{rahaman2019,wang2021eigenvector} hurts the most.
+  \item \textbf{The maximum principle is a tool for error analysis.} The convergence analysis of
+    Shin et al.~\cite{shin2020convergence} for PINNs relies on the regularity estimates and on the maximum
+    principle of elliptic and parabolic equations. Hyperbolic equations do not have a maximum principle,
+    so a different tool is needed: the energy identity \eqref{eq:energy-conservation}. We use it in
+    Chapter~\ref{ch:pinns} to bound the error of a PINN for the Klein--Gordon equation.
+  \item \textbf{Strong residuals ask for more regularity than the weak theory.} A PINN minimizes the
+    strong residual in $L^2$, which is meaningful when the solution has second derivatives in $L^2$
+    ($H^2$). For elliptic and parabolic problems this is guaranteed by the regularity theory, even with
+    rough data; for hyperbolic problems it is only true if the data are already in $H^2$. This is one of
+    the reasons why weak and variational PINNs \cite{kharazmi2021,deryck2024wpinn} have been
+    developed for hyperbolic problems.
+\end{enumerate}
+
+Our benchmark (Chapter~\ref{ch:experiments}) contains elliptic, parabolic and hyperbolic problems precisely to
+test these three intuitions; the next section explains why, among the hyperbolic ones, we chose the
+Klein--Gordon equation as the main case study.
+
+% =====================================================================
+\section{The Klein--Gordon Equation as a Case Study}\label{sec:klein-gordon}
+% =====================================================================
+
+The physicists Oskar Klein and Walter Gordon proposed in 1926 the Klein--Gordon equation as the
+equation that models the dynamics of relativistic electrons; nevertheless, in later years it was
+understood that the Klein--Gordon equation (a dispersive wave equation) describes perturbations (waves)
+of the field of spin-0 bosonic particles \cite{castro2018}. In other words, Klein and Gordon
+discovered an equation that describes the behavior of relativistic bosonic (quantum) particles.
+Moreover, each component of the Dirac spinor satisfies the Klein--Gordon equation individually
+\cite{bjorken1964} (Appendix~\ref{app:dirac}), so the dynamics of relativistic wave packets can be studied
+validly with the scalar formalism. Dispersive hyperbolic PDEs such as the Klein--Gordon equation are
+widely used in cosmology and high-energy physics \cite{yagdjian2013}, in the study of solitons and
+quantum physics \cite{madani2025}, in dispersive phenomena and fluid physics
+\cite{miller2019}, as well as in condensed matter \cite{megias2022}.
+
+Mathematically, we are talking about a hyperbolic partial differential equation for a scalar field
+$\phi(\mathbf{x},t)$:
+\begin{equation}
+  \underbrace{\frac{1}{c^2}\frac{\partial^2}{\partial t^2}\phi(\mathbf{x},t)}_{\text{temporal evolution}}
+  \;\underbrace{-\;\nabla^2\phi(\mathbf{x},t)}_{\text{spatial coupling}}
+  \;+\;\underbrace{\Big(\frac{mc}{\hbar}\Big)^2\phi(\mathbf{x},t)}_{\text{restoring force}}=0,
+  \label{eq:kg}
+\end{equation}
+where we find the second-order time derivative $\partial_{tt}$, which induces the change and the
+dynamics of the system; the Laplacian term $\nabla^2$, which couples each point with its neighbors (in
+a hyperbolic equation it is not a diffusion but the term that propagates the perturbation); and the
+mass term $\mu^2=(mc/\hbar)^2$, which acts as a restoring force. In one spatial dimension, the
+Klein--Gordon equation can be interpreted as a string that, besides its tension, is attached to an
+elastic medium that pulls every point back to the equilibrium. In the language of
+Section~\ref{subsec:hyperbolic}, it is the uniformly hyperbolic operator with $A=I$, $\mathbf{b}=0$ and $c=\mu^2>0$.
+From now on we use natural units, $c=\hbar=1$, so that $\mu=m$.
+
+\subsubsection{Plane waves and dispersion relation}
+We want the solution to contain the frequencies $e^{\pm i\mathbf{k}\cdot\mathbf{x}}$. This solution can be found
+through the method of separation of variables proposed by Fourier, $\phi(\mathbf{x},t)=\Psi(\mathbf{x})T(t)$. We find
+the temporal and spatial derivatives (in one dimension, for simplicity),
+\begin{equation}
+  \frac{\partial^2\phi}{\partial t^2}=\Psi(x)T''(t),\qquad
+  \frac{\partial^2\phi}{\partial x^2}=\Psi''(x)T(t),
+  \label{eq:kg-sep-1}
+\end{equation}
+and replace them in the differential equation:
+\begin{equation}
+  \frac{1}{c^2}\Psi(x)T''(t)-\Psi''(x)T(t)+\mu^2\Psi(x)T(t)=0.
+  \label{eq:kg-sep-2}
+\end{equation}
+Separating variables,
+\[
+  \frac{1}{c^2}\frac{T''(t)}{T(t)}+\mu^2=\frac{\Psi''(x)}{\Psi(x)}.
+\]
+For this identity to hold, the left and the right sides of the equality must be equal to the same
+constant, $-k^2$. In this way we obtain an ODE for each function separately:
+\begin{equation}
+  T''(t)+\omega_k^2T(t)=0,\qquad \Psi''(x)+k^2\Psi(x)=0,
+  \label{eq:kg-odes}
+\end{equation}
+where
+\begin{equation}
+  \omega_k^2=c^2(k^2+\mu^2)\quad\big(=k^2+m^2\ \text{in natural units}\big).
+  \label{eq:kg-dispersion}
+\end{equation}
+Both are ODEs of the simple harmonic oscillator; therefore their solutions are
+$\Psi(x)=Ae^{ikx}+Be^{-ikx}$ and $T(t)=Ce^{i\omega_kt}+De^{-i\omega_kt}$. Putting the solutions of each
+function together, we obtain plane-wave solutions of the Klein--Gordon field,
+\begin{equation}
+  \phi_k(\mathbf{x},t)=K_1e^{i(\mathbf{k}\cdot\mathbf{x}-\omega_kt)}+K_2e^{-i(\mathbf{k}\cdot\mathbf{x}-\omega_kt)}
+  \quad(+\ \text{the counter-propagating pair}),
+  \label{eq:kg-planewave}
+\end{equation}
+with $\mathbf{x}=(x,y,z)$ and $\mathbf{k}=(k_x,k_y,k_z)$. Equation~\eqref{eq:kg-dispersion} is the \emph{dispersion
+relation}. For the wave equation ($\mu=0$) it is linear, $\omega_k=c\abs{k}$, and every frequency
+travels at the same speed. For the Klein--Gordon equation it is not linear: the group velocity
+\begin{equation}
+  v_g(k)=\frac{\,d\omega_k}{\,d k}=\frac{c^2k}{\omega_k}=\frac{c\,k}{\sqrt{k^2+\mu^2}}<c
+  \label{eq:kg-group-velocity}
+\end{equation}
+depends on $k$. High wavenumbers travel almost at the speed of light, while low wavenumbers stay behind:
+a localized wave packet is \emph{dispersed}. This is exactly the behavior that we will see in the
+reference solution of Chapter~\ref{ch:experiments}: the fastest components draw the light cone $\abs{x}=t$,
+and the slower ones fill its interior.
+
+\subsubsection{General solution}
+By linearity, the general solution is a superposition of plane waves with all wavenumbers. Let
+$\hat\phi_0(k)$ and $\hat\phi_1(k)$ be the Fourier transforms of the initial position
+$\phi(x,0)=\phi_0(x)$ and of the initial velocity $\partial_t\phi(x,0)=\phi_1(x)$. Then, for each $k$,
+the coefficient $\hat\phi(k,t)$ solves the harmonic oscillator Equation~\eqref{eq:kg-odes}, and
+\begin{equation}
+  \phi(x,t)=\frac{1}{2\pi}\int_{\mathbb{R}}\Big(\hat\phi_0(k)\cos(\omega_kt)
+  +\hat\phi_1(k)\frac{\sin(\omega_kt)}{\omega_k}\Big)e^{ikx}\,d k.
+  \label{eq:kg-fourier-solution}
+\end{equation}
+The exact solution depends on the initial position and velocity and, in addition, on a temporal
+Fourier basis $\{\cos(\omega_kt),\sin(\omega_kt)\}$. When the initial velocity is zero, only the cosine
+term remains. Since $\omega_k$ depends on $k$, this is \emph{not} the initial condition multiplied by a
+single $\cos(\omega t)$: each Fourier component of the initial pulse oscillates with its own frequency,
+which is the analytic form of dispersion. This makes us think that a sinusoidal activation (SIREN) or a
+Fourier embedding would be natural candidates to give representation power to the network
+(Chapter~\ref{ch:pinns}), and it also gives us an exact way of computing a reference solution: the
+pseudo-spectral propagator of Section~\ref{sec:reference-solution} evaluates
+Equation~\eqref{eq:kg-fourier-solution} with the discrete Fourier transform.
+
+\subsubsection{Energy}
+Multiplying Equation~\eqref{eq:kg} by $\partial_t\phi$ and integrating by parts (as in Appendix~\ref{app:energy}), the
+Klein--Gordon field conserves the energy
+\begin{equation}
+  E_\phi(t)=\frac12\int_\Omega\Big(\abs{\partial_t\phi}^2+\abs{\nabla\phi}^2+m^2\abs{\phi}^2\Big)\,d\mathbf{x},
+  \label{eq:kg-energy}
+\end{equation}
+for periodic or homogeneous boundary conditions. Unlike the wave equation, the mass term makes this
+energy control the $L^2$ norm of $\phi$ itself, not only its derivatives.
+
+\subsubsection{Why the Klein--Gordon equation}
+With all the elements of this chapter, we can now state the reasons for our choice.
+\begin{enumerate}
+  \item \textbf{It is hyperbolic: there is no smoothing.} Everything in the initial pulse is
+    transported for all times along the light cone (Table~\ref{tab:second-order}), so the difficulty for
+    the network does not disappear with time as in a parabolic problem.
+  \item \textbf{It is dispersive: it is multi-frequency by construction.} Because of the nonlinear
+    dispersion relation \eqref{eq:kg-dispersion}, the components of a pulse separate, and by choosing
+    an initial condition with several wavenumbers $k_1<k_2<\dots<k_n$ we can control how many
+    frequencies the network has to learn simultaneously. This turns spectral bias into a controllable
+    experimental variable.
+  \item \textbf{It has an exact reference solution.} For periodic boundary conditions the propagator
+    is diagonal in Fourier space and exact in time, so the reference solution has no time-discretization
+    error (Section~\ref{sec:reference-solution}). The errors we measure belong to the network, not to the
+    numerical method used for comparison.
+  \item \textbf{It has an energy identity.} Since there is no maximum principle, the energy
+    Equation~\eqref{eq:kg-energy} is the natural tool to bound the error of a PINN (Section~\ref{sec:energy-estimate}),
+    and the mass term gives control of the $L^2$ error itself.
+  \item \textbf{It appears inside standard benchmarks.} In the PINNacle benchmark
+    \cite{hao2024pinnacle}, the reference solution of the task \emph{Wave2d-MS},
+    $u=\sin(\pi x)\sinh(\pi y)\cos(\pi t)+\sinh(3\pi x)\sin(2\pi y)\cos(\pi t)$, does not satisfy the
+    stated wave equation $u_{tt}-(u_{xx}+2u_{yy})=0$. A direct computation shows that both terms satisfy
+    $u_{tt}-(u_{xx}+2u_{yy})=-2\pi^2u$, that is, the Klein--Gordon equation with mass term $2\pi^2u$
+    (Appendix~\ref{app:benchmark}). The Klein--Gordon structure is therefore not a toy problem: it is hidden in
+    the problems used to rank PINN architectures.
+  \item \textbf{It connects with the quantum part of this thesis.} As the equation of a relativistic
+    spin-0 field, it is a natural bridge with the quantum formulation of Chapter~\ref{ch:quantum}.
+\end{enumerate}
+
+\section{Chapter Summary}\label{sec:ch2-summary}
+
+In this chapter we followed the regularity of the solution through the four prototypes of linear PDEs.
+The transport and wave equations keep the roughness of the data; Laplace's and the heat equations remove
+it, through the mean-value property and the Gaussian kernel, respectively. The modern theory (Hölder,
+Lebesgue and Sobolev spaces, weak derivatives) allows us to work with non-smooth data, and the
+classification into elliptic, parabolic and hyperbolic families summarizes the behavior of each class
+(Table~\ref{tab:second-order}). Hyperbolic equations do not smooth, do not have a maximum principle and
+conserve all their frequencies; among them, the Klein--Gordon equation adds dispersion, an exact
+spectral reference solution and an energy identity, which is why it is the case study of this thesis.
+
+\end{hyphenrules}

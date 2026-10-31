@@ -1,0 +1,40 @@
+{
+  // Archivo principal de la tesis: se compila siempre 0000.tex,
+  // aunque estés editando un capítulo (ver "% !TEX root" al inicio de cada archivo).
+  "latex-workshop.latex.rootFile.doNotPrompt": true,
+  "latex-workshop.latex.search.rootFiles.include": ["0000.tex"],
+
+  // Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
+  "latex-workshop.latex.tools": [
+    {
+      "name": "pdflatex",
+      "command": "pdflatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
+    },
+    {
+      "name": "bibtex",
+      "command": "bibtex",
+      "args": ["%DOCFILE%"]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    { "name": "Tesis completa (pdflatex + bibtex)", "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"] },
+    { "name": "Rápida (solo pdflatex)", "tools": ["pdflatex"] }
+  ],
+  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+
+  // Visor del PDF dentro de VS Code (Ctrl+Alt+J salta del texto al PDF; Ctrl+clic en el PDF salta al texto)
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  // Ocultar los archivos auxiliares de LaTeX en el explorador
+  "files.exclude": {
+    "**/*.aux": true, "**/*.bbl": true, "**/*.blg": true, "**/*.log": true,
+    "**/*.lof": true, "**/*.lot": true, "**/*.toc": true, "**/*.out": true,
+    "**/*.synctex.gz": true, "**/*.fls": true, "**/*.fdb_latexmk": true
+  },
+
+  // Edición cómoda de texto largo
+  "editor.wordWrap": "on",
+  "files.encoding": "utf8"
+}

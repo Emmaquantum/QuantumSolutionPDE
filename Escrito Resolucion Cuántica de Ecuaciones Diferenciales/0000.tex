@@ -1,0 +1,459 @@
+% !TEX root = 0000.tex
+% Esta es la Plantilla UNAL en LaTeX
+% Tesis: Resolución Cuántica de Ecuaciones Diferenciales Parciales
+% Contenido tomado de main_2.tex y organizado en la Plantilla Tesis Trabajo Final UNAL 2022.
+% Los cambios respecto a la plantilla original están marcados con "TESIS".
+\documentclass[10pt,spanish,openany,twoside,letterpaper]{book}
+
+%Muestra los márgenes del documento para evitar Warnings
+%Para activar la siguiente línea quite el simbolo % 
+%\usepackage[showframe]{geometry}
+
+%Formato de fuentes bibliográficas
+%Use el estilo bibliográfico que sea pertinente según el área de estudio APA, IEEE, etc
+
+%Usando el paquete Natbib
+% TESIS: el texto está escrito para citas numéricas (p. ej. "Evans~\cite{evans2010}"),
+% por eso se usa el estilo IEEE (ieeetr) en vez del estilo autor-año dtvstyle de la plantilla.
+\usepackage[numbers,sort&compress]{natbib}
+%\bibpunct{[}{]}{;}{\&}{.}{}   % TESIS: configuración autor-año de la plantilla (desactivada)
+%\bibliographystyle{dtvstyle}  % TESIS: estilo de la plantilla (desactivado)
+\bibliographystyle{ieeetr}
+
+%Idioma del documento
+%Use main para el idioma principal del documento
+\usepackage[main=spanish,english,german,french,portuguese]{babel}
+% TESIS: "max", "lim" en vez de "máx", "lím" (el texto está en inglés)
+\AtBeginDocument{\unaccentedoperators}
+
+% Carácteres especiales
+\usepackage{fontenc}
+
+% Evita ligadura li & fl
+\usepackage{microtype}
+\DisableLigatures{encoding = *, family = *}
+
+% Otros paquetes de tablas y colores avanzados
+\usepackage{amsmath,graphicx,rotating,float,multirow}
+\usepackage{longtable}
+\setlength{\LTcapwidth}{6in}
+\usepackage[utf8]{inputenc}
+% TESIS: se reemplaza "subfigure" por "subcaption" (la tesis usa el entorno subfigure de subcaption)
+\usepackage{epsfig,epic,eepic,threeparttable,amscd,here,lscape,tabularx}
+\usepackage{subcaption}
+\usepackage{tabu,array}
+\usepackage[rgb,table]{xcolor} % TESIS: opción "table" (la usaba la tesis)
+
+% Permite ver y configurar los parámetros de la página
+\usepackage{layout}
+%Hyperref permite ver las secciones del texto
+\usepackage[hidelinks]{hyperref}
+
+%Permite incluir código de cualquier lenguaje dentro del texto del documento
+% TESIS: minted desactivado porque la tesis no lo usa y exige compilar con -shell-escape.
+%\usepackage{minted}
+\usepackage{fancyvrb}
+\newenvironment{myverbatim}{\Verbatim}{\endVerbatim}
+
+%Genera los comandos de la página de autoría
+\newcommand{\studentname}{}
+\newcommand{\submissiondate}{}
+\newcommand{\academictitle}{}
+\newcommand{\resgroupone}{}
+\newcommand{\resgrouptwo}{}
+\newcommand{\researchtopic}{}
+\newcommand{\thesisname}{}
+\newcommand{\thesisnameeng}{}
+\newcommand{\thesisnamelang}{} %Usar solo si se requiere
+\newcommand{\director}{}
+\newcommand{\directortitle}{}
+\newcommand{\codirector}{} %Usar solo si se requiere
+\newcommand{\codirectortitle}{} %Usar solo si se requiere
+\newcommand{\issuedate}{}
+\newcommand{\palabrasclave}{}
+\newcommand{\keywords}{}
+\newcommand{\schlusselworter}{}
+\newcommand{\palavraschave}{}
+\newcommand{\sede}{}
+\newcommand{\department}{}
+\newcommand{\departmenttwo}{} %Usar solo si se requiere
+\newcommand{\faculty}{}
+\newcommand{\university}{Universidad Nacional de Colombia}
+
+%Información de la tesis
+%Diligenciar aquí los datos para su carga automática donde se requiera en el documento
+%En el caso de tesis o trabajos finales, verificar que el título coincida con el aprobado por la Facultad
+\renewcommand{\studentname}{Julián Sierra Salamanca}
+\renewcommand{\thesisname}{Resolución Cuántica de Ecuaciones Diferenciales Parciales}
+\renewcommand{\thesisnameeng}{Quantum Resolution of Partial Differential Equations}
+%\renewcommand{\thesisnamelang}{Nombre del trabajo o tesis en un tercer idioma} %Usar solo si se requiere
+\renewcommand{\issuedate}{2026}
+\renewcommand{\submissiondate}{2026}
+\renewcommand{\director}{PhD. [Nombre del Director]}
+\renewcommand{\directortitle}{[Indicar si es Profesor Titular/Asociado]}
+%\renewcommand{\codirector}{Prof. Dr. Co director}
+%\renewcommand{\codirectortitle}{Indicar si es Profesor Titular/Asociado}
+\renewcommand{\academictitle}{Magíster en Matemática Aplicada}
+%\renewcommand{\resgroupone}{Grupo A (Sigla Grupo Investigación 01) }
+%\renewcommand{\resgrouptwo}{Grupo B (Sigla Grupo Investigación 02) }
+\renewcommand{\researchtopic}{Modelamiento Matemático y Computación Científica}
+\renewcommand{\sede}{Bogotá} 
+\renewcommand{\department}{Departamento de Matemáticas}
+\renewcommand{\departmenttwo}{Departamento de Matemáticas}
+\renewcommand{\faculty}{Facultad de Ciencias}
+
+%Palabras clave del documento - Tener presente los Theasurus https://www.thesaurus.com/
+%Disponible en 3 idiomas aunque se puede extender a francés o otro idioma
+\renewcommand{\palabrasclave}{} % (mínimo 3 y máximo 7)
+\renewcommand{\keywords}{}      % (3 to 7)
+%\renewcommand{\schlusselworter}{}
+%\renewcommand{\palavraschave}{}
+
+% Estilo de los encabezados y pies de página
+\usepackage{fancyhdr}
+\fancyhf{}%
+\pagestyle{fancyplain}
+\textheight22.5cm \topmargin0cm \textwidth16.5cm \headheight22pt
+\oddsidemargin0.5cm \evensidemargin-0.5cm%
+\fancypagestyle{plain}{
+\fancyhead[RO,LE]{}
+\fancyhead[RE,LO]{\small \textbf{\thesisname}}
+\fancyfoot[CO,CE]{\thepage}
+}
+\pagestyle{fancy}
+\fancyhf{}%
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\; #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\; #1}{}}
+\fancyhead[LO,RE]{\leftmark}
+\fancyhead[RO,LE]{\rightmark}
+\fancyfoot[CO,CE]{\thepage}
+\thispagestyle{fancy}%
+
+\usepackage{titlesec}
+% Permite personalizar los títulos de sección y de capítulos
+% hang lo deja en el mismo renglón, display lo despliega
+% Elimina el "Capitulo" y deja solo el número
+\titleformat{\chapter}[hang]
+  {\sffamily\Huge\bfseries}{\thechapter}{0.5cm}{\sffamily\Huge}
+\titleformat{\section}[hang]{\sffamily\LARGE}{\thesection}{0.5cm}{}
+\titleformat{\subsection}[hang]{\sffamily\Large}{\thesubsection}{0.5cm}{}
+\titleformat{\subsubsection}[hang]{\sffamily\large}{\thesubsubsection}{0.5cm}{}
+\titleformat{\paragraph}[runin]{\sffamily\normalsize}{}{}{\emph}
+
+%Coloca anexo o apéndice en la Tabla de contenido
+\usepackage[toc,page]{appendix}
+
+% Configuración de las páginas en twoside-mode
+% Permite ver y configurar los parámetros de la página
+\setlength{\voffset}{-0.25in}
+\setlength{\headwidth}{467pt}
+\setlength{\headheight}{22pt}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\marginparwidth}{0pt}
+\setlength{\marginparsep}{0pt}
+\setlength{\parskip}{2em}
+\setlength{\footskip}{20pt}
+\setlength{\textheight}{650pt}
+\setlength{\textwidth}{467pt}
+\setlength{\headsep}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\baselineskip}{10pt plus 5pt minus 5pt}
+\renewcommand{\theequation}{\thechapter-\arabic{equation}}
+\renewcommand{\thefigure}{\textbf{\thechapter-\arabic{figure}}}
+\renewcommand{\thetable}{\textbf{\thechapter-\arabic{table}}}
+
+%Ajusta el espacio entre la etiqueta de figuras y tablas y su título en la lista de figuras y en la de tablas 
+\usepackage{titletoc} 
+\titlecontents{figure}[0em]{}{\thecontentslabel\hspace{1em}}{}{\titlerule*[1pc]{.}\contentspage}
+\titlecontents{table}[0em]{}{\thecontentslabel\hspace{1em}}{}{\titlerule*[1pc]{.}\contentspage}
+
+%Define la distancia de la primera linea de un parrafo a la margen
+\parindent0cm 
+
+%Espacio entre lineas
+\renewcommand{\baselinestretch}{1}
+
+%Permite personalizar el ajuste vertical mediante cajas
+\usepackage{adjustbox}
+
+%Para rotar texto, objetos, tablas y páginas.
+\usepackage{rotating}
+
+%Permite incluir mecanismos y reacciones químicas
+\usepackage{tikz}
+\usepackage{chemformula}
+\usepackage{chemfig}
+
+\usetikzlibrary{calc,arrows.meta}% per right to e left to
+\tikzset{
+myedge/.style={->, -{Latex[#1]}}
+}
+
+%Fuente de la presentación Ancizar Sans UNAL
+%Para usar este compilado en Overleaf se debe usar el compilador XeLaTeX o LuaLaTeX!!
+%Menu -> Compiler -> XeLaTeX o LuaLaTeX
+%La siguiente línea debe comentarse si desea compilar con pdfLaTeX
+%\RequireXeTeX
+
+% Definición de la fuente Ancizar Sans
+\newif\ifxetexorluatex
+
+\ifxetexorluatex
+  \usepackage{fontspec}
+  \usefonttheme{serif}
+  \setmainfont{AncizarSans}[Path=./AncizarSans/,Scale=1,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+\else
+  % Si se compila con pdfLaTeX, cargar la fuente apropiada aquí
+  \usepackage[T1]{fontenc}
+\fi
+% Metadatos del documento
+\AtBeginDocument{%
+	\hypersetup{
+		pdfborder={0 0 0},
+		pdfauthor={\studentname},
+		pdfsubject={\thesisname}, 
+		pdfcreator={\studentname},
+		pdfproducer={\studentname},
+	}
+}
+
+%Carga el simbolo de grado y el de Angstrom
+\newcommand{\angstrom}{\textup{\AA}}
+\newcommand{\grad}{$^{\circ}$}
+
+% ==========================================
+% TESIS: paquetes, entornos y macros de la tesis (tomados de main_2.tex)
+% ==========================================
+\usepackage{amsfonts,amssymb}
+\usepackage{esint}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage{mdframed}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+
+% Ubicación de las figuras (como en la plantilla, en la carpeta 00Figuras)
+\graphicspath{{00Figuras/}}
+\setlength{\emergencystretch}{2em} % evita líneas que se salen del margen
+% Páginas que solo tienen figuras: las figuras arriba, no centradas en la página
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{12pt plus 2fil}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+
+% Entornos de definición, teorema, supuesto y observación
+\newtcolorbox[auto counter, number within=section]{definicion}[2][]{
+  colback=black!5!white, colframe=black!65!white, fonttitle=\bfseries,
+  title={Definición \thetcbcounter: #2}, boxrule=0.5pt, arc=2pt, breakable, #1
+}
+\newtcolorbox[auto counter, number within=section]{teorema}[2][]{
+  colback=black!5!white, colframe=black!80!white, fonttitle=\bfseries,
+  title={Teorema \thetcbcounter: #2}, boxrule=0.5pt, arc=2pt, breakable, #1
+}
+\newtcolorbox[auto counter, number within=section]{supuesto}[2][]{
+  colback=black!5!white, colframe=black!50!white, fonttitle=\bfseries,
+  title={Supuesto \thetcbcounter: #2}, boxrule=0.5pt, arc=2pt, breakable, #1
+}
+\newtcolorbox{remarkbox}[1][]{
+  colback=black!2!white, colframe=black!35!white, fonttitle=\bfseries,
+  title={#1}, boxrule=0.5pt, arc=2pt, breakable
+}
+
+% Macros
+\newcommand{\inspace}{\hspace{2ex} \text{in} \hspace{2ex}}
+\newcommand{\onspace}{\hspace{2ex} \text{on} \hspace{2ex}}
+\newcommand{\uxt}{u(\mathbf{x},t)}
+\newcommand{\tupla}{(\mathbf{x},t)}
+\newcommand{\tripla}{(\mathbf{x},t,z)}
+\newcommand{\tuplapar}{(\mathbf{x}+s\mathbf{b},t+s)}
+\newcommand{\ux}{u(\mathbf{x})}
+\newcommand{\interception}{\cap}
+\newcommand{\xy}{(\mathbf{x},\mathbf{y})}
+\newcommand{\x}{(\mathbf{x})}
+\newcommand{\laplacian}{\Delta}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Loss}{\mathcal{L}}
+\newcommand{\T}{\mathcal{T}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\diag}{diag}
+
+% Fuente de una figura o tabla (va debajo de ella): \fuente{Adaptado de Autor~\cite{...}.}
+\newcommand{\fuente}[1]{\par\vspace{2pt}{\raggedright\small Fuente: #1\par}}
+
+% Capítulos sin número (p. ej. Introducción), con el formato de la plantilla
+\newcommand{\capitulosinnumero}[1]{\chapter*{\sffamily #1}\phantomsection\addcontentsline{toc}{chapter}{#1}\markboth{#1}{}\markright{}}
+
+% Etiquetas de revisión: cambia \reviewmodetrue por \reviewmodefalse para ocultarlas
+\newif\ifreviewmode
+\reviewmodetrue
+\newcommand{\revtag}[2]{\ifreviewmode{\color{red!70!black}\textsf{\footnotesize[#1#2]}}\fi}
+\newcommand{\verificar}[1]{\revtag{VERIFICAR}{: #1}}
+\newcommand{\sinfuente}[1]{\revtag{SIN\_FUENTE}{: #1}}
+
+%Inicio del documento, no olvide la etiqueta de cierre al final \end{document}
+\begin{document}
+
+%Nombres y formatos de títulos, tablas y figuras
+%Use \sffamily para dejar con letra Sans Serif, sin etiqueta queda LaTeX clásico
+\renewcommand{\listfigurename}{\sffamily Lista de figuras}
+\renewcommand{\listtablename}{\sffamily Lista de tablas}
+\renewcommand{\contentsname}{\sffamily Contenido}
+\renewcommand{\chaptername}{\sffamily Capítulo}
+\renewcommand{\tablename}{\scriptsize \centering \textbf{Tabla}}
+\renewcommand{\figurename}{\scriptsize \centering \textbf{Figura}}
+\renewcommand{\appendixname}{\sffamily Anexo}
+
+%Cambia el nombre de la sección de referencias
+\renewcommand{\bibname}{\sffamily Referencias Bibliográficas}
+
+%Páginas de Presentación del documento - No modificar esto se hace automáticamente
+{\newpage
+\thispagestyle{empty}
+\begin{center}
+\begin{figure}
+\centering
+\epsfig{file=00Figuras/00f00EscudoUN2016,scale=1}%
+\end{figure}
+\vspace{2.5cm}
+{\Huge\bfseries\renewcommand{\baselinestretch}{1.3}\selectfont \thesisname\par} % TESIS: más espacio entre las líneas del título
+\vspace{2.5cm}
+\textbf{\Large \studentname} \\
+\vspace{5.0cm}
+\faculty \\ \department \\
+\sede, Colombia\\
+\issuedate
+\newpage 
+\thispagestyle{empty}
+\vspace{2.0cm}
+{\Huge\bfseries\renewcommand{\baselinestretch}{1.3}\selectfont \thesisname\par} % TESIS: más espacio entre las líneas del título
+\vspace{2.0cm}
+\textbf{\Large \studentname} \\
+\vspace{2.0cm}
+\small Tesis presentada como requisito parcial para optar por el título de: \\
+{\bfseries \academictitle}\\
+\vspace{2.0cm}
+\textbf{Director(a):} \\
+\director \\
+\directortitle \; - \departmenttwo \\
+\faculty \\
+\university \\ 
+% TESIS: sin codirector. Descomentar el bloque si se requiere.
+%\vspace{0.5cm}
+%\textbf{Codirector(a):} \\
+%\codirector \\
+%\codirectortitle \; - \department \\
+%\faculty \\
+%\university 
+\vspace{1.5cm}
+\textbf{Línea de investigación:} \\ 
+\researchtopic\\
+% TESIS: sin grupo de investigación. Descomentar si se requiere.
+%\textbf{Grupo de investigación:} \\
+%\resgroupone \\
+%\resgrouptwo \\
+\vspace{1.5cm} 
+\university \\
+\faculty \\
+\department \\
+\issuedate
+\end{center}
+
+% Dedicatorias
+% TESIS: la tesis aún no tiene dedicatoria. Descomentar y completar si se requiere.
+%\newpage
+%\thispagestyle{empty}
+%\begin{flushright}
+%\begin{minipage}{12.5cm}
+%\noindent
+%\\[10em]
+%%Modificar la cita que se quiere agregar
+%{\Large Cita 01.}
+%\\[3em]
+%Autor
+%\\ \textit{Fuente}
+%\end{minipage}
+%\end{flushright} 
+
+% Declaracíon de originalidad del texto y del contenido
+% No modificar, se hace automáticamente con los comandos ya definidos
+\newpage
+\chapter*{\sffamily Declaración}
+\par Me permito afirmar que he realizado ésta tesis de manera autónoma y con la única ayuda de los medios permitidos y no diferentes a los mencionados el presente texto. Todos los pasajes que se han tomado de manera textual o figurativa de textos publicados y no publicados, los he reconocido en el presente trabajo. Ninguna parte del presente trabajo se ha empleado en ningún otro tipo de tesis. 
+\\[1em]
+\sede, \submissiondate
+\\[6em]
+\rule{6cm}{0.5pt}\\
+\studentname
+}
+
+%Páginas preámbulo, listado de figuras, tablas y tabla de contenido
+{\pagestyle{plain} \pagenumbering{roman}
+\setlength{\parskip}{1mm}
+% TESIS: Agradecimientos y Abreviaturas aún están vacíos; quitar el % cuando se completen.
+%\include{00Agradecimientos}
+%\include{00Abreviaturas}
+\include{00ResumenAbstract}
+% Dejar esta parte así para que genere correctamente la página de la tabla de contenido
+\addcontentsline{toc}{chapter}{Lista de figuras}
+\listoffigures
+\clearpage
+\addcontentsline{toc}{chapter}{Lista de tablas}
+\listoftables
+\clearpage
+\addcontentsline{toc}{chapter}{Contenido}
+\tableofcontents
+\clearpage
+}
+
+{\pagenumbering{arabic}
+\setlength{\parskip}{\baselineskip}
+%Incluir secciones del documento de aqui en adelante
+%Use \include para incluir desde una página nueva e \input para incluir sin salto de página
+% TESIS: los objetivos están en la Introducción (sección "Justificación y objetivos").
+% Planteamiento del problema, Hipótesis y Objetivos como capítulos aparte son opcionales:
+%\include{00HipotesisPlanteamiento}
+%\include{00Objetivos}
+\include{01Seccion01} % Introducción
+\include{02Seccion02} % About Partial Differential Equations
+\include{03Seccion03} % Physics-Informed Neural Networks - PINN
+\include{04Seccion04} % Experimentation and Results
+\include{05Seccion05} % Redes Neuronales Informadas por la física en un frame cuántico
+\include{06Seccion06} % Conclusiones y recomendaciones
+
+%Inicio del apéndice o anexos
+\begin{appendix}
+\include{08Apendice01}% Derivations of the Classical Representation Formulas
+\include{08Apendice02}% Energy Estimates and Convergence Bound for Hyperbolic PDEs
+\include{08Apendice03}% Derivations for the Optimization Problem of PINNs
+\include{08Apendice04}% Tasks of the PINNacle Benchmark
+\include{08Apendice05}% Error Maps and Training Curves of Experiment 1
+\include{08Apendice06}% Código y repositorio
+\end{appendix}
+
+%Permite visualizar la bibliografía en la tabla de contenido
+%Cambie el nombre a Bibliografía o Literatura Citada en la siguiente línea de ser preciso
+\addcontentsline{toc}{chapter}{Referencias Bibliográficas} 
+
+\let\OLDthebibliography=\thebibliography
+\def\thebibliography#1{\OLDthebibliography{#1}}
+{\scriptsize
+\pagestyle{plain}
+% Nombre del documento donde se almacenan las referencias
+\bibliography{Referencias}
+% TESIS: \nocite{*} desactivado para que solo aparezcan las referencias citadas en el texto.
+%\nocite{*}
+% Inserta un página adicional al final en blanco 
+%\cleardoublepage
+% Para NO insertar una página adicional al final usar \clearpage
+\clearpage
+}}
+
+\end{document}

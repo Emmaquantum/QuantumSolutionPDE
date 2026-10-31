@@ -1,0 +1,85 @@
+% !TEX root = 0000.tex
+% Introducción
+% Contenido tomado de main_2.tex (líneas 354-429) sin cambios de texto.
+
+% El texto está en inglés: reglas de corte de palabra del inglés
+\begin{hyphenrules}{english}
+
+\capitulosinnumero{Introducción}\label{ch:introduction}
+
+Partial differential equations (PDEs) are among the most powerful tools in science, economics,
+engineering, and applied mathematics. They appear in models such as kinetic dynamic, Fluid and gas dynamics, Granular materials flows, semiconductor, socio-economics, among others \cite{markowich2007applied}.
+Through this, we can describe and explain the multiple phenomena of concern in science. By the nature
+of PDEs, these equations are used to model the behavior of fluids, bodies, molecules, proteins, and
+social individuals governed by physical laws and social behavior.
+
+Differential Galois theory for linear ordinary differential equations (ODEs) shows that only those
+equations whose differential Galois group is solvable admit solutions expressible in terms of
+elementary functions (exponentials, integrals, and algebraic functions)
+\cite{vanderput2003}. The vast majority of higher-order linear ODEs possess
+non-solvable Galois groups, which implies that their solutions lack a closed-form expression in terms
+of elementary functions and must instead be solved via numerical methods such as Euler, Multisteps,  Runga-Kutta and extrapolation methods \cite{hairer1993solving, iserles1996first}.
+
+Hence, numerical methods are the only way to obtain approximate solutions in most cases. The classical
+approaches are finite difference methods (FDM) \cite{strikwerda2004}, finite element methods (FEM)
+\cite{zienkiewicz2013}, and finite volume methods (FVM) \cite{moukalled2016}; each of them
+discretizes the domain into small pieces forming a mesh and replaces derivatives with algebraic
+operators so that the computation can be carried out. On the other hand, spectral methods consist of
+projecting the solution onto a finite-dimensional subspace spanned by global basis functions, such as
+trigonometric or orthogonal polynomials including Legendre and Chebyshev polynomials
+\cite{shen2011}.
+
+Even so, numerical methods suffer from the curse of dimensionality, complications from complex
+geometries, nonlinearity and stiffness, lack of flexibility, and limitations in data integration
+\cite{schwencke2025thesis}. Computational cost grows exponentially with the dimensionality of the
+domain. Mesh-based methods require special grid treatment in cases of complex, irregular, and
+time-dependent domains. Highly complex PDEs with multi-scale features often require a fine grid,
+which in turn leads to high computational costs.
+
+Due to the rapid growth of available data and computing resources, machine learning techniques have
+become established tools across various sciences and disciplines. These techniques have been used in
+computer vision to analyze and segment cells, leading to advances in biomedical engineering
+\cite{ronneberger2015}; AlphaFold resolved the protein folding problem using attention mechanisms
+to understand the relationships between amino acids in protein chains \cite{jumper2021}; and
+reinforcement learning has been used to control cylinders in fluid flow to minimize aerodynamic
+resistance \cite{rabault2019}.
+
+Current engineering challenges involving large amounts of data, complex geometry, and a lack of
+knowledge about the internal equations governing them, together with the boom in machine learning and
+deep learning \cite{bishop2006,goodfellow2016,bach2024}, have opened the field to the development
+of tools that can understand behavior alongside data and model it. Three areas have emerged from this:
+data-driven learning \cite{fiorini2025,brunton2016,chen2018}, operator learning
+\cite{kovachki2021,li2021fno}, and physics-informed machine learning (PIML)
+\cite{raissi2019,cuomo2022}.
+
+Many scientific problems require vast amounts of data that are often unavailable. Consequently, a
+purely data-driven approach is not always the most effective way to address these challenges
+\cite{wu2020}. Neural operators and physics-informed machine learning do not rely solely on
+training data; instead, they leverage physical information, such as partial differential equations
+(PDEs) and the necessary boundary conditions. However, these paradigms are not mutually exclusive. In
+fact, hybrid approaches have demonstrated their full potential by combining assumptions about the
+underlying phenomena, available data, and neural network architectures
+\cite{raissi2020hidden,kissas2020,nguyen2022}.
+
+Furthermore, these new approaches have certain limitations associated with optimization \cite{wang2021gradient,wang2022ntk,krishnapriyan2021,deshpande2022,nguyen2023} and architecture \cite{rahaman2019,cao2020spectral,wang2021deeponet}. There is gradient imbalance caused by the stiffness of the cost function, spectral bias that hinders the representation of sharp peaks, discontinuities, and propagating wave fronts, and causality issues for propagative PDEs. On the other
+hand, some authors have developed theories concerning convergence
+\cite{mishra2025,siegel2024,shin2020convergence}, numerical stability
+\cite{deryck2024acta,dong2024}, and approximation error \cite{zeinhofer2024,chantada2024}.
+For spectrum analysis and the training process, the Neural Tangent Kernel (NTK) is a powerful tool to
+explain the ill-conditioning of classical PINNs \cite{jacot2018,wang2022ntk} regarding spectral
+bias, stiffness, and rigid gradients.
+
+\section*{Justificación y objetivos}\label{sec:objectives}
+% TODO (required): research question, general objective and specific objectives.
+% Chapters 2--4 are written so that each section can be traced to one specific objective.
+% Suggested structure (adapt to your proposal):
+%  OE1. Characterize the regularity of elliptic, parabolic and hyperbolic linear PDEs and its
+%       consequences for physics-informed learning (Chapter 2).
+%  OE2. Formalize the PINN optimization problem and the architectures used to mitigate its
+%       pathologies, and propose MABUR-PINN (Chapter 3).
+%  OE3. Evaluate MABUR-PINN on the linear Klein--Gordon equation and on a subset of the PINNacle
+%       benchmark (Chapter 4).
+%  OE4. Explore a variational quantum formulation of the problem (Chapter 5).
+\verificar{NO OLVIDAR COPIAR!}
+
+\end{hyphenrules}

@@ -1,0 +1,198 @@
+% !TEX root = 0000.tex
+% Anexo C
+% Contenido tomado de main_2.tex (líneas 3689-3877) sin cambios de texto.
+
+% El texto está en inglés: reglas de corte de palabra del inglés
+\begin{hyphenrules}{english}
+
+\chapter{Anexo: Derivations for the Optimization Problem of PINNs}\chaptermark{Optimization Derivations}\label{app:optimization}
+
+This appendix contains the intermediate computations of Sections~\ref{sec:optimization} and
+\ref{sec:gradient-pathologies}.
+
+% ---------------------------------------------------------------------
+\section{Gradients and KKT System in Matrix Form}\label{app-sec:kkt-gradients}
+
+For the KKT conditions \eqref{eq:kkt-1}--\eqref{eq:kkt-2}, expanding the gradient of the initial
+condition term yields
+\begin{align}
+  \nabla_\theta\Loss_{ic}(\theta)
+  &=\nabla_\theta\Big(\frac{1}{\abs{\T_{ic}}}\sum_{\mathbf{x}\in\T_{ic}}\abs{u_\theta(\mathbf{x},0)-g_0(\mathbf{x})}^2\Big) \label{eq:grad-ic-1}\\
+  &=\frac{2}{\abs{\T_{ic}}}\sum_{\mathbf{x}\in\T_{ic}}\big(u_\theta(\mathbf{x},0)-g_0(\mathbf{x})\big)\nabla_\theta u_\theta(\mathbf{x},0). \label{eq:grad-ic-2}
+\end{align}
+The terms $2u_\theta\nabla_\theta u_\theta$ and $2g_0\nabla_\theta u_\theta$ appear; both are nonlinear in
+$\theta$, because $u_\theta$ is nonlinear and so is its derivative. The same behavior is found in the
+gradient of the boundary condition. For the physics loss, the gradient is even more complex because of
+the differential operator; for the Klein--Gordon operator
+$\mathcal{D}_{KG}=\partial_{tt}-\nabla^2+m^2$,
+\begin{align}
+  \nabla_\theta\Loss_f(\theta)
+  &=\frac{1}{\abs{\T_f}}\sum_{(\mathbf{x},t)\in\T_f}\nabla_\theta\abs{\mathcal{D}_{KG}[u_\theta](\mathbf{x},t)}^2 \label{eq:grad-f-1}\\
+  &=\frac{2}{\abs{\T_f}}\sum_{(\mathbf{x},t)\in\T_f}\mathcal{D}_{KG}[u_\theta](\mathbf{x},t)\;
+    \mathcal{D}_{KG}\big[\nabla_\theta u_\theta\big](\mathbf{x},t). \label{eq:grad-f-2}
+\end{align}
+Notice that $\nabla_\theta\Loss_f$ requires differentiating with respect to the parameters through the
+temporal and spatial derivatives of the network ($\partial_{tt}$, $\nabla^2$), which increases the
+computational complexity compared with a standard neural network.
+
+\paragraph{The KKT system in matrix form.}
+Writing $N_{ic}=\abs{\T_{ic}}$, $N_{bc}=\abs{\T_{bc}}$, $N_f=\abs{\T_f}$, the expanded KKT conditions
+show that the optimizer must solve a system of high-dimensional nonlinear equations (the
+dimensionality is induced by the neural network):
+\begin{align}
+  \frac{2}{N_{ic}}J_{ic}^{T}R_{ic}(\theta)+\frac{2}{N_{bc}}J_{bc}^{T}R_{bc}(\theta)
+  +\frac{2v}{N_f}J_f^{T}R_f(\theta)&=0, \label{eq:kkt-matrix-1}\\
+  \Loss_f(\theta)&=0, \label{eq:kkt-matrix-2}
+\end{align}
+where $R_{ic}(\theta)\in\mathbb{R}^{N_{ic}}$ has entries $u_\theta(\mathbf{x}_i,0)-g_0(\mathbf{x}_i)$;
+$J_{ic}(\theta)\in\mathbb{R}^{N_{ic}\times P}$ has rows $\nabla_\theta u_\theta(\mathbf{x}_i,0)^{T}$ (analogously for
+$R_{bc},J_{bc}$); $R_f(\theta)\in\mathbb{R}^{N_f}$ has entries $\mathcal{D}_{KG}[u_\theta](\mathbf{x}_k,t_k)$; and
+$J_f(\theta)\in\mathbb{R}^{N_f\times P}$ has rows $\mathcal{D}_{KG}[\nabla_\theta u_\theta](\mathbf{x}_k,t_k)^{T}$.
+
+\paragraph{One multiplier per collocation point.}
+Since the single constraint $\Loss_f(\theta)=0$ is degenerate (Section~\ref{sec:optimization}), the natural
+hard-constrained problem imposes $R_f(\mathbf{x}_k,t_k;\theta)=0$ at each of the $N_f$ collocation points,
+with $N_f$ multipliers $v_k$, and Equation~\eqref{eq:kkt-matrix-1} becomes
+$\frac{2}{N_{ic}}J_{ic}^{T}R_{ic}+\frac{2}{N_{bc}}J_{bc}^{T}R_{bc}+J_f^{T}\mathbf{v}=0$. Whether this
+system has a solution depends on whether the network is expressive enough to reach that optimum.
+
+% ---------------------------------------------------------------------
+\section{Non-Convexity of the Loss}\label{app-sec:nonconvexity}
+
+For the initial condition term,
+\begin{equation}
+  \nabla^2_\theta\Loss_{ic}(\theta)=\frac{2}{N_{ic}}\sum_{\mathbf{x}\in\T_{ic}}
+  \Big[\nabla_\theta u_\theta(\mathbf{x},0)\,\nabla_\theta u_\theta(\mathbf{x},0)^{T}
+  +\big(u_\theta(\mathbf{x},0)-g_0(\mathbf{x})\big)\nabla^2_\theta u_\theta(\mathbf{x},0)\Big].
+  \label{eq:hessian-ic}
+\end{equation}
+The first term, an outer product, is always positive semidefinite (it is the Gauss--Newton part). The
+interesting analysis is in the second term, for which we do not know the sign of
+$u_\theta(\mathbf{x},0)-g_0(\mathbf{x})$, and $\nabla^2_\theta u_\theta$ is, in general, indefinite. Near the optimum this
+factor is small, but globally nothing guarantees positivity. In fact, writing $\Loss_{ic}=F\circ G$ with
+$G(\theta)=u_\theta(\cdot,0)-g_0$ and $F=\norm{\cdot}_2^2$, the composition rules of
+Boyd and Vandenberghe~\cite{boyd2004} would require $G$ to be affine (or convex with $F$ non-decreasing); but even for a
+single layer $u_\theta(\mathbf{y})=b+V\sigma(c+\mathbf{w}\cdot\mathbf{y})$, the dependence on $(\mathbf{w},c)$ passes
+through an activation that is neither convex nor concave, so $\Loss_{ic}$ is not convex. The cost function
+is non-convex, and non-convex optimization methods must be used.
+
+% ---------------------------------------------------------------------
+\section{Infeasible-Start Newton Method}\label{app-sec:newton}
+
+The Newton step $\nabla^2\mathscr{L}\,\delta=-\nabla\mathscr{L}$ applied to both variables $(\theta,v)$
+with the linearized constraint is the linear system \cite{boyd2004}
+\begin{equation}
+  \begin{pmatrix}
+    \nabla^2_\theta\Loss_{ic}+\nabla^2_\theta\Loss_{bc}+v\nabla^2_\theta\Loss_f & \nabla_\theta\Loss_f\\
+    \nabla_\theta\Loss_f^{T} & 0
+  \end{pmatrix}
+  \begin{pmatrix}\delta\theta_{\mathrm{nt}}\\ \delta v_{\mathrm{nt}}\end{pmatrix}
+  =-\begin{pmatrix}\nabla_\theta\Loss_{ic}+\nabla_\theta\Loss_{bc}+v\nabla_\theta\Loss_f\\ \Loss_f\end{pmatrix}.
+  \label{eq:newton-system}
+\end{equation}
+Its matrix needs the Hessian of the approximating function $u_\theta$ for the losses of the initial and
+boundary data, and the Hessian of the physics loss, which in turn contains spatial and temporal
+derivatives of $u_\theta$; its cost is estimated in Section~\ref{sec:optimization}.
+
+% ---------------------------------------------------------------------
+\section{Stiffness of Gradient Descent}\label{app-sec:stiffness}
+
+For the steepest descent step \eqref{eq:gd}, the Taylor expansion of the loss function around the
+current parameters, up to second order, is
+\begin{equation}
+  \Loss(\theta_{n+1})=\Loss(\theta_n)+(\theta_{n+1}-\theta_n)^{T}\nabla_\theta\Loss(\theta_n)
+  +\frac12(\theta_{n+1}-\theta_n)^{T}\nabla^2_\theta\Loss(\xi)(\theta_{n+1}-\theta_n).
+  \label{eq:taylor}
+\end{equation}
+Using the gradient descent update rule $\theta_{n+1}-\theta_n=-\eta\nabla_\theta\Loss(\theta_n)$, the
+loss difference becomes
+\begin{equation}
+  \Loss(\theta_{n+1})-\Loss(\theta_n)=-\eta\norm{\nabla_\theta\Loss(\theta_n)}_2^2
+  +\frac12\eta^2\nabla_\theta\Loss(\theta_n)^{T}\nabla^2_\theta\Loss(\xi)\nabla_\theta\Loss(\theta_n).
+  \label{eq:loss-diff}
+\end{equation}
+It is worth analyzing each term. The first one is the squared gradient times the learning rate. For the
+second one, let $\mathbf{x}=\nabla_\theta\Loss(\theta_n)/\norm{\nabla_\theta\Loss(\theta_n)}$ be the unit
+direction of the gradient. Since the Hessian $\nabla^2_\theta\Loss(\xi)$ is a real symmetric matrix, by the
+spectral theorem \cite{trefethen1997} it can be diagonalized by an orthogonal matrix $Q$ that contains
+its eigenvectors, $\nabla^2_\theta\Loss(\xi)=Q^{T}\diag(\lambda_1,\dots,\lambda_P)Q$, with
+$\lambda_1\le\dots\le\lambda_P$. With $\mathbf{y}=Q\mathbf{x}$,
+\begin{equation}
+  \nabla_\theta\Loss(\theta_n)^{T}\nabla^2_\theta\Loss(\xi)\nabla_\theta\Loss(\theta_n)
+  =\norm{\nabla_\theta\Loss(\theta_n)}^2\,\mathbf{y}^{T}\diag(\lambda_1,\dots,\lambda_P)\mathbf{y}
+  =\norm{\nabla_\theta\Loss(\theta_n)}^2\sum_{i=1}^{P}\lambda_iy_i^2.
+  \label{eq:hessian-quadratic}
+\end{equation}
+Substituting in Equation~\eqref{eq:loss-diff}, we obtain Equation~\eqref{eq:stiffness}.
+
+% ---------------------------------------------------------------------
+\section{Bounds on the Gradients}\label{app-sec:grad-bounds}
+
+Wang et al.~\cite{wang2021gradient} develop the analysis of bounds starting from inequalities of Sobolev type
+for $\nabla_\theta\Loss_f$ and $\nabla_\theta\Loss_{\mathrm{data}}$:
+\begin{equation}
+  \norm{\nabla_\theta\Loss_f(\theta)}_{L^\infty}\le C\norm{\nabla^2_\theta\Loss_f(\theta)}_{L^\infty},\qquad
+  \norm{\nabla_\theta\Loss_{\mathrm{data}}(\theta)}_{L^\infty}\le C\norm{\nabla^2_\theta\Loss_{\mathrm{data}}(\theta)}_{L^\infty}.
+  \label{eq:grad-bounds}
+\end{equation}
+\verificar{exact form and hypotheses of these inequalities in Wang et al.\ (2021)}
+This imposes that the maximum value of the gradient is bounded by the maximum value of the curvature of
+the loss function. To connect this with the eigenvalues of the Hessian, we use the equivalence of matrix
+norms \cite{trefethen1997}: for $H\in\mathbb{R}^{P\times P}$,
+$P^{-1/2}\norm{H}_\infty\le\norm{H}_2\le P^{1/2}\norm{H}_\infty$. Then the inequalities are directly related
+to the eigenvalues of the Hessians of the physics and data losses:
+\begin{align}
+  \norm{\nabla_\theta\Loss_f(\theta)}_{L^\infty}&\le C\sqrt{P}\,\norm{\nabla^2_\theta\Loss_f(\theta)}_{2}
+  =C\sqrt{P}\,\sqrt{\lambda_{\max}(H_f^{T}H_f)}, \label{eq:bound-f}\\
+  \norm{\nabla_\theta\Loss_{\mathrm{data}}(\theta)}_{L^\infty}&\le C\sqrt{P}\,\norm{\nabla^2_\theta\Loss_{\mathrm{data}}(\theta)}_{2}
+  =C\sqrt{P}\,\sqrt{\lambda_{\max}(H_{\mathrm{data}}^{T}H_{\mathrm{data}})}. \label{eq:bound-data}
+\end{align}
+So the size of the gradient is bounded by the largest eigenvalue of its curvature. A large eigenvalue of
+$H^{T}H$ allows large values of the gradient, while a small eigenvalue restricts the gradient to small
+values. Therefore, the imbalance between gradients can be reaffirmed.
+
+
+% ---------------------------------------------------------------------
+\section{Fisher Matrix and KL Divergence}\label{app:fisher}
+
+Let the Kullback--Leibler (KL) divergence between $P(\cdot\mid\theta)$ and $P(\cdot\mid\theta+\delta)$ be
+\cite{pascanu2013}
+\[
+  \mathrm{KL}(\theta\,\|\,\theta+\delta)=\mathbb{E}_{\mathbf{x}\sim P(\cdot\mid\theta)}\big[\log P(\mathbf{x}\mid\theta)-\log P(\mathbf{x}\mid\theta+\delta)\big].
+\]
+Expanding $\log P(\mathbf{x}\mid\theta+\delta)$ to second order, we obtain
+\[
+  \log P(\mathbf{x}\mid\theta+\delta)\approx\log P(\mathbf{x}\mid\theta)+\nabla_\theta\log P(\mathbf{x}\mid\theta)^{T}\delta
+  +\frac12\delta^{T}\nabla^2_\theta\log P(\mathbf{x}\mid\theta)\,\delta,
+\]
+and substituting,
+\begin{equation}
+  \mathrm{KL}(\theta\,\|\,\theta+\delta)\approx-\mathbb{E}\big[\nabla_\theta\log P(\mathbf{x}\mid\theta)\big]^{T}\delta
+  -\frac12\delta^{T}\,\mathbb{E}\big[\nabla^2_\theta\log P(\mathbf{x}\mid\theta)\big]\,\delta.
+  \label{eq:app-kl}
+\end{equation}
+The first term vanishes for every $\theta$ (not only at the optimum), because of the following properties:
+\[
+  \int P(\mathbf{x}\mid\theta)\,d\mathbf{x}=1\ \Rightarrow\ \int\nabla_\theta P(\mathbf{x}\mid\theta)\,d\mathbf{x}=0,
+\]
+\[
+  \nabla_\theta\log P=\frac{\nabla_\theta P}{P}\ \Rightarrow\
+  \mathbb{E}\big[\nabla_\theta\log P(\mathbf{x}\mid\theta)\big]=\int P\,\nabla_\theta\log P\,d\mathbf{x}=0.
+\]
+Differentiating the last identity once more with respect to $\theta$,
+\[
+  0=\int\Big(\nabla_\theta P\,\nabla_\theta\log P^{T}+P\,\nabla^2_\theta\log P\Big)\,d\mathbf{x}
+   =\int P\Big(\nabla_\theta\log P\,\nabla_\theta\log P^{T}+\nabla^2_\theta\log P\Big)\,d\mathbf{x},
+\]
+that is, the expectation of the second moment satisfies
+\[
+  \mathbb{E}\big[\nabla_\theta\log P\,\nabla_\theta\log P^{T}\big]=-\mathbb{E}\big[\nabla^2_\theta\log P\big].
+\]
+Therefore,
+\[
+  \mathrm{KL}(\theta\,\|\,\theta+\delta)\approx\frac12\delta^{T}\,
+  \mathbb{E}\big[\nabla_\theta\log P(\mathbf{x}\mid\theta)\,\nabla_\theta\log P(\mathbf{x}\mid\theta)^{T}\big]\,\delta
+  =\frac12\delta^{T}F\delta.
+\]
+
+\end{hyphenrules}
