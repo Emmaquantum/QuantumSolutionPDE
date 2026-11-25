@@ -1,0 +1,611 @@
+\begin{thebibliography}{100}
+
+\bibitem{figalli2017monge}
+A.~Figalli, {\em The Monge-Amp{\`e}re equation and its applications}.
+\newblock European Mathematical Society, Z{\"u}rich, 2017.
+
+\bibitem{conde2026generation}
+E.~Conde~L{\'o}pez, J.~Flores~Escribano, E.~Salete~Casino, and
+  A.~Vargas~Ure{\~n}a, ``Generation of digital elevation models using the
+  poisson equation and the finite element method,'' {\em Modelling}, vol.~7,
+  no.~1, p.~10, 2026.
+
+\bibitem{zhu2023analytical}
+W.~Zhu, Z.~Huang, J.~Chen, and Y.-W. Chang, ``Analytical solution of poisson's
+  equation with application to vlsi global placement,'' {\em arXiv preprint
+  arXiv:2307.12041}, 2023.
+
+\bibitem{sousa2024application}
+P.~Sousa, A.~Afonso, and C.~Veiga~Rodrigues, ``Application of machine learning
+  to model the pressure poisson equation for fluid flow on generic
+  geometries,'' {\em Neural Computing and Applications}, vol.~36, no.~26,
+  pp.~16581--16606, 2024.
+
+\bibitem{guereca2026blood}
+J.~R. Guereca-Ibarra, G.~Urriolagoitia-Sosa, B.~Romero-{\'A}ngeles,
+  J.~Mart{\'\i}nez-Reyes, J.~A. Gomez-Niebla, E.~J. Rodr{\'\i}guez-Granados,
+  J.~Mireles-Hern{\'a}ndez, M.~Martinez-Mondragon, A.~S. Laguna-Canales,
+  D.~S{\'a}nchez-Hern{\'a}ndez, {\em et~al.}, ``Blood flow analysis and
+  structural analysis of arterial wall in a 3d model of the carotid artery
+  based on magnetic resonance imaging,'' {\em Fluids}, vol.~11, no.~7, p.~182,
+  2026.
+
+\bibitem{singh2025hemodynamic}
+D.~Singh, ``Hemodynamic analysis of non-newtonian blood flow in a doubly
+  branched, shallow-bulged iliac artery,'' {\em Results in Engineering},
+  p.~106302, 2025.
+
+\bibitem{estrada2025generalized}
+J.~Estrada-{\'A}lvarez, F.~Dom{\'\i}nguez-Adame, and E.~D{\'\i}az,
+  ``Generalized navier-stokes model for ballistic and tomographic electrons,''
+  {\em Scientific Reports}, vol.~15, no.~1, p.~38326, 2025.
+
+\bibitem{oh2025iron}
+S.-M. Oh, K.~Akatsu, D.-W. Lee, and H.-J. Lee, ``On the iron loss reduction
+  design improvement of an axial flux permanent magnet motor,'' {\em
+  Actuators}, vol.~14, no.~12, p.~595, 2025.
+
+\bibitem{nooraiepour2026partial}
+M.~Nooraiepour, J.~W. Both, T.~Kadeethum, and S.~Sadeghnejad, ``Partial
+  differential equations in the age of machine learning: A critical synthesis
+  of classical, machine learning, and hybrid methods,'' {\em arXiv preprint
+  arXiv:2603.07655}, 2026.
+
+\bibitem{thomee2001finite}
+V.~Thom{\'e}e, ``From finite differences to finite elements: A short history of
+  numerical analysis of partial differential equations,'' in {\em Numerical
+  Analysis: Historical Developments in the 20th Century}, pp.~361--414,
+  Elsevier, 2001.
+
+\bibitem{leveque2007finite}
+R.~J. LeVeque, {\em Finite difference methods for ordinary and partial
+  differential equations: steady-state and time-dependent problems}.
+\newblock SIAM, 2007.
+
+\bibitem{svard2014review}
+M.~Sv{\"a}rd and J.~Nordstr{\"o}m, ``Review of summation-by-parts schemes for
+  initial--boundary-value problems,'' {\em Journal of Computational Physics},
+  vol.~268, pp.~17--38, 2014.
+
+\bibitem{ren2022fft}
+Y.~Ren, H.~Feng, and S.~Zhao, ``A {FFT} accelerated high order finite
+  difference method for elliptic boundary value problems over irregular
+  domains,'' {\em Journal of Computational Physics}, vol.~448, p.~110762, 2022.
+
+\bibitem{coco2024high}
+A.~Coco and G.~Russo, ``High-order finite-difference ghost-point methods for
+  elliptic problems in domains with curved boundaries,'' {\em Open
+  Mathematics}, vol.~22, no.~1, p.~20240072, 2024.
+
+\bibitem{feng2022high}
+Q.~Feng, B.~Han, and P.~Minev, ``A high order compact finite difference scheme
+  for elliptic interface problems with discontinuous and high-contrast
+  coefficients,'' {\em Applied Mathematics and Computation}, vol.~431,
+  p.~127314, 2022.
+
+\bibitem{cocquet2024asymptotic}
+P.-H. Cocquet and M.~J. Gander, ``Asymptotic dispersion correction in general
+  finite difference schemes for {Helmholtz} problems,'' {\em SIAM Journal on
+  Scientific Computing}, vol.~46, no.~2, pp.~A670--A696, 2024.
+
+\bibitem{li2023fast}
+C.~Li, Y.~Ren, G.~Long, E.~Boerman, and S.~Zhao, ``A fast sine transform
+  accelerated high-order finite difference method for parabolic problems over
+  irregular domains,'' {\em Journal of Scientific Computing}, vol.~95, no.~2,
+  p.~49, 2023.
+
+\bibitem{abdulle2022explicit}
+A.~Abdulle, M.~J. Grote, and G.~Rosilho~de Souza, ``Explicit stabilized
+  multirate method for stiff differential equations,'' {\em Mathematics of
+  Computation}, vol.~91, no.~338, pp.~2681--2714, 2022.
+
+\bibitem{gracia2023singularly}
+J.~L. Gracia and E.~O'Riordan, ``A singularly perturbed convection-diffusion
+  parabolic problem with incompatible boundary/initial data,'' {\em Applied
+  Numerical Mathematics}, vol.~190, pp.~168--186, 2023.
+
+\bibitem{wang2022energy}
+S.~Wang, D.~Appel{\"o}, and G.~Kreiss, ``An energy-based summation-by-parts
+  finite difference method for the wave equation in second order form,'' {\em
+  Journal of Scientific Computing}, vol.~91, no.~2, p.~52, 2022.
+
+\bibitem{hojas2024reflectionless}
+V.~A. Hojas, C.~P{\'e}rez-Arancibia, and M.~A. S{\'a}nchez, ``Reflectionless
+  discrete perfectly matched layers for higher-order finite difference
+  schemes,'' {\em SIAM Journal on Scientific Computing}, vol.~46, no.~5,
+  pp.~A3094--A3123, 2024.
+
+\bibitem{hamfeldt2022convergent}
+B.~F. Hamfeldt and J.~Lesniewski, ``Convergent finite difference methods for
+  fully nonlinear elliptic equations in three dimensions,'' {\em Journal of
+  Scientific Computing}, vol.~90, no.~1, p.~35, 2022.
+
+\bibitem{neilan2019monge}
+M.~Neilan, A.~J. Salgado, and W.~Zhang, ``The {Monge--Amp{\`e}re} equation,''
+  in {\em Geometric Partial Differential Equations -- Part I}, vol.~21 of {\em
+  Handbook of Numerical Analysis}, Elsevier, 2020.
+
+\bibitem{del2022finite}
+F.~del Teso and E.~Lindgren, ``A finite difference method for the variational
+  p-{Laplacian},'' {\em Journal of Scientific Computing}, vol.~90, no.~1,
+  p.~67, 2022.
+
+\bibitem{hou2023linear}
+D.~Hou, L.~Ju, and Z.~Qiao, ``A linear second-order maximum bound
+  principle-preserving {BDF} scheme for the {Allen--Cahn} equation with a
+  general mobility,'' {\em Mathematics of Computation}, vol.~92, no.~344,
+  pp.~2515--2542, 2023.
+
+\bibitem{qin2026second}
+Y.~Qin and C.~Wang, ``A second-order accurate, positivity-preserving numerical
+  scheme for the {Poisson--Nernst--Planck--Navier--Stokes} system,'' {\em IMA
+  Journal of Numerical Analysis}, vol.~46, no.~3, pp.~1383--1430, 2026.
+
+\bibitem{del2023finite}
+F.~del Teso and E.~Lindgren, ``Finite difference schemes for the parabolic
+  p-{Laplace} equation,'' {\em SeMA Journal}, vol.~80, no.~4, pp.~527--547,
+  2023.
+
+\bibitem{tadmor2012review}
+E.~Tadmor, ``A review of numerical methods for nonlinear partial differential
+  equations,'' {\em Bulletin of the American Mathematical Society}, vol.~49,
+  no.~4, pp.~507--554, 2012.
+
+\bibitem{fu2023review}
+L.~Fu, ``Review of the high-order {TENO} schemes for compressible gas dynamics
+  and turbulence,'' {\em Archives of Computational Methods in Engineering},
+  vol.~30, no.~4, pp.~2493--2526, 2023.
+
+\bibitem{bonito2024adaptive}
+A.~Bonito, C.~Canuto, R.~H. Nochetto, and A.~Veeser, ``Adaptive finite element
+  methods,'' {\em Acta Numerica}, vol.~33, pp.~163--485, 2024.
+
+\bibitem{babuvska1994p}
+I.~Babu{\v{s}}ka and M.~Suri, ``The p and h-p versions of the finite element
+  method, basic principles and properties,'' {\em SIAM Review}, vol.~36, no.~4,
+  pp.~578--632, 1994.
+
+\bibitem{grossmann2024can}
+T.~G. Grossmann, U.~J. Komorowska, J.~Latz, and C.-B. Sch{\"o}nlieb, ``Can
+  physics-informed neural networks beat the finite element method?,'' {\em IMA
+  Journal of Applied Mathematics}, vol.~89, no.~1, pp.~143--174, 2024.
+
+\bibitem{burman2025cut}
+E.~Burman, P.~Hansbo, M.~G. Larson, and S.~Zahedi, ``Cut finite element
+  methods,'' {\em Acta Numerica}, vol.~34, pp.~1--121, 2025.
+
+\bibitem{babuska1997pollution}
+I.~M. Babu{\v{s}}ka and S.~A. Sauter, ``Is the pollution effect of the {FEM}
+  avoidable for the {Helmholtz} equation considering high wave numbers?,'' {\em
+  SIAM Journal on Numerical Analysis}, vol.~34, no.~6, pp.~2392--2423, 1997.
+
+\bibitem{li2019fem}
+Y.~Li and H.~Wu, ``{FEM} and {CIP-FEM} for {Helmholtz} equation with high wave
+  number and perfectly matched layer truncation,'' {\em SIAM Journal on
+  Numerical Analysis}, vol.~57, no.~1, pp.~96--126, 2019.
+
+\bibitem{galkowski2026numerical}
+J.~Galkowski and E.~A. Spence, ``Numerical analysis of the high-frequency
+  {Helmholtz} equation using semiclassical analysis,'' {\em Acta Numerica},
+  vol.~35, pp.~1--171, 2026.
+
+\bibitem{hauck2023super}
+M.~Hauck and D.~Peterseim, ``Super-localization of elliptic multiscale
+  problems,'' {\em Mathematics of Computation}, vol.~92, no.~341,
+  pp.~981--1003, 2023.
+
+\bibitem{bastian2022multilevel}
+P.~Bastian, R.~Scheichl, L.~Seelinger, and A.~Strehlow, ``Multilevel spectral
+  domain decomposition,'' {\em SIAM Journal on Scientific Computing}, vol.~45,
+  no.~3, pp.~S1--S26, 2022.
+
+\bibitem{barrenechea2024finite}
+G.~R. Barrenechea, V.~John, and P.~Knobloch, ``Finite element methods
+  respecting the discrete maximum principle for convection-diffusion
+  equations,'' {\em SIAM Review}, vol.~66, no.~1, pp.~3--88, 2024.
+
+\bibitem{gantner2024improved}
+G.~Gantner and R.~Stevenson, ``Improved rates for a space--time {FOSLS} of
+  parabolic {PDEs},'' {\em Numerische Mathematik}, vol.~156, no.~1,
+  pp.~133--157, 2024.
+
+\bibitem{akrivis2022error}
+G.~Akrivis and B.~Li, ``Error estimates for fully discrete {BDF} finite element
+  approximations of the {Allen--Cahn} equation,'' {\em IMA Journal of Numerical
+  Analysis}, vol.~42, no.~1, pp.~363--391, 2022.
+
+\bibitem{vijaywargiya2024two}
+A.~Vijaywargiya and G.~Fu, ``Two finite element approaches for the porous
+  medium equation that are positivity preserving and energy stable,'' {\em
+  Journal of Scientific Computing}, vol.~100, no.~3, p.~86, 2024.
+
+\bibitem{chen2022error}
+W.~Chen, Q.~Liu, and J.~Shen, ``Error estimates and blow-up analysis of a
+  finite-element approximation for the parabolic-elliptic {Keller--Segel}
+  system,'' {\em arXiv preprint arXiv:2212.07655}, 2022.
+
+\bibitem{grote2026explicit}
+M.~J. Grote, S.~R. Michel, and S.~A. Sauter, ``Explicit local time-stepping for
+  the inhomogeneous wave equation with optimal convergence,'' {\em IMA Journal
+  of Numerical Analysis}, p.~drag052, 2026.
+
+\bibitem{imbert2023space}
+L.-M. Imbert-G{\'e}rard, A.~Moiola, and P.~Stocker, ``A space--time
+  quasi-{Trefftz} {DG} method for the wave equation with piecewise-smooth
+  coefficients,'' {\em Mathematics of Computation}, vol.~92, no.~341,
+  pp.~1211--1249, 2023.
+
+\bibitem{henning2022ultraweak}
+J.~Henning, D.~Palitta, V.~Simoncini, and K.~Urban, ``An ultraweak space-time
+  variational formulation for the wave equation: analysis and efficient
+  numerical solution,'' {\em ESAIM: Mathematical Modelling and Numerical
+  Analysis}, vol.~56, no.~4, pp.~1173--1198, 2022.
+
+\bibitem{lukavcova2023convergence}
+M.~Luk{\'a}{\v{c}}ov{\'a}-Medvi{\v{d}}ov{\'a} and P.~{\"O}ffner, ``Convergence
+  of discontinuous {Galerkin} schemes for the {Euler} equations via dissipative
+  weak solutions,'' {\em Applied Mathematics and Computation}, vol.~436,
+  p.~127508, 2023.
+
+\bibitem{rueda2022subcell}
+A.~M. Rueda-Ram{\'\i}rez, W.~Pazner, and G.~J. Gassner, ``Subcell limiting
+  strategies for discontinuous {Galerkin} spectral element methods,'' {\em
+  Computers \& Fluids}, vol.~247, p.~105627, 2022.
+
+\bibitem{dzanic2022positivity}
+T.~Dzanic and F.~D. Witherden, ``Positivity-preserving entropy-based adaptive
+  filtering for discontinuous spectral element methods,'' {\em Journal of
+  Computational Physics}, vol.~468, p.~111501, 2022.
+
+\bibitem{xu2018spectral}
+H.~Xu, C.~D. Cantwell, C.~Monteserin, C.~Eskilsson, A.~P. Engsig-Karup, and
+  S.~J. Sherwin, ``Spectral/hp element methods: Recent developments,
+  applications, and perspectives,'' {\em Journal of Hydrodynamics}, vol.~30,
+  no.~1, pp.~1--22, 2018.
+
+\bibitem{cadiot2024rigorous}
+M.~Cadiot, J.-P. Lessard, and J.-C. Nave, ``Rigorous computation of solutions
+  of semilinear {PDEs} on unbounded domains via spectral methods,'' {\em SIAM
+  Journal on Applied Dynamical Systems}, vol.~23, no.~3, pp.~1966--2017, 2024.
+
+\bibitem{bao2022uniform}
+W.~Bao, Y.~Feng, and C.~Su, ``Uniform error bounds of time-splitting spectral
+  methods for the long-time dynamics of the nonlinear {Klein--Gordon} equation
+  with weak nonlinearity,'' {\em Mathematics of Computation}, vol.~91,
+  pp.~811--842, 2022.
+
+\bibitem{gottlieb1997gibbs}
+D.~Gottlieb and C.-W. Shu, ``On the {Gibbs} phenomenon and its resolution,''
+  {\em SIAM Review}, vol.~39, no.~4, pp.~644--668, 1997.
+
+\bibitem{fornberg2015solving}
+B.~Fornberg and N.~Flyer, ``Solving {PDEs} with radial basis functions,'' {\em
+  Acta Numerica}, vol.~24, pp.~215--258, 2015.
+
+\bibitem{li2022large}
+D.~Li, ``Why large time-stepping methods for the {Cahn--Hilliard} equation is
+  stable,'' {\em Mathematics of Computation}, vol.~91, no.~338, pp.~2501--2515,
+  2022.
+
+\bibitem{alkhatib2025numerical}
+O.~J. Alkhatib, C.~E. Jeeva, K.~B. Naikwadi, and M.~Kumar, ``Numerical methods
+  for solving partial differential equations in scientific simulation and
+  engineering applications,'' {\em International Journal of Applied
+  Mathematics}, vol.~38, no.~12s, pp.~2999--3013, 2025.
+
+\bibitem{bachmayr2023low}
+M.~Bachmayr, ``Low-rank tensor methods for partial differential equations,''
+  {\em Acta Numerica}, vol.~32, pp.~1--121, 2023.
+
+\bibitem{dahmen2016tensor}
+W.~Dahmen, R.~DeVore, L.~Grasedyck, and E.~S{\"u}li, ``Tensor-sparsity of
+  solutions to high-dimensional elliptic partial differential equations,'' {\em
+  Foundations of Computational Mathematics}, vol.~16, no.~4, pp.~813--874,
+  2016.
+
+\bibitem{weinan2021algorithms}
+W.~E, J.~Han, and A.~Jentzen, ``Algorithms for solving high dimensional {PDEs}:
+  from nonlinear {Monte Carlo} to machine learning,'' {\em Nonlinearity},
+  vol.~35, no.~1, p.~278, 2021.
+
+\bibitem{deryck2024acta}
+T.~De~Ryck and S.~Mishra, ``Numerical analysis of physics-informed neural
+  networks and related models in physics-informed machine learning,'' {\em Acta
+  Numerica}, vol.~33, pp.~633--713, 2024.
+
+\bibitem{cybenko1989}
+G.~Cybenko, ``Approximation by superpositions of a sigmoidal function,'' {\em
+  Mathematics of Control, Signals and Systems}, vol.~2, no.~4, pp.~303--314,
+  1989.
+
+\bibitem{hornik1989}
+K.~Hornik, M.~Stinchcombe, and H.~White, ``Multilayer feedforward networks are
+  universal approximators,'' {\em Neural Networks}, vol.~2, no.~5,
+  pp.~359--366, 1989.
+
+\bibitem{leshno1993}
+M.~Leshno, V.~Y. Lin, A.~Pinkus, and S.~Schocken, ``Multilayer feedforward
+  networks with a nonpolynomial activation function can approximate any
+  function,'' {\em Neural Networks}, vol.~6, no.~6, pp.~861--867, 1993.
+
+\bibitem{deryck2021tanh}
+T.~De~Ryck, S.~Lanthaler, and S.~Mishra, ``On the approximation of functions by
+  tanh neural networks,'' {\em Neural Networks}, vol.~143, pp.~732--750, 2021.
+
+\bibitem{lu2021deeponet}
+L.~Lu, P.~Jin, G.~Pang, Z.~Zhang, and G.~E. Karniadakis, ``Learning nonlinear
+  operators via {DeepONet} based on the universal approximation theorem of
+  operators,'' {\em Nature Machine Intelligence}, vol.~3, no.~3, pp.~218--229,
+  2021.
+
+\bibitem{dissanayake1994}
+M.~W. M.~G. Dissanayake and N.~Phan-Thien, ``Neural-network-based
+  approximations for solving partial differential equations,'' {\em
+  Communications in Numerical Methods in Engineering}, vol.~10, no.~3,
+  pp.~195--201, 1994.
+
+\bibitem{raissi2017a}
+M.~Raissi, P.~Perdikaris, and G.~E. Karniadakis, ``Physics informed deep
+  learning (part {I}): Data-driven solutions of nonlinear partial differential
+  equations,'' {\em arXiv preprint arXiv:1711.10561}, 2017.
+
+\bibitem{raissi2019}
+M.~Raissi, P.~Perdikaris, and G.~E. Karniadakis, ``Physics-informed neural
+  networks: A deep learning framework for solving forward and inverse problems
+  involving nonlinear partial differential equations,'' {\em Journal of
+  Computational Physics}, vol.~378, pp.~686--707, 2019.
+
+\bibitem{raissi2017b}
+M.~Raissi, P.~Perdikaris, and G.~E. Karniadakis, ``Physics informed deep
+  learning (part {II}): Data-driven discovery of nonlinear partial differential
+  equations,'' {\em arXiv preprint arXiv:1711.10566}, 2017.
+
+\bibitem{cuomo2022}
+S.~Cuomo, V.~Schiano Di~Cola, F.~Giampaolo, G.~Rozza, M.~Raissi, and
+  F.~Piccialli, ``Scientific machine learning through physics--informed neural
+  networks: Where we are and what's next,'' {\em Journal of Scientific
+  Computing}, vol.~92, no.~3, p.~88, 2022.
+
+\bibitem{luo2025physics}
+K.~Luo, J.~Zhao, Y.~Wang, J.~Li, J.~Wen, J.~Liang, H.~Soekmadji, and S.~Liao,
+  ``Physics-informed neural networks for {PDE} problems: a comprehensive
+  review,'' {\em Artificial Intelligence Review}, vol.~58, no.~10, p.~323,
+  2025.
+
+\bibitem{montans2019data}
+F.~J. Mont{\'a}ns, F.~Chinesta, R.~G{\'o}mez-Bombarelli, and J.~N. Kutz,
+  ``Data-driven modeling and learning in science and engineering,'' {\em
+  Comptes Rendus. M{\'e}canique}, vol.~347, no.~11, pp.~845--855, 2019.
+
+\bibitem{lu2021deepxde}
+L.~Lu, X.~Meng, Z.~Mao, and G.~E. Karniadakis, ``{DeepXDE}: A deep learning
+  library for solving differential equations,'' {\em SIAM Review}, vol.~63,
+  no.~1, pp.~208--228, 2021.
+
+\bibitem{shin2020convergence}
+Y.~Shin, J.~Darbon, and G.~E. Karniadakis, ``On the convergence of physics
+  informed neural networks for linear second-order elliptic and parabolic type
+  {PDEs},'' {\em Communications in Computational Physics}, vol.~28, no.~5,
+  pp.~2042--2074, 2020.
+
+\bibitem{doumeche2025convergence}
+N.~Doum{\`e}che, G.~Biau, and C.~Boyer, ``On the convergence of {PINNs},'' {\em
+  Bernoulli}, vol.~31, no.~3, pp.~2127--2151, 2025.
+
+\bibitem{qian2023}
+Y.~Qian, Y.~Zhang, Y.~Huang, and S.~Dong, ``Physics-informed neural networks
+  for approximating dynamic (hyperbolic) {PDEs} of second order in time: Error
+  analysis and algorithms,'' {\em Journal of Computational Physics}, vol.~495,
+  p.~112527, 2023.
+
+\bibitem{deryck2022kolmogorov}
+T.~De~Ryck and S.~Mishra, ``Error analysis for physics-informed neural networks
+  ({PINNs}) approximating {Kolmogorov} {PDEs},'' {\em Advances in Computational
+  Mathematics}, vol.~48, p.~79, 2022.
+
+\bibitem{deryck2022generic}
+T.~De~Ryck and S.~Mishra, ``Generic bounds on the approximation error for
+  physics-informed (and) operator learning,'' in {\em Advances in Neural
+  Information Processing Systems}, vol.~35, 2022.
+
+\bibitem{liu2023residual}
+S.~Liu, X.~Huang, and P.~Protopapas, ``Residual-based error bound for
+  physics-informed neural networks,'' in {\em Uncertainty in Artificial
+  Intelligence}, pp.~1284--1293, PMLR, 2023.
+
+\bibitem{jacot2018}
+A.~Jacot, F.~Gabriel, and C.~Hongler, ``Neural tangent kernel: Convergence and
+  generalization in neural networks,'' in {\em Advances in Neural Information
+  Processing Systems}, vol.~31, pp.~8571--8580, 2018.
+
+\bibitem{kharazmi2019}
+E.~Kharazmi, Z.~Zhang, and G.~E. Karniadakis, ``Variational physics-informed
+  neural networks for solving partial differential equations,'' {\em arXiv
+  preprint arXiv:1912.00873}, 2019.
+
+\bibitem{rojas2024robust}
+S.~Rojas, P.~Maczuga, J.~Mu{\~n}oz-Matute, D.~Pardo, and M.~Paszy{\'n}ski,
+  ``Robust variational physics-informed neural networks,'' {\em Computer
+  Methods in Applied Mechanics and Engineering}, vol.~425, p.~116904, 2024.
+
+\bibitem{han2018solving}
+J.~Han, A.~Jentzen, and W.~E, ``Solving high-dimensional partial differential
+  equations using deep learning,'' {\em Proceedings of the National Academy of
+  Sciences}, vol.~115, no.~34, pp.~8505--8510, 2018.
+
+\bibitem{hu2024tackling}
+Z.~Hu, K.~Shukla, G.~E. Karniadakis, and K.~Kawaguchi, ``Tackling the curse of
+  dimensionality with physics-informed neural networks,'' {\em Neural
+  Networks}, vol.~176, p.~106369, 2024.
+
+\bibitem{wang2024causality}
+S.~Wang, S.~Sankaran, and P.~Perdikaris, ``Respecting causality for training
+  physics-informed neural networks,'' {\em Computer Methods in Applied
+  Mechanics and Engineering}, vol.~421, p.~116813, 2024.
+
+\bibitem{chaumet2024improving}
+A.~Chaumet and J.~Giesselmann, ``Improving weak {PINNs} for hyperbolic
+  conservation laws: Dual norm computation, boundary conditions and systems,''
+  {\em The SMAI Journal of Computational Mathematics}, vol.~10, pp.~373--401,
+  2024.
+
+\bibitem{deryck2024wpinn}
+T.~De~Ryck, S.~Mishra, and R.~Molinaro, ``{wPINNs}: Weak physics informed
+  neural networks for approximating entropy solutions of hyperbolic
+  conservation laws,'' {\em SIAM Journal on Numerical Analysis}, vol.~62,
+  no.~2, pp.~811--841, 2024.
+
+\bibitem{jagtap2020conservative}
+A.~D. Jagtap, E.~Kharazmi, and G.~E. Karniadakis, ``Conservative
+  physics-informed neural networks on discrete domains for conservation laws:
+  Applications to forward and inverse problems,'' {\em Computer Methods in
+  Applied Mechanics and Engineering}, vol.~365, p.~113028, 2020.
+
+\bibitem{quita2023conservative}
+R.~Quita, Y.-S. Chen, H.-Y. Lee, A.~C. Hu, and J.~M. Hong, ``Conservative
+  physics-informed neural networks for non-conservative hyperbolic conservation
+  laws near critical states,'' {\em arXiv preprint arXiv:2305.12817}, 2023.
+
+\bibitem{de2024error}
+T.~De~Ryck and S.~Mishra, ``Error analysis for deep neural network
+  approximations of parametric hyperbolic conservation laws,'' {\em Mathematics
+  of Computation}, vol.~93, no.~350, pp.~2643--2677, 2024.
+
+\bibitem{cai2021physics}
+S.~Cai, Z.~Mao, Z.~Wang, M.~Yin, and G.~E. Karniadakis, ``Physics-informed
+  neural networks ({PINNs}) for fluid mechanics: A review,'' {\em Acta
+  Mechanica Sinica}, vol.~37, no.~12, pp.~1727--1738, 2021.
+
+\bibitem{wang2022ntk}
+S.~Wang, X.~Yu, and P.~Perdikaris, ``When and why {PINNs} fail to train: A
+  neural tangent kernel perspective,'' {\em Journal of Computational Physics},
+  vol.~449, p.~110768, 2022.
+
+\bibitem{wang2021eigenvector}
+S.~Wang, H.~Wang, and P.~Perdikaris, ``On the eigenvector bias of {Fourier}
+  feature networks: From regression to solving multi-scale {PDEs} with
+  physics-informed neural networks,'' {\em Computer Methods in Applied
+  Mechanics and Engineering}, vol.~384, p.~113938, 2021.
+
+\bibitem{wang2021gradient}
+S.~Wang, Y.~Teng, and P.~Perdikaris, ``Understanding and mitigating gradient
+  flow pathologies in physics-informed neural networks,'' {\em SIAM Journal on
+  Scientific Computing}, vol.~43, no.~5, pp.~A3055--A3081, 2021.
+
+\bibitem{krishnapriyan2021}
+A.~S. Krishnapriyan, A.~Gholami, S.~Zhe, R.~M. Kirby, and M.~W. Mahoney,
+  ``Characterizing possible failure modes in physics-informed neural
+  networks,'' in {\em Advances in Neural Information Processing Systems},
+  vol.~34, pp.~26548--26560, 2021.
+
+\bibitem{rathore2024challenges}
+P.~Rathore, W.~Lei, Z.~Frangella, L.~Lu, and M.~Udell, ``Challenges in training
+  {PINNs}: A loss landscape perspective,'' {\em arXiv preprint
+  arXiv:2402.01868}, 2024.
+
+\bibitem{sitzmann2020}
+V.~Sitzmann, J.~N.~P. Martel, A.~W. Bergman, D.~B. Lindell, and G.~Wetzstein,
+  ``Implicit neural representations with periodic activation functions,'' in
+  {\em Advances in Neural Information Processing Systems}, vol.~33,
+  pp.~7462--7473, 2020.
+
+\bibitem{wang2023abu}
+H.~Wang, L.~Lu, S.~Song, and G.~Huang, ``Learning specialized activation
+  functions for physics-informed neural networks,'' {\em Communications in
+  Computational Physics}, vol.~34, no.~4, pp.~869--906, 2023.
+
+\bibitem{wang2023expert}
+S.~Wang, S.~Sankaran, H.~Wang, and P.~Perdikaris, ``An expert's guide to
+  training physics-informed neural networks,'' {\em arXiv preprint
+  arXiv:2308.08468}, 2023.
+
+\bibitem{wang2024piratenets}
+S.~Wang, B.~Li, Y.~Chen, and P.~Perdikaris, ``{PirateNets}: Physics-informed
+  deep learning with residual adaptive networks,'' {\em Journal of Machine
+  Learning Research}, vol.~25, no.~402, pp.~1--51, 2024.
+
+\bibitem{li2021fno}
+Z.~Li, N.~Kovachki, K.~Azizzadenesheli, B.~Liu, K.~Bhattacharya, A.~Stuart, and
+  A.~Anandkumar, ``{Fourier} neural operator for parametric partial
+  differential equations,'' in {\em International Conference on Learning
+  Representations}, 2021.
+
+\bibitem{hao2024pinnacle}
+Z.~Hao, J.~Yao, C.~Su, H.~Su, Z.~Wang, F.~Lu, Z.~Xia, Y.~Zhang, S.~Liu, L.~Lu,
+  and J.~Zhu, ``{PINNacle}: A comprehensive benchmark of physics-informed
+  neural networks for solving {PDEs},'' in {\em Advances in Neural Information
+  Processing Systems (Datasets and Benchmarks Track)}, vol.~37, 2024.
+
+\bibitem{zhang2026physics}
+W.~Zhang, W.~Suo, J.~Song, and W.~Cao, ``Physics-informed neural networks
+  ({PINNs}) as intelligent computing technique for solving partial differential
+  equations: Limitation and future prospects,'' {\em SCIENCE CHINA Physics,
+  Mechanics \& Astronomy}, vol.~69, no.~1, p.~214602, 2026.
+
+\bibitem{zhou2025weak}
+H.~Zhou and L.~Shi, ``Weak physics informed neural networks for geometry
+  compatible hyperbolic conservation laws on manifolds,'' {\em arXiv preprint
+  arXiv:2505.19036}, 2025.
+
+\bibitem{basir2022investigating}
+S.~Basir, ``Investigating and mitigating failure modes in physics-informed
+  neural networks ({PINNs}),'' {\em arXiv preprint arXiv:2209.09988}, 2022.
+
+\bibitem{xiang2022self}
+Z.~Xiang, W.~Peng, X.~Liu, and W.~Yao, ``Self-adaptive loss balanced
+  physics-informed neural networks,'' {\em Neurocomputing}, vol.~496,
+  pp.~11--34, 2022.
+
+\bibitem{gao2023failure}
+Z.~Gao, L.~Yan, and T.~Zhou, ``Failure-informed adaptive sampling for
+  {PINNs},'' {\em SIAM Journal on Scientific Computing}, vol.~45, no.~4,
+  pp.~A1971--A1994, 2023.
+
+\bibitem{oubarka2026weak}
+I.~Oubarka, I.~Kissami, M.~Boubekeur, F.~Benkhaldoun, A.~Madrane, and Z.~Saadi,
+  ``Weak and entropy physics-informed neural networks for conservation laws,''
+  {\em arXiv preprint arXiv:2603.24819}, 2026.
+
+\bibitem{wang2025wf}
+X.~Wang, S.~Yi, H.~Gu, J.~Xu, and W.~Xu, ``{WF-PINNs}: solving forward and
+  inverse problems of {Burgers} equation with steep gradients using weak-form
+  physics-informed neural networks,'' {\em Scientific Reports}, vol.~15, no.~1,
+  p.~40555, 2025.
+
+\bibitem{muller2023achieving}
+J.~M{\"u}ller and M.~Zeinhofer, ``Achieving high accuracy with {PINNs} via
+  energy natural gradient descent,'' in {\em International Conference on
+  Machine Learning}, pp.~25471--25485, PMLR, 2023.
+
+\bibitem{dangel2024kronecker}
+F.~Dangel, J.~M{\"u}ller, and M.~Zeinhofer, ``Kronecker-factored approximate
+  curvature for physics-informed neural networks,'' in {\em Advances in Neural
+  Information Processing Systems}, vol.~37, 2024.
+
+\bibitem{mckay2025near}
+M.~B. McKay, A.~Kaur, C.~Greif, and B.~Wetton, ``Near-optimal sketchy natural
+  gradients for physics-informed neural networks,'' in {\em Forty-second
+  International Conference on Machine Learning}, 2025.
+
+\bibitem{guzman2025improving}
+A.~Guzm{\'a}n-Cordero, F.~Dangel, G.~Goldshlager, and M.~Zeinhofer, ``Improving
+  energy natural gradient descent through {Woodbury}, momentum, and
+  randomization,'' in {\em Advances in Neural Information Processing Systems},
+  vol.~38, 2025.
+
+\bibitem{jnini2025dual}
+A.~Jnini and F.~Vella, ``Dual natural gradient descent for scalable training of
+  physics-informed neural networks,'' {\em arXiv preprint arXiv:2505.21404},
+  2025.
+
+\bibitem{schwencke2025anagram}
+N.~Schwencke and C.~Furtlehner, ``{ANaGRAM}: A natural gradient relative to
+  adapted model for efficient {PINNs} learning,'' in {\em International
+  Conference on Learning Representations}, 2025.
+
+\bibitem{schwencke2025amstramgram}
+N.~Schwencke, C.~Rousselot, A.~Shilova, and C.~Furtlehner, ``{AMStraMGRAM}:
+  Adaptive multi-cutoff strategy modification for {ANaGRAM},'' {\em arXiv
+  preprint arXiv:2510.15998}, 2025.
+
+\end{thebibliography}

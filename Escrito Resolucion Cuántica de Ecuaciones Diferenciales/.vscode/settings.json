@@ -1,25 +1,24 @@
 {
-  // Archivo principal de la tesis: se compila siempre 0000.tex,
-  // aunque estés editando un capítulo (ver "% !TEX root" al inicio de cada archivo).
-  "latex-workshop.latex.rootFile.doNotPrompt": true,
-  "latex-workshop.latex.search.rootFiles.include": ["0000.tex"],
+  // Estructura: cada capítulo está en su carpeta (Cap01_..., Cap07_..., Anexos/, 00_Preliminares/).
+  // Las figuras siguen en 00Figuras/ y la bibliografía en Referencias.bib (raíz).
+  // Cada capítulo (01..06, 08Apendice..) es un "subfile":
+  //   - Abierto un capítulo, Ctrl+Alt+B compila SOLO ese capítulo -> 03Seccion03.pdf, etc.
+  //   - Para la tesis completa: abra 0000.tex y pulse Ctrl+Alt+B
+  //     (la receta "Tesis completa (0000.tex)" solo funciona con 0000.tex abierto, porque compila en la carpeta del archivo activo).
+  "latex-workshop.latex.rootFile.useSubFile": true,
 
-  // Compilación: pdflatex -> bibtex -> pdflatex -> pdflatex
   "latex-workshop.latex.tools": [
-    {
-      "name": "pdflatex",
-      "command": "pdflatex",
-      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"]
-    },
-    {
-      "name": "bibtex",
-      "command": "bibtex",
-      "args": ["%DOCFILE%"]
-    }
+    { "name": "pdflatex", "command": "pdflatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"] },
+    { "name": "bibtex", "command": "bibtex", "args": ["%DOCFILE%"] },
+    { "name": "pdflatex-tesis", "command": "pdflatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "0000.tex"] },
+    { "name": "bibtex-tesis", "command": "bibtex", "args": ["0000"] }
   ],
   "latex-workshop.latex.recipes": [
-    { "name": "Tesis completa (pdflatex + bibtex)", "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"] },
-    { "name": "Rápida (solo pdflatex)", "tools": ["pdflatex"] }
+    { "name": "Este archivo (capítulo o tesis)", "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"] },
+    { "name": "Este archivo, rápido (solo pdflatex)", "tools": ["pdflatex"] },
+    { "name": "Tesis completa (0000.tex)", "tools": ["pdflatex-tesis", "bibtex-tesis", "pdflatex-tesis", "pdflatex-tesis"] }
   ],
   "latex-workshop.latex.recipe.default": "first",
   "latex-workshop.latex.autoBuild.run": "onSave",
@@ -34,7 +33,6 @@
     "**/*.synctex.gz": true, "**/*.fls": true, "**/*.fdb_latexmk": true
   },
 
-  // Edición cómoda de texto largo
   "editor.wordWrap": "on",
   "files.encoding": "utf8"
 }

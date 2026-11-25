@@ -1,0 +1,31 @@
+\babel@toc {spanish}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\textbf {3-1}}{\ignorespaces Errors that appear when training a PINN}}{42}{figure.caption.18}%
+\contentsline {figure}{\numberline {\textbf {3-2}}{\ignorespaces MABUR-PINN architecture}}{54}{figure.caption.19}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\textbf {4-1}}{\ignorespaces Pseudo-spectral reference solution of the preliminary experiment}}{58}{figure.caption.22}%
+\contentsline {figure}{\numberline {\textbf {4-2}}{\ignorespaces Loss functions through the training epochs of the preliminary experiment}}{59}{figure.caption.23}%
+\contentsline {figure}{\numberline {\textbf {4-3}}{\ignorespaces Validation of the preliminary experiment}}{60}{figure.caption.24}%
+\contentsline {figure}{\numberline {\textbf {4-4}}{\ignorespaces Relative $L^2$ error against complexity}}{62}{figure.caption.28}%
+\contentsline {figure}{\numberline {\textbf {4-5}}{\ignorespaces Error maps of three architectures on the Klein--Gordon equation}}{63}{figure.caption.29}%
+\contentsline {figure}{\numberline {\textbf {4-6}}{\ignorespaces MABUR-PINN V2 with $\sigma =5$}}{64}{figure.caption.31}%
+\contentsline {figure}{\numberline {\textbf {4-7}}{\ignorespaces Training history (total, PDE, initial position, initial velocity and boundary losses).}}{65}{figure.caption.32}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {\textbf {E-1}}{\ignorespaces Vanilla PINN: error map and training curves}}{84}{figure.caption.35}%
+\contentsline {figure}{\numberline {\textbf {E-2}}{\ignorespaces PINN-SIREN: error map and training curves}}{85}{figure.caption.36}%
+\contentsline {figure}{\numberline {\textbf {E-3}}{\ignorespaces MSF-PINN: error map and training curves}}{85}{figure.caption.37}%
+\contentsline {figure}{\numberline {\textbf {E-4}}{\ignorespaces M4-PINN: error map and training curves}}{86}{figure.caption.38}%
+\contentsline {figure}{\numberline {\textbf {E-5}}{\ignorespaces AbuPINN: error map and training curves}}{86}{figure.caption.39}%
+\contentsline {figure}{\numberline {\textbf {E-6}}{\ignorespaces MABUR-PINN V1: error map and training curves}}{87}{figure.caption.40}%
+\contentsline {figure}{\numberline {\textbf {E-7}}{\ignorespaces MABUR-PINN V2: error map and training curves}}{87}{figure.caption.41}%
+\contentsline {figure}{\numberline {\textbf {E-8}}{\ignorespaces MABUR-PINN V2 ($\sigma =5$): L2RE 3.32\%. Same architecture with a larger Fourier scale.}}{88}{figure.caption.42}%
+\addvspace {10\p@ }
+\contentsfinish 

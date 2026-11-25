@@ -1,0 +1,36 @@
+{
+  // Cada capítulo (01..06, 08Apendice..) es un "subfile":
+  //   - Abierto un capítulo, Ctrl+Alt+B compila SOLO ese capítulo -> 03Seccion03.pdf, etc.
+  //   - Para la tesis completa: abra 0000.tex y pulse Ctrl+Alt+B,
+  //     o desde cualquier archivo: ícono TeX > Build LaTeX project > Recipe: "Tesis completa (0000.tex)".
+  "latex-workshop.latex.rootFile.useSubFile": true,
+
+  "latex-workshop.latex.tools": [
+    { "name": "pdflatex", "command": "pdflatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "%DOC%"] },
+    { "name": "bibtex", "command": "bibtex", "args": ["%DOCFILE%"] },
+    { "name": "pdflatex-tesis", "command": "pdflatex",
+      "args": ["-synctex=1", "-interaction=nonstopmode", "-file-line-error", "0000.tex"] },
+    { "name": "bibtex-tesis", "command": "bibtex", "args": ["0000"] }
+  ],
+  "latex-workshop.latex.recipes": [
+    { "name": "Este archivo (capítulo o tesis)", "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"] },
+    { "name": "Este archivo, rápido (solo pdflatex)", "tools": ["pdflatex"] },
+    { "name": "Tesis completa (0000.tex)", "tools": ["pdflatex-tesis", "bibtex-tesis", "pdflatex-tesis", "pdflatex-tesis"] }
+  ],
+  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+
+  // Visor del PDF dentro de VS Code (Ctrl+Alt+J salta del texto al PDF; Ctrl+clic en el PDF salta al texto)
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  // Ocultar los archivos auxiliares de LaTeX en el explorador
+  "files.exclude": {
+    "**/*.aux": true, "**/*.bbl": true, "**/*.blg": true, "**/*.log": true,
+    "**/*.lof": true, "**/*.lot": true, "**/*.toc": true, "**/*.out": true,
+    "**/*.synctex.gz": true, "**/*.fls": true, "**/*.fdb_latexmk": true
+  },
+
+  "editor.wordWrap": "on",
+  "files.encoding": "utf8"
+}

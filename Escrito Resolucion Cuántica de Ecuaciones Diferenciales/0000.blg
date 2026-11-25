@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: 0000.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+The style file: ieeetr.bst
+Reallocating 'name_of_file' (item size: 1) to 22 items.
+A level-1 auxiliary file: 00ResumenAbstract.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+Database file #1: Referencias.bib
+Warning--can't use both volume and number fields in oh2025iron
+You've used 212 entries,
+            1876 wiz_defined-function locations,
+            1463 strings with 39013 characters,
+and the built_in function-call counts, 59910 in all, are:
+= -- 6017
+> -- 2416
+< -- 0
++ -- 884
+- -- 672
+* -- 4158
+:= -- 8283
+add.period$ -- 237
+call.type$ -- 212
+change.case$ -- 193
+chr.to.int$ -- 0
+cite$ -- 213
+duplicate$ -- 3259
+empty$ -- 5476
+format.name$ -- 672
+if$ -- 14768
+int.to.chr$ -- 0
+int.to.str$ -- 212
+missing$ -- 228
+newline$ -- 664
+num.names$ -- 215
+pop$ -- 651
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 2319
+stack$ -- 0
+substring$ -- 3795
+swap$ -- 1496
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 545
+width$ -- 215
+write$ -- 2108
+(There was 1 warning)

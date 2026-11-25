@@ -1,0 +1,30 @@
+\babel@toc {spanish}{}\relax 
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {\textbf {1-1}}{\ignorespaces Behavior of numerical methods}}{8}{table.caption.10}%
+\contentsline {table}{\numberline {\textbf {1-2}}{\ignorespaces PINN según el tipo de EDP en la literatura revisada.}}{12}{table.caption.11}%
+\contentsline {table}{\numberline {\textbf {1-3}}{\ignorespaces Herramientas para que la PINN respete la estructura de conservación.}}{15}{table.caption.12}%
+\contentsline {table}{\numberline {\textbf {1-4}}{\ignorespaces Gradientes naturales para PINN: estrategia, escala y problemas de prueba.}}{16}{table.caption.13}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {\textbf {2-1}}{\ignorespaces Comparison of second-order linear PDEs.}}{33}{table.caption.14}%
+\contentsline {table}{\numberline {\textbf {2-2}}{\ignorespaces Weak formulations via distributional derivatives}}{34}{table.caption.15}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {\textbf {3-1}}{\ignorespaces Classical numerical methods for PDEs.}}{39}{table.caption.16}%
+\contentsline {table}{\numberline {\textbf {3-2}}{\ignorespaces Main advances and variants in the field of PINNs.}}{39}{table.caption.17}%
+\contentsline {table}{\numberline {\textbf {3-3}}{\ignorespaces The two versions of MABUR-PINN.}}{54}{table.caption.20}%
+\contentsline {table}{\numberline {\textbf {3-4}}{\ignorespaces Candidate branches of the adaptive activation.}}{55}{table.caption.21}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {\textbf {4-1}}{\ignorespaces Shared training configuration of Experiment~1.}}{60}{table.caption.25}%
+\contentsline {table}{\numberline {\textbf {4-2}}{\ignorespaces Architectures of Experiment~1}}{61}{table.caption.26}%
+\contentsline {table}{\numberline {\textbf {4-3}}{\ignorespaces Comparative results of the architectures on the Klein--Gordon equation (Experiment~1).}}{61}{table.caption.27}%
+\contentsline {table}{\numberline {\textbf {4-4}}{\ignorespaces MABUR-PINN V2: regularization and Fourier scale}}{62}{table.caption.30}%
+\contentsline {table}{\numberline {\textbf {4-5}}{\ignorespaces Branches of the softmax blend used for each PDE}}{65}{table.caption.33}%
+\contentsline {table}{\numberline {\textbf {4-6}}{\ignorespaces Relative $L^2$ error (L2RE) on the PINNacle benchmark}}{66}{table.caption.34}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsfinish 

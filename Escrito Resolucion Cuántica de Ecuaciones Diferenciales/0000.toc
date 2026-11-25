@@ -1,0 +1,194 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{Resumen}{\es@scroman {ii}}{chapter*.3}%
+\contentsline {chapter}{Abstract}{\es@scroman {iii}}{chapter*.4}%
+\contentsline {chapter}{Lista de figuras}{\es@scroman {iv}}{chapter*.4}%
+\contentsline {chapter}{Lista de tablas}{\es@scroman {v}}{chapter*.5}%
+\contentsline {chapter}{Contenido}{\es@scroman {vi}}{chapter*.6}%
+\contentsline {chapter}{Introducción}{1}{section*.9}%
+\contentsline {chapter}{\numberline {1}Estado del Arte}{3}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Brief historical review of Partial Differential Equations and Classical Numerical Solvers}{3}{section.1.1}%
+\contentsline {section}{\numberline {1.2}State of art of Physics-Informed Neuronal Networks and Variational Quantum Circuits}{5}{section.1.2}%
+\contentsline {paragraph}{Diferencias finitas.}{5}{section.1.2}%
+\contentsline {paragraph}{Elementos finitos.}{6}{section.1.2}%
+\contentsline {paragraph}{Métodos espectrales.}{7}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Physics-Informed Neuronal Networks - PINNs}{8}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Teoría de aproximación universal}{9}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}La PINN como método numérico}{9}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Implementaciones según el tipo de EDP}{10}{subsection.1.2.4}%
+\contentsline {paragraph}{Elípticas.}{10}{subsection.1.2.4}%
+\contentsline {paragraph}{Parabólicas.}{11}{subsection.1.2.4}%
+\contentsline {paragraph}{Hiperbólicas de primer orden y leyes de conservación.}{11}{subsection.1.2.4}%
+\contentsline {paragraph}{Hiperbólicas de segundo orden (ondas).}{11}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Arquitecturas y sus resultados}{11}{subsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.2.6}Limitaciones actuales}{13}{subsection.1.2.6}%
+\contentsline {subsection}{\numberline {1.2.7}Problemas de optimización}{13}{subsection.1.2.7}%
+\contentsline {subsection}{\numberline {1.2.8}Herramientas para respetar la conservación}{14}{subsection.1.2.8}%
+\contentsline {subsection}{\numberline {1.2.9}Gradientes naturales}{15}{subsection.1.2.9}%
+\contentsline {chapter}{\numberline {2}About Partial Differential Equations}{18}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Linear Partial Differential Equations}{18}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Transport Equation}{18}{subsection.2.1.1}%
+\contentsline {subsubsection}{Homogeneous case}{19}{subsection.2.1.1}%
+\contentsline {subsubsection}{Non-homogeneous case}{19}{equation.2.1}%
+\contentsline {subsubsection}{Regularization of transport operators}{19}{equation.2.3}%
+\contentsline {subsection}{\numberline {2.1.2}Laplace's Equation}{20}{subsection.2.1.2}%
+\contentsline {subsubsection}{Homogeneous case}{20}{equation.2.6}%
+\contentsline {subsubsection}{Non-homogeneous case}{21}{equation.2.10}%
+\contentsline {subsubsection}{Regularity and some properties}{21}{equation.2.12}%
+\contentsline {subsection}{\numberline {2.1.3}Heat Equation}{22}{subsection.2.1.3}%
+\contentsline {subsubsection}{Homogeneous case}{22}{equation.2.15}%
+\contentsline {subsubsection}{Non-homogeneous equation -- Duhamel's principle}{23}{equation.2.19}%
+\contentsline {subsubsection}{Regularization and some properties}{23}{equation.2.22}%
+\contentsline {subsection}{\numberline {2.1.4}Wave Equation}{24}{subsection.2.1.4}%
+\contentsline {subsubsection}{Homogeneous case}{24}{equation.2.25}%
+\contentsline {subsubsection}{Non-homogeneous case}{25}{equation.2.29}%
+\contentsline {subsubsection}{About the problem of solutions with closed forms}{26}{equation.2.31}%
+\contentsline {section}{\numberline {2.2}Modern Theory of Partial Differential Equations}{26}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Hölder Spaces}{26}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Lebesgue Spaces $L^p$}{27}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Weak Derivatives}{27}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Sobolev Spaces}{29}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Second-Order Partial Differential Equations}{29}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Second-Order Elliptic Equations}{29}{subsection.2.3.1}%
+\contentsline {subsubsection}{The mathematical definition of ellipticity}{29}{subsection.2.3.1}%
+\contentsline {subsubsection}{Some properties of elliptic theory}{30}{equation.2.43}%
+\contentsline {subsection}{\numberline {2.3.2}Second-Order Parabolic Equations}{31}{subsection.2.3.2}%
+\contentsline {subsubsection}{The mathematical definition of parabolicity}{31}{subsection.2.3.2}%
+\contentsline {subsubsection}{Some properties of parabolic theory}{31}{equation.2.47}%
+\contentsline {subsection}{\numberline {2.3.3}Second-Order Hyperbolic Equations}{32}{subsection.2.3.3}%
+\contentsline {subsubsection}{The mathematical definition of hyperbolicity}{32}{subsection.2.3.3}%
+\contentsline {subsubsection}{Some properties of hyperbolic theory}{32}{equation.2.51}%
+\contentsline {section}{\numberline {2.4}Regularity and its Consequences for Learning}{33}{section.2.4}%
+\contentsline {section}{\numberline {2.5}The Klein--Gordon Equation as a Case Study}{34}{section.2.5}%
+\contentsline {subsubsection}{Plane waves and dispersion relation}{35}{equation.2.55}%
+\contentsline {subsubsection}{General solution}{35}{equation.2.61}%
+\contentsline {subsubsection}{Energy}{36}{equation.2.62}%
+\contentsline {subsubsection}{Why the Klein--Gordon equation}{36}{equation.2.63}%
+\contentsline {section}{\numberline {2.6}Chapter Summary}{37}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Physics-Informed Neural Networks - PINN}{38}{chapter.3}%
+\contentsline {section}{\numberline {3.1}From Classical Numerical Methods to Neural Networks}{38}{section.3.1}%
+\contentsline {paragraph}{Mathematical foundations and first ideas.}{39}{table.caption.16}%
+\contentsline {section}{\numberline {3.2}Formulation of Physics-Informed Neural Networks}{40}{section.3.2}%
+\contentsline {paragraph}{Three errors.}{41}{equation.3.9}%
+\contentsline {section}{\numberline {3.3}Modern Theory of PINNs}{42}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Error Decomposition}{42}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Approximation Error}{42}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Generalization Gap}{43}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Optimization: Conditioning and Spectral Bias}{43}{subsection.3.3.4}%
+\contentsline {paragraph}{Spectral convergence rate.}{44}{tcb@cnt@teorema.3.3.6}%
+\contentsline {subsection}{\numberline {3.3.5}Regularized Loss and the Hölder Seminorm}{44}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.6}Energy Estimate for the Klein--Gordon Equation}{45}{subsection.3.3.6}%
+\contentsline {section}{\numberline {3.4}The Optimization Problem: Hard vs.\ Soft Constraints}{45}{section.3.4}%
+\contentsline {paragraph}{A degenerate constraint.}{46}{equation.3.22}%
+\contentsline {paragraph}{Non-convexity.}{46}{equation.3.22}%
+\contentsline {paragraph}{Computational cost of Newton's method.}{46}{equation.3.22}%
+\contentsline {subsection}{\numberline {3.4.1}Soft Constraints and Multi-Objective Optimization}{47}{subsection.3.4.1}%
+\contentsline {section}{\numberline {3.5}Gradient Pathologies and Optimizers}{47}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Stiffness Analysis}{48}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Learning Rate Annealing}{48}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}ADAM as an Approximation of the Natural Gradient}{49}{subsection.3.5.3}%
+\contentsline {paragraph}{Second-order refinement (L-BFGS).}{50}{equation.3.37}%
+\contentsline {section}{\numberline {3.6}Training Strategies for Hyperbolic PDEs}{50}{section.3.6}%
+\contentsline {paragraph}{Causal training.}{50}{section.3.6}%
+\contentsline {paragraph}{Focused stochastic sampling.}{50}{equation.3.38}%
+\contentsline {paragraph}{Input normalization.}{50}{equation.3.38}%
+\contentsline {section}{\numberline {3.7}Representation: Fourier Features and Activation Functions}{51}{section.3.7}%
+\contentsline {paragraph}{Random Fourier features.}{51}{section.3.7}%
+\contentsline {paragraph}{Sinusoidal activations (SIREN).}{51}{equation.3.41}%
+\contentsline {paragraph}{Rational activations.}{52}{equation.3.43}%
+\contentsline {section}{\numberline {3.8}State of the Art in Architectures}{52}{section.3.8}%
+\contentsline {paragraph}{Vanilla PINN.}{52}{section.3.8}%
+\contentsline {paragraph}{Multi-scale Fourier features (MSF).}{52}{section.3.8}%
+\contentsline {paragraph}{Modified MLP (M4).}{52}{section.3.8}%
+\contentsline {paragraph}{PirateNet.}{52}{equation.3.44}%
+\contentsline {paragraph}{AbuPINN (adaptive blending units).}{53}{equation.3.45}%
+\contentsline {section}{\numberline {3.9}Proposed Architecture: MABUR-PINN}{53}{section.3.9}%
+\contentsline {paragraph}{Motivation.}{53}{section.3.9}%
+\contentsline {paragraph}{Architecture.}{53}{section.3.9}%
+\contentsline {paragraph}{Theoretical intuition.}{55}{table.caption.20}%
+\contentsline {paragraph}{Activation functions.}{55}{equation.3.47}%
+\contentsline {chapter}{\numberline {4}Experimentation and Results}{56}{chapter.4}%
+\contentsline {section}{\numberline {4.1}General Methodology}{56}{section.4.1}%
+\contentsline {paragraph}{Metrics.}{56}{section.4.1}%
+\contentsline {paragraph}{Implementation.}{56}{equation.4.1}%
+\contentsline {section}{\numberline {4.2}Reference Solution: Pseudo-Spectral Propagator}{57}{section.4.2}%
+\contentsline {paragraph}{Problem.}{57}{section.4.2}%
+\contentsline {paragraph}{Choice of parameters.}{57}{equation.4.2}%
+\contentsline {paragraph}{Propagator.}{57}{Item.33}%
+\contentsline {section}{\numberline {4.3}Preliminary Experiment: ADAM + LRA and L-BFGS}{59}{section.4.3}%
+\contentsline {paragraph}{Results.}{59}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Experiment 1: Comparison of Architectures}{60}{section.4.4}%
+\contentsline {paragraph}{Methodology.}{60}{section.4.4}%
+\contentsline {paragraph}{Results.}{60}{table.caption.26}%
+\contentsline {paragraph}{Discussion.}{61}{figure.caption.29}%
+\contentsline {section}{\numberline {4.5}Experiment 2: Regularization and Fourier Scale}{62}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Behavior of the Optimizer ADAM + LRA}{64}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Experiment 3: MABUR-PINN on the PINNacle Benchmark}{64}{section.4.7}%
+\contentsline {paragraph}{Methodology.}{64}{section.4.7}%
+\contentsline {paragraph}{Results.}{65}{table.caption.33}%
+\contentsline {paragraph}{Discussion by class.}{65}{table.caption.34}%
+\contentsline {paragraph}{Threats to validity.}{66}{table.caption.34}%
+\contentsline {section}{\numberline {4.8}Synthesis}{66}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Redes Neuronales Informadas por la física en un frame cuántico}{67}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Computación Cuántica Variacional}{67}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Circuitos Cuánticos Parametrizados (PQC) como aproximadores de funciones}{67}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Integración Híbrida: PINNs y Algoritmos Cuánticos}{67}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Conclusiones y recomendaciones}{68}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Conclusiones}{68}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Recomendaciones}{68}{section.6.2}%
+\contentsline {chapter}{\numberline {A}Anexo: Derivations of the Classical Representation Formulas}{69}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Transport Equation}{69}{appendix.A.1}%
+\contentsline {paragraph}{Homogeneous case.}{69}{equation.A.1}%
+\contentsline {paragraph}{Non-homogeneous case.}{69}{equation.A.2}%
+\contentsline {section}{\numberline {A.2}Laplace's Equation}{70}{appendix.A.2}%
+\contentsline {paragraph}{Green's representation formula.}{70}{appendix.A.2}%
+\contentsline {paragraph}{Mean-value property (heuristic derivation).}{71}{equation.A.12}%
+\contentsline {section}{\numberline {A.3}Heat Equation}{71}{appendix.A.3}%
+\contentsline {paragraph}{Fundamental solution.}{71}{appendix.A.3}%
+\contentsline {paragraph}{Green's function on a bounded domain.}{71}{equation.A.18}%
+\contentsline {paragraph}{Interior regularity through a cutoff function.}{72}{equation.A.23}%
+\contentsline {section}{\numberline {A.4}Wave Equation}{73}{appendix.A.4}%
+\contentsline {paragraph}{d'Alembert's formula ($n=1$).}{73}{appendix.A.4}%
+\contentsline {paragraph}{Spherical means ($n\ge 2$).}{73}{equation.A.42}%
+\contentsline {section}{\numberline {A.5}Propagator of the Klein--Gordon Equation}{73}{appendix.A.5}%
+\contentsline {chapter}{\numberline {B}Anexo: Energy Estimates and Convergence Bound for Hyperbolic PDEs}{75}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Energy Estimate for a Klein--Gordon PINN}{75}{appendix.B.1}%
+\contentsline {paragraph}{Term with $\partial _t^2e$.}{75}{appendix.B.1}%
+\contentsline {paragraph}{Term with $-\Delta e$ (spatial integration by parts).}{75}{appendix.B.1}%
+\contentsline {paragraph}{Term with $m^2e$.}{75}{equation.B.1}%
+\contentsline {paragraph}{Assembly and energy identity.}{75}{equation.B.1}%
+\contentsline {paragraph}{Bounds for the source and boundary terms.}{76}{equation.B.2}%
+\contentsline {paragraph}{Gronwall's inequality.}{76}{equation.B.3}%
+\contentsline {section}{\numberline {B.2}From the Dirac Equation to the Klein--Gordon Equation}{76}{appendix.B.2}%
+\contentsline {chapter}{\numberline {C}Anexo: Derivations for the Optimization Problem of PINNs}{77}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Gradients and KKT System in Matrix Form}{77}{appendix.C.1}%
+\contentsline {paragraph}{The KKT system in matrix form.}{77}{equation.C.4}%
+\contentsline {paragraph}{One multiplier per collocation point.}{78}{equation.C.6}%
+\contentsline {section}{\numberline {C.2}Non-Convexity of the Loss}{78}{appendix.C.2}%
+\contentsline {section}{\numberline {C.3}Infeasible-Start Newton Method}{78}{appendix.C.3}%
+\contentsline {section}{\numberline {C.4}Stiffness of Gradient Descent}{78}{appendix.C.4}%
+\contentsline {section}{\numberline {C.5}Bounds on the Gradients}{79}{appendix.C.5}%
+\contentsline {section}{\numberline {C.6}Fisher Matrix and KL Divergence}{79}{appendix.C.6}%
+\contentsline {chapter}{\numberline {D}Anexo: Tasks of the PINNacle Benchmark}{81}{appendix.D}%
+\contentsline {section}{\numberline {D.1}Burgers Equation}{81}{appendix.D.1}%
+\contentsline {paragraph}{Burgers1d-C.}{81}{appendix.D.1}%
+\contentsline {paragraph}{Burgers2d-C (coupled).}{81}{appendix.D.1}%
+\contentsline {section}{\numberline {D.2}Poisson Equation (elliptic)}{81}{appendix.D.2}%
+\contentsline {paragraph}{Poisson2d-C.}{81}{appendix.D.2}%
+\contentsline {paragraph}{Poisson2d-CG (Poisson--Boltzmann).}{81}{appendix.D.2}%
+\contentsline {paragraph}{Poisson2d-MS (multi-scale).}{81}{appendix.D.2}%
+\contentsline {section}{\numberline {D.3}Heat Equation (parabolic)}{81}{appendix.D.3}%
+\contentsline {paragraph}{Heat2d-CG (complex geometry).}{81}{appendix.D.3}%
+\contentsline {paragraph}{Heat2d-MS (multi-scale).}{82}{appendix.D.3}%
+\contentsline {paragraph}{Heat2d-VC (variable coefficients).}{82}{appendix.D.3}%
+\contentsline {section}{\numberline {D.4}Navier--Stokes Equations}{82}{appendix.D.4}%
+\contentsline {paragraph}{NS2d-C (lid-driven cavity).}{82}{appendix.D.4}%
+\contentsline {paragraph}{NS2d-CG (backward-facing step).}{82}{appendix.D.4}%
+\contentsline {section}{\numberline {D.5}Wave Equation (hyperbolic)}{82}{appendix.D.5}%
+\contentsline {paragraph}{Wave1d-C.}{82}{appendix.D.5}%
+\contentsline {paragraph}{Wave2d-CG (heterogeneous medium).}{82}{appendix.D.5}%
+\contentsline {paragraph}{Wave2d-MS (multi-scale).}{82}{appendix.D.5}%
+\contentsline {paragraph}{The reference solution of Wave2d-MS is a Klein--Gordon solution.}{82}{appendix.D.5}%
+\contentsline {chapter}{\numberline {E}Anexo: Error Maps and Training Curves of Experiment 1}{84}{appendix.E}%
+\contentsline {chapter}{\numberline {F}Anexo: Código y repositorio}{89}{appendix.F}%
+\contentsline {chapter}{Referencias Bibliográficas}{89}{appendix.F}%
+\contentsfinish 

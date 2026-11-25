@@ -1,4 +1,5 @@
-% !TEX root = 0000.tex
+\documentclass[../0000.tex]{subfiles}
+\begin{document}
 % Introducción
 % Contenido tomado de main_2.tex (líneas 354-429) sin cambios de texto.
 
@@ -7,8 +8,9 @@
 
 \capitulosinnumero{Introducción}\label{ch:introduction}
 
-Partial differential equations (PDEs) are among the most powerful tools in science, economics,
-engineering, and applied mathematics. They appear in models such as kinetic dynamic, Fluid and gas dynamics, Granular materials flows, semiconductor, socio-economics, among others \cite{markowich2007applied}.
+Partial differential equations (PDEs) are among the most powerful tools in science, economics, 
+engineering, and applied mathematics. They appear in models such as kinetic dynamic, Fluid and gas dynamics, 
+Granular materials flows, semiconductor, socio-economics, among others \cite{markowich2007applied}.
 Through this, we can describe and explain the multiple phenomena of concern in science. By the nature
 of PDEs, these equations are used to model the behavior of fluids, bodies, molecules, proteins, and
 social individuals governed by physical laws and social behavior.
@@ -18,7 +20,8 @@ equations whose differential Galois group is solvable admit solutions expressibl
 elementary functions (exponentials, integrals, and algebraic functions)
 \cite{vanderput2003}. The vast majority of higher-order linear ODEs possess
 non-solvable Galois groups, which implies that their solutions lack a closed-form expression in terms
-of elementary functions and must instead be solved via numerical methods such as Euler, Multisteps,  Runga-Kutta and extrapolation methods \cite{hairer1993solving, iserles1996first}.
+of elementary functions and must instead be solved via numerical methods such as Euler, Multisteps, 
+Runga-Kutta and extrapolation methods \cite{hairer1993solving,iserles1996first}.
 
 Hence, numerical methods are the only way to obtain approximate solutions in most cases. The classical
 approaches are finite difference methods (FDM) \cite{strikwerda2004}, finite element methods (FEM)
@@ -83,3 +86,7 @@ bias, stiffness, and rigid gradients.
 \verificar{NO OLVIDAR COPIAR!}
 
 \end{hyphenrules}
+
+% --- Solo cuando se compila este capítulo por aparte (no afecta la tesis completa) ---
+\ifSubfilesClassLoaded{\bibliography{../Referencias}}{}
+\end{document}

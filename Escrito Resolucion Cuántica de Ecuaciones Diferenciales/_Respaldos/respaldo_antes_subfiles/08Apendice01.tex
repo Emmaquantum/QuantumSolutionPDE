@@ -1,0 +1,336 @@
+% !TEX root = 0000.tex
+% Anexo A
+% Contenido tomado de main_2.tex (líneas 3248-3574) sin cambios de texto.
+
+% El texto está en inglés: reglas de corte de palabra del inglés
+\begin{hyphenrules}{english}
+
+\chapter{Anexo: Derivations of the Classical Representation Formulas}\chaptermark{Classical Derivations}\label{app:classical}
+
+This appendix contains the complete derivations of the formulas of Section~\ref{sec:linear-pdes}, and of
+the propagator used for the reference solution of Chapter~\ref{ch:experiments}. They follow
+Evans~\cite{evans2010}; the equation numbers of the main text are cited where the result is used.
+
+% ---------------------------------------------------------------------
+\section{Transport Equation}\label{app-sec:transport}
+
+The geometry of a function $u:\mathbb{R}^n\times[0,\infty)\to\mathbb{R}$ that satisfies $Lu=0$, for the transport
+operator $L=\partial_t+\mathbf{b}\cdot\nabla$, is represented by the hypersurface $S\subset\mathbb{R}^{n+2}$ given by
+\begin{equation}
+  S=\{(\mathbf{x},t,z)\in\mathbb{R}^n\times[0,\infty)\times\mathbb{R} \mid \Phi(\mathbf{x},t,z)=u(\mathbf{x},t)-z=0\},
+  \label{eq:transport-graph}
+\end{equation}
+where $S$ is simply the graph of the solution $u$. Transport inherently involves velocity and spatial
+displacement; with the constant space--time vector field $\mathbf{V}=(\mathbf{b},1)^{T}\in\mathbb{R}^{n+1}$ we arrive at
+the homogeneous transport equation $\partial_t u(\mathbf{x},t)+\mathbf{b}\cdot\nabla u(\mathbf{x},t)=0$.
+
+\paragraph{Homogeneous case.}
+For the problem \eqref{eq:transport-hom}, the matrix form of the system is
+\begin{equation}
+  \begin{pmatrix}\nabla u(\mathbf{x},t)\\ \partial_t u(\mathbf{x},t)\end{pmatrix}\cdot
+  \begin{pmatrix}\mathbf{b}\\ 1\end{pmatrix}=0
+  \iff D_{\mathbf{V}}u=\nabla_{\mathbf{x},t}u\cdot\mathbf{V}=0,
+  \label{eq:transport-matrix}
+\end{equation}
+which establishes that the directional derivative of $u$ in the direction of the vector $\mathbf{V}$ is
+identically zero throughout the space--time domain. This means that the velocity vector is perpendicular
+to the gradient and tangent to the level sets of $u$. In other words, if one moves in the direction of
+$\mathbf{V}$, the value of $u$ remains constant along the characteristic trajectory. The solution to
+$D_{\mathbf{V}}u=0$ is $u(\mathbf{x},t)=g(\mathbf{x}-t\mathbf{b})$.
+
+\paragraph{Non-homogeneous case.}
+For the problem \eqref{eq:transport-nonhom} we apply the same approach as in the homogeneous case.
+Consider the smooth function
+$u:\mathbb{R}^n\times[0,\infty)\to\mathbb{R}$; the graph of the solution is again a hypersurface, now in the
+$(n+2)$-dimensional space of triples $(\mathbf{x},t,z)$. At any point $(\mathbf{x},t,z)\in S$, the normal vector to
+the tangent plane of the surface $S$ is given by the gradient of $\Phi$,
+\begin{equation}
+  D\Phi(\mathbf{x},t,z)=\big(\nabla u(\mathbf{x},t),\ \partial_t u(\mathbf{x},t),\ -1\big)^{T}.
+  \label{eq:transport-normal}
+\end{equation}
+Thus, the PDE can be interpreted as a tangency condition. Inspired by the same idea as in the
+homogeneous case, we define $z(s)=u(\mathbf{x}+s\mathbf{b},t+s)$ for $s\in[-t,0]$. Calculating the derivative yields
+\begin{equation}
+  \frac{\,d z}{\,d s}=\partial_t u(\mathbf{x}+s\mathbf{b},t+s)+\mathbf{b}\cdot\nabla u(\mathbf{x}+s\mathbf{b},t+s)=f(\mathbf{x}+s\mathbf{b},t+s),
+  \label{eq:transport-dz}
+\end{equation}
+and integrating from $-t$ to $0$ gives
+\begin{equation}
+  z(0)-z(-t)=\int_{-t}^{0}\frac{\,d z}{\,d s}\,d s=\int_{-t}^{0}f(\mathbf{x}+s\mathbf{b},t+s)\,d s.
+  \label{eq:transport-int}
+\end{equation}
+Given that $z(0)=u(\mathbf{x},t)$ and $z(-t)=u(\mathbf{x}-t\mathbf{b},0)=g(\mathbf{x}-t\mathbf{b})$, and using the change of variables
+$\tau=t+s$, we obtain the expression
+\begin{equation}
+  u(\mathbf{x},t)=g(\mathbf{x}-t\mathbf{b})+\int_{0}^{t}f\big(\mathbf{x}+(\tau-t)\mathbf{b},\tau\big)\,d\tau.
+  \label{eq:app-transport-duhamel}
+\end{equation}
+Through Duhamel's principle, this result means that the solution is the sum of the transported initial
+value $g(\mathbf{x}-t\mathbf{b})$ and the values accumulated from the source $f$, generated in the past times $\tau$
+along the same characteristic curve.
+
+% ---------------------------------------------------------------------
+\section{Laplace's Equation}\label{app-sec:laplace}
+
+\paragraph{Green's representation formula.}
+To integrate the boundary information of the problem \eqref{eq:laplace-dirichlet}, we employ a vector
+field that contains
+it; following Evans~\cite{evans2010}, we combine the harmonic function $u$ and the fundamental solution
+$\Phi$ in the flux $\mathbf{F}=u\nabla\Phi-\Phi\nabla u$. By the divergence theorem (Green's second identity),
+\begin{align}
+  \int_\Omega\operatorname{div}(\mathbf{F})\,d\mathbf{y}
+    &=\int_\Omega\big(u(\mathbf{y})\Delta\Phi(\mathbf{x}-\mathbf{y})-\Phi(\mathbf{x}-\mathbf{y})\Delta u(\mathbf{y})\big)\,d\mathbf{y} \label{eq:green2-a}\\
+    &=\int_{\partial\Omega}\Big(u(\mathbf{y})\frac{\partial\Phi}{\partial\mathbf{n}}(\mathbf{x}-\mathbf{y})
+      -\Phi(\mathbf{x}-\mathbf{y})\frac{\partial u}{\partial\mathbf{n}}(\mathbf{y})\Big)\,d S(\mathbf{y}), \label{eq:green2-b}
+\end{align}
+where $\partial f/\partial\mathbf{n}=\nabla f\cdot\mathbf{n}$ for $f\in\{u,\Phi\}$ and $\mathbf{n}$ is the outward normal vector
+at $\partial\Omega$. On the right side of the first equation, $-\Delta\Phi(\mathbf{x}-\mathbf{y})=\delta(\mathbf{x}-\mathbf{y})$ at the
+singular point and zero elsewhere, and $\Delta u(\mathbf{y})=0$ by definition; thus, only the singular point
+survives and the integral equals $-u(\mathbf{x})$. On the boundary, $u(\mathbf{y})=g(\mathbf{y})$. Thus,
+\begin{equation}
+  u(\mathbf{x})=\int_{\partial\Omega}\Big(\Phi(\mathbf{x}-\mathbf{y})\frac{\partial u}{\partial\mathbf{n}}(\mathbf{y})
+    -g(\mathbf{y})\frac{\partial\Phi}{\partial\mathbf{n}}(\mathbf{x}-\mathbf{y})\Big)\,d S(\mathbf{y}).
+  \label{eq:laplace-rep}
+\end{equation}
+
+However, $\partial u/\partial\mathbf{n}$ is unknown on the boundary. To complement the previous idea and
+eliminate the unknown term by the Green method, it is necessary to build an auxiliary (corrector)
+function $\phi^{\mathbf{x}}\in C^2(\Omega)\cap C(\bar\Omega)$ that is harmonic in $\Omega$ and matches the
+fundamental solution on the boundary, $\phi^{\mathbf{x}}(\mathbf{y})=\Phi(\mathbf{y}-\mathbf{x})$ for $\mathbf{y}\in\partial\Omega$. Applying
+the same identity to the flux $\mathbf{F}=u\nabla\phi^{\mathbf{x}}-\phi^{\mathbf{x}}\nabla u$, where now both functions are
+harmonic, we obtain
+\begin{equation}
+  0=\int_{\partial\Omega}\Big(g(\mathbf{y})\frac{\partial\phi^{\mathbf{x}}}{\partial\mathbf{n}}(\mathbf{y})
+    -\Phi(\mathbf{x}-\mathbf{y})\frac{\partial u}{\partial\mathbf{n}}(\mathbf{y})\Big)\,d S(\mathbf{y}).
+  \label{eq:laplace-corrector}
+\end{equation}
+By the superposition of Equations~\eqref{eq:laplace-rep} and \eqref{eq:laplace-corrector}, the unknown normal derivative
+cancels and we finally find the solution $u$ through Green's function
+$G(\mathbf{x},\mathbf{y})=\Phi(\mathbf{y}-\mathbf{x})-\phi^{\mathbf{x}}(\mathbf{y})$:
+\begin{equation}
+  u(\mathbf{x})=-\int_{\partial\Omega}g(\mathbf{y})\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y})\,d S(\mathbf{y}),
+  \label{eq:app-laplace-green}
+\end{equation}
+where $\partial G/\partial\mathbf{n}=\nabla_{\mathbf{y}}G\cdot\mathbf{n}$. Finally, we have an analytical solution through an
+auxiliary function that imposes the cancellation on the boundary:
+\begin{equation}
+  \begin{cases}
+    -\Delta_{\mathbf{y}}G(\mathbf{x},\mathbf{y})=\delta(\mathbf{x}-\mathbf{y}) & \text{in } \mathbf{y}\in\Omega,\\
+    G(\mathbf{x},\mathbf{y})=0 & \text{on } \mathbf{y}\in\partial\Omega.
+  \end{cases}
+  \label{eq:app-green-function}
+\end{equation}
+
+\paragraph{Mean-value property (heuristic derivation).}
+Consider a ball $B(\mathbf{x},r)\subset\Omega$ centered at a point $\mathbf{x}$ inside the domain. Applying
+Equation~\eqref{eq:app-laplace-green} to the ball itself (homogeneous case),
+\begin{equation}
+  u(\mathbf{x})=-\int_{\partial B(\mathbf{x},r)}u(\mathbf{y})\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y})\,d S(\mathbf{y}).
+  \label{eq:mvp-1}
+\end{equation}
+Evaluating the $\partial G/\partial\mathbf{n}$ term on the sphere $\partial B(\mathbf{x},r)$ is easy for this geometry:
+since $\Phi(\mathbf{y}-\mathbf{x})$ only depends on $r=\abs{\mathbf{x}-\mathbf{y}}$, it is constant on $\partial B(\mathbf{x},r)$, and the
+corrector is simply the constant $\phi^{\mathbf{x}}\equiv\Phi(r)$, whose gradient vanishes. The derivative with
+respect to the normal vector $\mathbf{n}$ is then
+\begin{align}
+  \frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y})
+    &=\big(\nabla_r\Phi(r)-\nabla_r\phi^{\mathbf{x}}\big)\cdot\mathbf{n}=\nabla_r\Phi(r)\cdot\mathbf{n} \label{eq:mvp-2}\\
+    &=\begin{cases}
+        -\dfrac{1}{2\pi r} & (n=2),\\[2mm]
+        -\dfrac{1}{n\alpha(n)}\dfrac{1}{r^{n-1}} & (n\ge3);
+      \end{cases} \label{eq:mvp-3}
+\end{align}
+in both cases the denominator is the surface area $\abs{\partial B(\mathbf{x},r)}=n\alpha(n)r^{n-1}$, so
+\begin{equation}
+  u(\mathbf{x})=\frac{1}{\abs{\partial B(\mathbf{x},r)}}\int_{\partial B(\mathbf{x},r)}u(\mathbf{y})\,d S(\mathbf{y})
+  =\fint_{\partial B(\mathbf{x},r)}u\,d S \qquad\text{(mean-value property)}.
+  \label{eq:app-mvp}
+\end{equation}
+This is the mean-value property used in Section~\ref{subsec:laplace}.
+
+% ---------------------------------------------------------------------
+\section{Heat Equation}\label{app-sec:heat}
+
+\paragraph{Fundamental solution.}
+The temporal derivative is of first order while the spatial derivative is of second order; to treat
+this, we look for solutions that are invariant under the scaling $(\mathbf{x},t)\mapsto(\lambda^{\beta}\mathbf{x},\lambda t)$
+for $\lambda>0$. Choosing $\lambda=1/t$, we can write the ansatz
+\begin{equation}
+  u(\mathbf{x},t)=\frac{1}{t^{\alpha}}\,v\Big(\frac{\mathbf{x}}{t^{\beta}}\Big);
+  \label{eq:heat-ansatz}
+\end{equation}
+it reveals the structure of the solution, but it is not sufficient. It should be noted that for heat
+phenomena the thermal mass is conserved at any time $0<t\le T$. Usually, the conservation law is
+written as
+\begin{equation}
+  \int_{\mathbb{R}^n}\frac{1}{t^{\alpha}}\,v\Big(\frac{\mathbf{y}}{t^{\beta}}\Big)\,d\mathbf{y}=\text{constant}\qquad\forall t>0.
+  \label{eq:heat-mass}
+\end{equation}
+Evans~\cite{evans2010} shows through this treatment that $\beta=1/2$ and $\alpha=n/2$. Thus, we obtain
+\emph{the fundamental solution of the heat equation}, Equation~\eqref{eq:heat-fundamental}.
+
+\paragraph{Green's function on a bounded domain.}
+For the problem \eqref{eq:heat-ibvp} we must appeal to a Green's function. Given that
+$\Phi$ in this case depends on the space--time coordinates, it is intuitive to apply the second Green's
+identity to the heat operator $L=\partial_s-\Delta$ and to its adjoint (backward) operator
+$L^{*}=-\partial_s-\Delta$. Fix $(\mathbf{x},t)$ and let $w(\mathbf{y},s)=\Phi(\mathbf{x}-\mathbf{y},t-s)$, which satisfies $L^{*}w=0$
+for $s<t$. For a small $\varepsilon>0$,
+\begin{align}
+  0&=\int_0^{t-\varepsilon}\!\!\int_\Omega\big(w\,Lu-u\,L^{*}w\big)\,d\mathbf{y}\,d s
+    =\int_0^{t-\varepsilon}\!\!\int_\Omega\big(w\partial_s u+u\partial_s w-w\Delta u+u\Delta w\big)\,d\mathbf{y}\,d s
+    \label{eq:heat-green-a}\\
+   &=\int_0^{t-\varepsilon}\!\!\int_\Omega\partial_s(uw)\,d\mathbf{y}\,d s
+    -\int_0^{t-\varepsilon}\!\!\int_\Omega\big(w\Delta u-u\Delta w\big)\,d\mathbf{y}\,d s
+    \label{eq:heat-green-b}\\
+   &=\Big[\int_\Omega u(\mathbf{y},s)w(\mathbf{y},s)\,d\mathbf{y}\Big]_{s=0}^{s=t-\varepsilon}
+    -\int_0^{t-\varepsilon}\!\!\int_{\partial\Omega}\Big(w\frac{\partial u}{\partial\mathbf{n}}
+    -u\frac{\partial w}{\partial\mathbf{n}}\Big)\,d S(\mathbf{y})\,d s.
+    \label{eq:heat-green-c}
+\end{align}
+When $\varepsilon\to0$, the first term at $s=t-\varepsilon$ becomes $u(\mathbf{x},t)$ because
+$\Phi(\cdot,\varepsilon)\to\delta$; the term at $s=0$ is $\int_\Omega h(\mathbf{y})\Phi(\mathbf{x}-\mathbf{y},t)\,d\mathbf{y}$; and the
+boundary integral has an unknown factor $\partial u/\partial\mathbf{n}$. As in Laplace's equation, we must build
+an auxiliary function that eliminates that term: let $\phi^{\mathbf{x}}(\mathbf{y},\tau)$ solve
+\begin{equation}
+  \begin{cases}
+    \partial_\tau\phi^{\mathbf{x}}(\mathbf{y},\tau)-\Delta_{\mathbf{y}}\phi^{\mathbf{x}}(\mathbf{y},\tau)=0 & \text{in } \mathbf{y}\in\Omega,\ \tau\in(0,\infty),\\
+    \phi^{\mathbf{x}}(\mathbf{y},0)=0 & \text{on } \mathbf{y}\in\Omega,\ \{\tau=0\},\\
+    \phi^{\mathbf{x}}(\mathbf{y},\tau)=\Phi(\mathbf{x}-\mathbf{y},\tau) & \text{on } \mathbf{y}\in\partial\Omega,\ \tau\in(0,\infty),
+  \end{cases}
+  \label{eq:heat-corrector}
+\end{equation}
+and define the Green's function $G(\mathbf{x},\mathbf{y},\tau)=\Phi(\mathbf{x}-\mathbf{y},\tau)-\phi^{\mathbf{x}}(\mathbf{y},\tau)$, which vanishes for
+$\mathbf{y}\in\partial\Omega$. Repeating Equations~\eqref{eq:heat-green-a}--\eqref{eq:heat-green-c} with
+$w(\mathbf{y},s)=G(\mathbf{x},\mathbf{y},t-s)$, the unknown term disappears and we obtain the closed form
+\begin{equation}
+  u(\mathbf{x},t)=\int_\Omega h(\mathbf{y})G(\mathbf{x},\mathbf{y},t)\,d\mathbf{y}
+  -\int_0^t\!\!\int_{\partial\Omega}g(\mathbf{y},s)\frac{\partial G}{\partial\mathbf{n}}(\mathbf{x},\mathbf{y},t-s)\,d S(\mathbf{y})\,d s,
+  \label{eq:app-heat-green}
+\end{equation}
+where $\partial G/\partial\mathbf{n}=\nabla_{\mathbf{y}}G\cdot\mathbf{n}$. The structure is exactly the same as
+Equation~\eqref{eq:app-laplace-green}: an integral of the data against a kernel that already knows the boundary.
+
+\paragraph{Interior regularity through a cutoff function.}
+Let $K$ and $V$ be two
+space--time subsets of $\mathbb{R}^n\times(0,T)$ such that $K$ is compact, $V$ is open and $K\subset\subset V$.
+We define a cutoff function $\zeta\in C_c^\infty(\mathbb{R}^n\times(0,T))$ as
+\begin{equation}
+  \zeta(\mathbf{x},t)=
+  \begin{cases}
+    1 & \text{if } (\mathbf{x},t)\in K,\\
+    0 & \text{if } (\mathbf{x},t)\notin V.
+  \end{cases}
+  \label{eq:cutoff}
+\end{equation}
+Given that $\zeta$ equals one inside $K$ and zero outside $V$, its derivatives $D^\alpha\zeta$ with
+$\abs{\alpha}\ge1$ are zero, except in the transition zone $V\setminus K$. We construct the function
+$v=u\zeta$. With the aim of analyzing what this transformation does to the heat equation,
+$\partial_t v(\mathbf{x},t)-\Delta v(\mathbf{x},t)=\,?$, it is necessary to decompose each term:
+\begin{align}
+  \partial_t v&=\zeta\partial_t u+u\partial_t\zeta, \label{eq:cut-dt}\\
+  \Delta v&=\zeta\Delta u+2\nabla u\cdot\nabla\zeta+u\Delta\zeta, \label{eq:cut-lap}
+\end{align}
+to find
+\begin{align}
+  \partial_t v-\Delta v
+    &=(\partial_t u)\zeta+u\partial_t\zeta-(\Delta u)\zeta-2\nabla u\cdot\nabla\zeta-u\Delta\zeta \label{eq:cut-1}\\
+    &=(\partial_t u-\Delta u)\zeta+(\partial_t\zeta-\Delta\zeta)u-2\nabla u\cdot\nabla\zeta \label{eq:cut-2}\\
+    &=(\partial_t\zeta-\Delta\zeta)u-2\nabla u\cdot\nabla\zeta=:\tilde f(\mathbf{x},t). \label{eq:cut-3}
+\end{align}
+Since $v$ vanishes near $t=0$, writing the Duhamel solution \eqref{eq:heat-duhamel} for $v$ gives
+\begin{align}
+  v(\mathbf{x},t)&=\int_0^t\!\!\int_{\mathbb{R}^n}\Phi(\mathbf{x}-\mathbf{y},t-s)\tilde f(\mathbf{y},s)\,d\mathbf{y}\,d s \label{eq:cut-4}\\
+         &=\int_0^t\!\!\int_{\mathbb{R}^n}\Phi\,u\,(\partial_s\zeta-\Delta\zeta)\,d\mathbf{y}\,d s
+           -2\int_0^t\!\!\int_{\mathbb{R}^n}\Phi\,(\nabla\zeta\cdot\nabla u)\,d\mathbf{y}\,d s, \label{eq:cut-5}
+\end{align}
+where $\Phi=\Phi(\mathbf{x}-\mathbf{y},t-s)$ and all derivatives act on $\mathbf{y}$. Using the identity
+$\nabla\cdot(u\Phi\nabla\zeta)=\Phi(\nabla u\cdot\nabla\zeta)+u\nabla\cdot(\Phi\nabla\zeta)$ and the
+divergence theorem (the boundary term vanishes because $\zeta$ has compact support), we move the
+derivative from $u$ to the known functions:
+\begin{align}
+  v(\mathbf{x},t)&=\int_0^t\!\!\int_{\mathbb{R}^n}\Big[\Phi u(\partial_s\zeta-\Delta\zeta)+2u\nabla\cdot(\Phi\nabla\zeta)\Big]\,d\mathbf{y}\,d s \label{eq:cut-6}\\
+         &=\int_0^t\!\!\int_{\mathbb{R}^n}u\Big[\Phi(\partial_s\zeta-\Delta\zeta)+2\nabla\Phi\cdot\nabla\zeta+2\Phi\Delta\zeta\Big]\,d\mathbf{y}\,d s \label{eq:cut-7}\\
+         &=\int_0^t\!\!\int_{\mathbb{R}^n}u\Big[\Phi(\partial_s\zeta+\Delta\zeta)+2\nabla\Phi\cdot\nabla\zeta\Big]\,d\mathbf{y}\,d s \label{eq:cut-8}\\
+         &=\int_0^t\!\!\int_{\mathbb{R}^n}u(\mathbf{y},s)\,\mathcal{K}(\mathbf{x},\mathbf{y},t,s)\,d\mathbf{y}\,d s. \label{eq:app-cut-9}
+\end{align}
+The interpretation of this kernel is given in Section~\ref{subsec:heat}.
+
+% ---------------------------------------------------------------------
+\section{Wave Equation}\label{app-sec:wave}
+
+\paragraph{d'Alembert's formula ($n=1$).}
+D'Alembert's formula takes advantage of the factorization of the wave operator
+$\Box=\partial_t^2-\partial_x^2$; applying it to the function $u(x,t)$ we obtain
+\begin{align}
+  \Box u(x,t)&=(\partial_t^2-\partial_x^2)u(x,t)=(\partial_t+\partial_x)(\partial_t-\partial_x)u(x,t) \label{eq:dalembert-1}\\
+             &=(\partial_t+\partial_x)v(x,t), \label{eq:dalembert-2}
+\end{align}
+where $v=(\partial_t-\partial_x)u$. The equation $(\partial_t+\partial_x)v=0$ is the homogeneous
+transport equation with $b=1$, and its solution is $v(x,t)=a(x-t)$ with $a(x)=v(x,0)$. We proceed with
+\begin{equation}
+  (\partial_t-\partial_x)u(x,t)=a(x-t),
+  \label{eq:dalembert-3}
+\end{equation}
+which is the non-homogeneous transport equation with $b=-1$; by Equation~\eqref{eq:app-transport-duhamel} its
+solution is
+\begin{align}
+  u(x,t)&=\int_0^t a\big(x+(t-s)-s\big)\,d s+g(x+t) \label{eq:dalembert-4}\\
+        &=\frac12\int_{x-t}^{x+t}a(y)\,d y+g(x+t). \label{eq:dalembert-5}
+\end{align}
+Then, for $a(x)=v(x,0)=\partial_t u(x,0)-\partial_x u(x,0)=h(x)-g'(x)$, the previous equation is
+transformed to
+\begin{align}
+  u(x,t)&=\frac12\int_{x-t}^{x+t}\big(h(y)-g'(y)\big)\,d y+g(x+t) \label{eq:dalembert-6}\\
+        &=\frac12\big[g(x+t)+g(x-t)\big]+\frac12\int_{x-t}^{x+t}h(y)\,d y. \label{eq:app-dalembert}
+\end{align}
+This is d'Alembert's formula.
+
+\paragraph{Spherical means ($n\ge2$).}
+For finding a solution in dimensions $n\ge2$, it is necessary to return to the concept of average
+introduced in Laplace's equation, to analyze what happens with the surrounding points of a particular
+point. Evans~\cite{evans2010} defines the mean value over a sphere $\partial B(\mathbf{x},r)$ centered at $\mathbf{x}$ as
+\begin{equation}
+  U(\mathbf{x},t;r)=\fint_{\partial B(\mathbf{x},r)}u(\mathbf{y},t)\,d S(\mathbf{y});
+  \label{eq:spherical-mean}
+\end{equation}
+applying the wave operator $\Box$ to $U$, for $r>0$, it is possible to find
+\begin{equation}
+  \begin{cases}
+    \partial_t^2U-\partial_r^2U-\dfrac{n-1}{r}\partial_rU=0 & \text{in } \mathbb{R}_+\times(0,\infty),\\
+    U(\mathbf{x},0;r)=G(\mathbf{x};r) & \text{on } \mathbb{R}_+\times\{t=0\},\\
+    \partial_tU(\mathbf{x},0;r)=H(\mathbf{x};r) & \text{on } \mathbb{R}_+\times\{t=0\},
+  \end{cases}
+  \label{eq:epd}
+\end{equation}
+where $G$ and $H$ are the spherical means of $g$ and $h$. This is the Euler--Poisson--Darboux equation.
+It only provides a scheme for the structure of the solution; it is not clear regarding the closed form.
+Evans~\cite{evans2010} distinguishes the solution between odd and even dimensions based on spherical
+averages.
+
+% ---------------------------------------------------------------------
+\section{Propagator of the Klein--Gordon Equation}\label{app-sec:kg-propagator}
+
+For the first-order system \eqref{eq:kg-first-order}, with $A=\begin{pmatrix}0&1\\-\mathcal{L}&0\end{pmatrix}$
+and $\mathcal{L}=m^2-\partial_{xx}$, the propagator $e^{At}$ is responsible for the temporal evolution of
+the field. To compute it, we expand it in Taylor series and look at the powers of $A$:
+\[
+  A^2=\begin{pmatrix}-\mathcal{L} & 0\\ 0 & -\mathcal{L}\end{pmatrix},\qquad
+  A^{2n}=(-1)^n\mathcal{L}^{n}I,
+\]
+\[
+  A^{2n+1}=(-1)^n\mathcal{L}^{n}A=\begin{pmatrix}0 & (-1)^n\mathcal{L}^{n}\\ -(-1)^n\mathcal{L}^{n+1} & 0\end{pmatrix}.
+\]
+Then, separating even and odd powers,
+\begin{equation}
+  e^{At}=\sum_{n=0}^{\infty}\frac{t^{2n}}{(2n)!}A^{2n}+\sum_{n=0}^{\infty}\frac{t^{2n+1}}{(2n+1)!}A^{2n+1}
+  =\begin{pmatrix}
+    \cos\big(t\sqrt{\mathcal{L}}\big) & \dfrac{\sin(t\sqrt{\mathcal{L}})}{\sqrt{\mathcal{L}}}\\[2mm]
+    -\sqrt{\mathcal{L}}\sin\big(t\sqrt{\mathcal{L}}\big) & \cos\big(t\sqrt{\mathcal{L}}\big)
+  \end{pmatrix},
+  \label{eq:app-kg-propagator}
+\end{equation}
+where we recognized the series
+$\cos(t\sqrt{\mathcal{L}})=\sum_n(-1)^nt^{2n}\mathcal{L}^n/(2n)!$ and
+$\sin(t\sqrt{\mathcal{L}})/\sqrt{\mathcal{L}}=\sum_n(-1)^nt^{2n+1}\mathcal{L}^n/(2n+1)!$.
+
+\end{hyphenrules}

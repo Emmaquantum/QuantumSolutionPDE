@@ -1,0 +1,408 @@
+\documentclass[0000.tex]{subfiles}
+\begin{document}
+% Capítulo 2: Physics-Informed Neural Networks
+% Contenido tomado de main_2.tex (líneas 1570-2617) sin cambios de texto.
+
+% El texto está en inglés: reglas de corte de palabra del inglés
+\begin{hyphenrules}{english}
+
+\chapter{Estado del Arte}\label{ch:EstadoDelArte}
+
+In this chapter, we present a brief state of the art of quantum and modern nonlinear numerical solvers for partial differential equations (PDEs). 
+First, we present a brief historical review of the development of PDEs and classical numerical solvers that gave rise to the study of this topic. Second, 
+we present a review of the latest advances and investigations in two areas: modern data-driven numerical solvers, such as physics-informed neural networks (PINNs), and 
+variational quantum algorithms (VQAs).
+
+\section{Brief historical review of Partial Differential Equations and Classical Numerical Solvers}\label{sec:BriefHistoricalReview}
+%PDEs
+
+In the middle of the 18th century, the study of partial differential equations (PDEs) was initiated by the works of Euler, Lagrange, and Laplace at study of the 
+vibrations of strings and membranes, the propagations of heat and sound. The one dimensional wave equations
+\begin{align*}
+    \frac{\partial^2 u}{\partial t^2} = \frac{\partial^2 u}{\partial x^2}
+\end{align*}
+appears at 1752 in the work of d'Alembert as a model of vibrating string. His work was extended by Euler in 1759 and D. Bernoulli in 1762 to 2 and 3 dimensional 
+wave equations. The Laplacian equation
+\begin{align*}
+    \nabla^2 u = 0
+\end{align*}
+was introduced by Laplace around 1780 in his work on the gravitational potential fields. And, finally the heat equation
+\begin{align*}
+    \frac{\partial u}{\partial t} = \nabla^2 u
+\end{align*}
+was introduced by Fourier between 1810 and 1822 in his work titled "Théorie analytique de la chaleur" (Analytical Theory of Heat). 
+These works provided the foundation for the mathematical study of PDEs; Hadamard in 1923, formalizing the notion of well-posed problems (existence, uniqueness, 
+and continuous stability) and the classifications of the linear equations of second-order into elliptic, parabolic, and hyperbolic equations.
+and introduced the study of various physical phenomena, such as incompressible fluids with the Euler equations in 1755, minimal surfaces by Lagrange in 1770 
+that are used in optimization problems, the Monge–Ampère equations by Monge in 1775 and the Laplace and Poisson equations starting with Poisson in 1813, 
+Green in 1828, and Gauss in 1839 that are used in electricity and magnetism, the Navier–Stokes equations for fluid flows in 1822–1827 by Navier, Maxwell's 
+equations for electromagnetic fields in the 1860s, the Helmholtz equation in 1860, and the Korteweg–de Vries equation in 1896 as a model for solitary water waves.
+
+During the 19th century, the topic was extended to methods for calculating solutions of PDEs, such as the method of separation of variables introduced by 
+d'Alembert in 1747 and Euler in 1748 for the wave equation, the method of Green's functions for the Laplace and Poisson equations in 1835, and power series methods to 
+obtain particular solutions in 1840 by Cauchy, especially for nonlinear problems. In 1870s the study of PDE was centered on boundary value problems, the most famous
+case is the Dirichlet problem, which consists of finding a function that solves a given PDE in a domain and takes initial values on the boundary domain. Reimann
+reduced this problem to the study of existence of a smooth function that minimize the Dirichlet integral
+\begin{align*}
+    \int_{\Omega} \sum_i \bigg( \frac{\partial v}{\partial x_i}\bigg)^2 d\Omega
+\end{align*}
+over the entire domain $\Omega$ and with the boundary condition $v = g$ on boundary $\partial\Omega$. In 1980 Poincaré proved the existence and uniqueness of the 
+solution of the Dirichlet problem for the Laplace equation. In his fundamental paper of 1894, Poincaré established the existence of an infinite sequence of
+eigenvalues and eigenfunctions for the Laplace operator for Dirichlet conditions. During the 20th century, the study of PDEs was extended to the study of existence
+and uniqueness of solutions, trying to find the most general conditions for their existence.
+
+The Weierstrass's objection to the Dirichlet principle, which was based on the existence of a smooth function that minimized the Dirichlet integral,
+lacked analytical rigor if one only works with smooth and continuous functions $C^k$ and $C^0$. Poincaré's work warned that physical-mathematical problems require
+a more general theory that includes functions with singularities, discontinuities, and non-smoothness. The conceptual shift of the 20th century
+split the problem into two parts: the existence of a solution and its regularity. First, weak solutions are included in the new theoretical framework in Banach
+spaces and Hilbert spaces, which is known as Sobolev spaces and Laurent Schwartz's distribution theory. Second, the regularity of the solution is studied to 
+determine whether the weak solution is also a classical solution and possesses smoothness. 
+
+At the end of the 20th century, the classical theory crashed against a conceptual wall. Beppo Levi in 1906 noted that the minimizant sequences of the Dirichlet 
+integral form a Cauchy's sequence under the energy norm (energy integral). Sergei Sobolev in 1935-1938 structured the Sobolev spaces $W^{k,p}$ and $H^k$ to include 
+weak solutions of PDEs and prove Sobolev embedding theorems ($W^{k,p} \hookrightarrow L^q$). Laurent Schwartz in 1950 introduced the theory of distributions 
+("La théorie des distributions"), which provided a framework for working with weak formulations through function smoothness and derivatives of arbitrary order. 
+Ennio De Giorgi in 1957 and John Nash in 1958 proved independently that all weak solutions of second-order elliptic or parabolic equations in divergence form 
+with bounded measurable coefficients are Hölder continuous ($C^{0,\alpha}$).
+
+In 1952, Calderón and Zygmund developed the theory of singular integrals in $L^p$. Born in 1934 with Leray-Schauder topological degree theory, the theory of 
+monotonic operators (Minty 1962, Browder 1963, Leray-Lions 1965, Brezis 1968), the nonlinear semigroups of Crandall-Liggett in 1971, and the viscosity solutions 
+of Crandall-Lions in 1983 for Hamilton-Jacobi equations. Evans in 1982 and Krylov in 1982 proved the regularity $C^{2,\alpha}$ for concave nonlinear elliptic 
+equations.
+
+%Numerical methods
+In parallel with the theoretical development of PDEs, numerical methods were developed to approximate their solutions. Between 1744 and 1768, Leonhard Euler, 
+in his work on the calculus of variations, initiated this line of study; he proposed a discretization curve through regular polygons, and later, 
+in "Institutiones Calculi Integralis" in 1768, formalized the approximation of integral equations through the discretization of a continuum by steps, 
+which is known now as the finite difference method. Karl Schellbach first used two-dimensional meshes formed by triangles in 1852 to approximate solutions to 
+the minimal surface problem. Bernhard Riemann used the Dirichlet principle between 1851 and 1857 to prove the existence of solutions to the Laplace equation 
+$\Delta u = 0$, relating the solution to the function that minimizes the energy. In 1870, Karl Weierstrass critiqued this approach by demonstrating the existence 
+of the infimum of the energy for non-smooth functions, and Hilbert later rescued the Dirichlet principle using direct methods of variational calculus through 
+minimizing sequences.
+
+Walter Ritz revolutionized the approach to numerical solutions; he proposed approximating the solution through a linear combination of test functions
+\begin{align*}
+    w(x,y) = \sum_{m}^{P} a_m \phi_m(x,y).
+\end{align*}
+By substituting it into the energy function and minimizing with respect to $a_i$, Ritz transformed the continuous differential problem into a system of linear 
+algebraic equations. While in Europe Ritz's method was used moderately, in Russia it was adopted immediately; Stepan Timoshenko applied this method in 1910–1913 
+to applied problems in engineering, specifically in elastic stability problems; Ivan Bubnov observed in 1911–1913 that it is not necessary to build linear systems 
+using the energy principle, as it also works by substituting the approximate series into the PDE, multiplying by test functions, and integrating over the domain 
+$\Omega$; Boris Galerkin formalized and popularized that research in 1915, which was later called Galerkin's method or the Ritz–Galerkin method; in 1940, G. I. 
+Petrov generalized this scheme by allowing testing spaces to differ from trial spaces.
+
+In the 1940s, Richard Courant introduced the idea of replacing global functions (polynomials or series) with locally supported functions (hat functions) defined 
+on triangular meshes. He carried out the earliest recorded calculation using finite elements with triangles on a two-dimensional mesh. During the decade from 1940 
+to 1950, the researchers Hrennikoff, McHenry, Argyris, Turner, and Ray Clough developed the formulation for complex structural analysis for aeronautical engineering; 
+and in 1960, Ray Clough officially coined the finite element method. Following the end of the Second World War, research on these methods underwent a massive expansion 
+in areas such as fluid dynamics simulation, heat transport, structural engineering, and geophysics.
+
+Far from being historical curiosity, these equations remain at the core of current research. The Monge–Ampère equation underlies optimal transportation and 
+meteorological models \citep{figalli2017monge}; the Laplace and Poisson equations are used to generate digital elevation model \citep{conde2026generation}, 
+to model nanoscale transistor \citep{zhu2023analytical}, and in the machine learning pressure solvers \citep{sousa2024application}; the Navier–Stokes equations 
+describe the arterial and venous blood flow \citep{guereca2026blood, singh2025hemodynamic} and the hydrodynamic transport of electrons in nanometric channels 
+\citep{estrada2025generalized}; and Maxwell's equations guide the design of axial flux permanent magnet motors \citep{oh2025iron}.
+
+\section{State of art of Physics-Informed Neuronal Networks and Variational Quantum Circuits}
+
+Finite differences (FD), the finite element method (FEM), and spectral methods remain the standard reference for solving partial differential equations (PDEs). All of them 
+are direct and deductive methods because they start from equations with certain suppositions and search criteria regarding stability, regularity and convergence of the 
+approximate solution, Unlike indirect methods that are mainly based on data \cite{nooraiepour2026partial,thomee2001finite}.
+
+\paragraph{Diferencias finitas.}
+For FD, the linear case of arbitrary PDEs is complete, which means that consistency and stability have already been established based on the Lax equivalence 
+theorem, which states that, for a well-posed initial value problem and a consistent finite difference approximation, stability is both a necessary and a sufficient 
+condition for convergence. However, this is not sufficient for a good approximation in some problems. Some examples of that were demonstrated in the work by K. Mattsson 
+and M. H. Carpenter, where they presented the summation-by-parts and simultaneous-approximation-term (SBP-SAT) algorithms on non-conforming grids to address 
+numerical instability and spurious solutions \cite{leveque2007finite,svard2014review}. 
+
+On the other hand, the cost of working with meshes lies in geometry and structure. For elliptic problems over irregular domains, the stencil requires nodes outside the domain. The ghost point method and immersed interface/boundary 
+methods (MIB/AMIB) achieve fourth and eighth orders of accuracy with a cost of $O(N\log N)$, in exchange of solve increasing systems and lost the high order 
+\cite{ren2022fft,coco2024high}. In interfaces with high contrast coefficientes the local order remain bounded on the irregular points \cite{feng2022high}, and 
+in the Helmholtz equations the correction of dispertion only reduce the error en 2D and 3D, without eliminate \cite{cocquet2024asymptotic}. 
+
+In parabolic linear cases, the schema of Crack-Nilcolson with fast sine transform reaches cost of order of $O(\Delta \tau^2+h^4)$, that depends on wide of steps in time 
+$\tau$ and space $h$, with stability \cite{li2023fast}, but the rigidity imposes $\Delta \tau \sim h^2$ on explicit schemes, and the explicitly stabilized alternatives 
+pay with first-order precision \cite{abdulle2022explicit}; with incompatible data on pertubed singularity problems the order decay to $O(N^{-1/2})$, even on Shishkin 
+mashes \cite{gracia2023singularly}. In hiperbolic linear cases, the price is the lost of order on the boundary and interfaces \cite{wang2022energy} and the truncation 
+of the domain, where a absorbent layer need auxiliar variables and dense blocks \cite{hojas2024reflectionless}. 
+
+In the nonlinear case, classical theory is no longer sufficient, even to guarantee convergence. Fully nonlinear elliptic equations require monotone schemes within their 
+framework and over-resolution on the boundary \cite{hamfeldt2022convergent,neilan2019monge,del2022finite}; Parabolic equations require designed schemes to preserve the 
+bounded maximum principle and the positive energy \cite{hou2023linear,qin2026second,del2023finite}; and hyperbolic equations with shocks lack a unified theoretical 
+framework and depend on non-oscillatory schemes (WENO, TENO) that are more expensive \cite{tadmor2012review,fu2023review}.
+
+\paragraph{Elementos finitos.}
+
+For elliptic problems, the finite element method is well studied and understood. Adaptive methods refine the mesh only where an a posteriori estimator detects 
+large errors, such as near corners or singularities. Each refinement step reduces the error by a fixed factor, and the method reaches a given accuracy with 
+essentially the smallest possible number of degrees of freedom \cite{bonito2024adaptive}. The $hp$ version, which combines mesh refinement with higher polynomial degrees, 
+achieves exponential convergence for piecewise analytic data, whereas refining the mesh alone gives only algebraic rates~\cite{babuvska1994p}. In direct 
+comparisons on the Poisson equation in one and two dimensions, the finite element method was both faster and more accurate than physics-informed neural networks 
+(PINNs), although in three dimensions the PINN matched its accuracy \cite{grossmann2024can}. The price is the mesh and the associated algebraic cost. Cut finite element methods (CutFEM) avoid fitting the mesh to the geometry by letting the boundary
+cut through the elements; however, elements cut into very small pieces make the linear system nearly singular, and a stabilization term (ghost penalty) is
+needed to keep the condition number bounded~\cite{burman2025cut}. The $hp$ version, in turn, is complex to implement and produces less sparse matrices,
+which increases memory requirements~\cite{babuvska1994p}.
+
+For the Helmholtz equation at high frequency, the finite element solution suffers from the pollution effect, which is caused when the discrete wave travels at a 
+slightly wrong speed, and this phase error accumulates over the many wavelengths contained in the domain, so the error grows with the wave number even when the number 
+of points per wavelength is kept fixed. Babu\v{s}ka and Sauter~\cite{babuska1997pollution} proved that this effect can be removed in one dimension but is 
+unavoidable in two or more dimensions for standard finite elements. It can only be controlled by raising the polynomial degree or by adding penalty terms on 
+element faces (CIP-FEM) \cite{li2019fem,galkowski2026numerical}.
+
+When the coefficients vary on a very fine scale, as in composite materials or heterogeneous porous media, a standard mesh must resolve that scale, which leads to 
+a prohibitive number of degrees of freedom. The alternatives are numerical homogenization, which builds coarse-mesh basis functions that encode the fine-scale information 
+at the cost of solving local problems, and domain decomposition with spectral coarse spaces, which keeps the iterative solver robust against high contrast but 
+whose condition number grows with the number of levels~\cite{hauck2023super,bastian2022multilevel}. When convection dominates diffusion, the solution develops thin layers and the standard method produces spurious oscillations that violate the 
+discrete maximum principle, that is, the numerical solution leaves the physical bounds, for instance a concentration becoming negative. Linear remedies either 
+smear the layers or require very fine meshes; nonlinear stabilizations respect the bounds with far fewer degrees of freedom, but turn a linear problem into a nonlinear 
+one~\cite{barrenechea2024finite}.
+
+In parabolic, Space-time finite element methods treat time as an additional coordinate and mesh the whole space-time cylinder at once. For parabolic problems with
+non-smooth data, such as an initial condition that does not match the boundary condition, the usual simplicial meshes (triangles or tetrahedra) converge very slowly, 
+for the heat equation the error decreases only like $N^{-0.08}$ to $N^{-0.17}$, where $N$ is the number of degrees of freedom. Gantner and Stevenson~\cite{gantner2024improved} 
+show that prismatic meshes, built by extruding a spatial mesh in time, combined with adaptive refinement raise this rate to $0.43$, close to the optimal $0.5$; 
+in two spatial dimensions, reaching the optimal rate also requires anisotropic refinement.
+
+For nonlinear parabolic problems, the FEM converges under some conditions. In the Allen--Cahn equation, which models the phase separation of two components 
+through an interface of thickness $\varepsilon$, classical error bounds grew exponentially as $\varepsilon$ decreased; Akrivis and Li~\cite{akrivis2022error}
+made them polynomial in $1/\varepsilon$, provided that the time step and the mesh size decrease as powers of $\varepsilon$: the thinner the
+interface, the finer the discretization must be. In the porous medium equation, whose solution is a nonnegative density with a front advancing at a finite
+speed, ensuring positivity, mass conservation, and energy stability requires first-order temporal schemes that solve nonlinear systems with
+Newton's method or impose a CFL-type condition~\cite{vijaywargiya2024two}. In the Keller--Segel chemotaxis model, where the concentration blows up in finite time
+if the initial mass exceeds a threshold, the discrete scheme reproduces this blow-up with error $O(\tau+h)$, but only under the restriction $\tau\le Ch$ and assuming
+high regularity of the exact solution~\cite{chen2022error}.
+
+For linear hyperbolic problems, the FEM converges, but explicit schemes are only stable if the time step is smaller than the element size divided by the
+wave speed; when locally refining the mesh, a few small elements impose a tiny time step across the entire domain. Local time-stepping
+methods use small steps only in the refined region and recover optimal convergence at the cost of additional evaluations of the
+source term~\cite{grote2026explicit}. Other strategies reduce the number of degrees of freedom or remove the time-step restriction, but shift the cost to
+the conditioning: quasi-Trefftz bases, which solve the equation locally in each element, achieve condition numbers of $10^{27}$ with high polynomial
+degree~\cite{imbert2023space}, and the ultraweak space-time formulation, which is unconditionally stable, has the conditioning of a fourth-order
+problem and requires expensive preconditioners~\cite{henning2022ultraweak}.
+
+For nonlinear hyperbolic problems the obstacle is both theoretical and practical. Across a shock, such as an abrupt jump in the density or pressure of
+a gas, the solution is discontinuous and the equations hold only in an weak form, that is integral form. Weak formulations admit many solutions, so an
+additional entropy condition, a form of the second law of thermodynamics, is imposed to select the physical one. For the multidimensional Euler equations, 
+even entropy solutions may fail to be unique, and the classical question of whether a scheme converges to the solution loses itsmeaning. 
+Luk\'a\v{c}ov\'a-Medvi\v{d}ov\'a and \"Offner~\cite{lukavcova2023convergence} therefore prove convergence of high-order discontinuous Galerkin (DG) methods
+toward \emph{dissipative weak solutions}, a generalized notion that describes the limit of the numerical solutions in an averaged sense and coincides with
+the smooth solution whenever one exists. In their computations of the Kelvin-Helmholtz instability, only averages of the numerical solutions converge, 
+at a rate close to one even for high-degree polynomials.
+
+In practice, high-degree polynomials overshoot and oscillate next to a discontinuity (the Gibbs phenomenon), which can produce negative densities or
+pressures and break the simulation. One remedy is subcell limiting: troubled elements are split into subcells where the DG solution is blended with a
+robust but more diffusive first-order finite volume scheme, at the price of heuristic indicators with tunable parameters~\cite{rueda2022subcell}. Another
+is adaptive filtering, which damps the high-frequency modes of the solution just enough to keep density and pressure positive and to satisfy a local 
+minimum entropy principle; it needs no tuning and adds little cost, but reduces accuracy to about first order near shocks~\cite{dzanic2022positivity}.
+
+\paragraph{Métodos espectrales.}
+Spectral methods represent the solution as a sum of global functions, such as sines and cosines or Chebyshev polynomials, defined over the entire domain. 
+If the solution is smooth, the coefficients of this sum decay exponentially, and with them the error, a few dozen modes achieve the precision that finite 
+differences or finite elements attain with thousands of nodes~\cite{xu2018spectral}. This accuracy even allows a numerical calculation to be turned into a 
+proof, in semilinear elliptic problems, an approximate solution computed using Fourier series, together with interval arithmetic, proves that an exact solution 
+exists at a distance of less than $10^{-13}$~\cite{cadiot2024rigorous}. In the Klein–Gordon equation with weak nonlinearity, alternating the exact resolution of 
+the linear part in Fourier space with that of the nonlinear part produces error bounds that do not degrade over long times, even with large time steps, 
+provided the domain is periodic and the solution is very regular~\cite{bao2022uniform}.
+
+A sum of smooth functions cannot reproduce a jump, near a discontinuity, oscillations appear that do not disappear when adding modes (Gibbs phenomenon), and 
+the accuracy drops to first order throughout the domain. Reconstruction with Gegenbauer polynomials recovers exponential accuracy, but only if the location of 
+the discontinuities is known in advance~\cite{gottlieb1997gibbs}. Practical alternatives, such as spectral viscosity, which dissipates only the high modes, or 
+adaptive filters, control oscillations at the expense of returning to first order near shocks~\cite{tadmor2012review,dzanic2022positivity}. In nonlinear problems, 
+aliasing is added: the products generate modes that the method cannot represent and that contaminate the others, which forces the use of more integration 
+points~\cite{xu2018spectral}.
+
+The second cost is geometry, since global functions are only easily defined on simple domains, such as intervals, rectangles, or periodic boxes. Geometric 
+flexibility is recovered by dividing the domain into elements with high-degree polynomials (spectral elements/$hp$), which require high-order curved meshes 
+that are difficult to generate~\cite{xu2018spectral}, or with radial basis functions, which do not need a mesh but produce nearly singular matrices precisely when 
+they are most accurate~\cite{fornberg2015solving}. Finally, in time, semi-implicit schemes for nonlinear parabolic problems such as Cahn–Hilliard only admit large 
+steps if a stabilization term is added, which limits the scheme to first order~\cite{li2022large}. The reviewed literature does not include recent spectral works 
+for linear parabolic and hyperbolic problems; this is a limit of the scope of the review and not proof that these cases are solved.
+
+\begin{table}[ht]
+\centering\small
+\caption{Behavior of numerical methods}
+\label{tab:cruce-clasicos}
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+\toprule
+method & It is sufficient for & Limitations & Main price \\
+\midrule
+Finite differences & Linear PDEs in simple geometry (the three types) & Nonlinear elliptic and hyperbolic PDEs; irregular geometries & Ad hoc treatments at boundaries and interfaces; low-order monotone schemes; $\Delta \tau \sim h^2$ restriction \\
+FEM & Linear elliptic PDEs; parabolic PDEs with smooth solutions & High-frequency Helmholtz; hyperbolic PDEs with shocks & Mesh generation; conditioning; time step dictated by the smallest element \\
+Spectral methods & Smooth solutions in simple domains & Discontinuities; complex geometries & Regularity; Gibbs phenomenon; high-order meshes \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Furthermore, all three families share a common price: the curse of dimensionality, since the number of degrees of freedom in a mesh grows exponentially with the 
+dimension $d$~\cite{alkhatib2025numerical,nooraiepour2026partial}. Low-rank tensor formats, multilevel Picard methods, or Deep BSDE avoid this, but only when the 
+operator or the equation has a particular structure~\cite{bachmayr2023low,dahmen2016tensor,weinan2021algorithms}. For this reason, recent literature points toward 
+hybrid schemes that preserve the guarantees of classical methods while adding the adaptability of learning~\cite{nooraiepour2026partial}.
+
+\subsection{Physics-Informed Neuronal Networks - PINNs}
+
+La sección anterior mostró que ninguna familia clásica basta por sí sola y que la literatura reciente apunta a esquemas híbridos. Las redes neuronales informadas por la física (PINN) son la propuesta híbrida más difundida: representan la solución de la EDP con una red neuronal y la entrenan minimizando el residuo de la ecuación y de sus condiciones iniciales y de frontera. Esta revisión recorre la literatura en ocho ejes que siguen la lógica del método: por qué una red puede representar la solución (\ref{subsec:ea-aprox}), qué garantías tiene como método numérico (\ref{subsec:ea-numerico}), cómo se ha adaptado a cada tipo de EDP (\ref{subsec:ea-tipos}), qué arquitecturas han mejorado sus resultados (\ref{subsec:ea-arq}), cuáles son sus limitaciones actuales (\ref{subsec:ea-lim}), por qué su entrenamiento es difícil (\ref{subsec:ea-opt}), qué herramientas existen para que respete la estructura de conservación de la física (\ref{subsec:ea-cons}) y cómo los gradientes naturales atacan el problema de optimización (\ref{subsec:ea-ngd}). Un hilo atraviesa los ocho ejes: el análisis numérico de las PINN descompone el error total en errores de aproximación, estabilidad, generalización y optimización, y señala el de optimización como el cuello de botella principal~\cite{de2024numerical}.
+
+% -----------------------------------------------------------------
+\subsection{Teoría de aproximación universal}
+\label{subsec:ea-aprox}
+
+La justificación de fondo de cualquier método basado en redes neuronales es que estas pueden aproximar la función buscada. Cybenko demostró, con los teoremas de Hahn--Banach y de representación de Riesz, que las combinaciones lineales de una función sigmoidal continua son densas en el espacio de funciones continuas sobre el hipercubo; es decir, una sola capa oculta basta para aproximar uniformemente cualquier función continua~\cite{cybenko1989approximation}. Hornik, Stinchcombe y White llegaron al mismo resultado por el teorema de Stone--Weierstrass para funciones de aplastamiento arbitrarias, y lo extendieron a cualquier función medible de Borel~\cite{hornik1989multilayer}. Leshno et al.\ cerraron la pregunta sobre la activación: una red con activación localmente acotada y continua a trozos es un aproximador universal si y solo si la activación no es un polinomio; además, el sesgo (umbral) es indispensable, pues sin él una activación como $\sin(w\cdot x)$ no puede aproximar funciones pares como $\cos(x)$~\cite{leshno1993multilayer}.
+
+Estos resultados tienen dos límites que reaparecen a lo largo de la revisión. El primero es que son teoremas de existencia: ninguno dice cuántas neuronas se necesitan para una precisión dada ni cómo crece ese número con la dimensión~\cite{hornik1989multilayer,leshno1993multilayer}, y Cybenko advierte que la maldición de la dimensionalidad exigiría, en la mayoría de los problemas, una cantidad astronómica de términos~\cite{cybenko1989approximation}. El segundo es que no dicen nada sobre el entrenamiento: Hornik et al.\ atribuyen los fracasos en aplicaciones a un aprendizaje inadecuado, a pocas unidades o a relaciones estocásticas, y no a una falta de capacidad de la red~\cite{hornik1989multilayer}. Tres décadas después, el diagnóstico de los fallos de las PINN es el mismo (Sección~\ref{subsec:ea-opt}).
+
+Para una PINN, además, no basta aproximar la solución: el residuo contiene sus derivadas, de modo que importa la aproximación en normas de Sobolev. De Ryck, Lanthaler y Mishra dieron cotas cuantitativas en esas normas para redes $\tanh$ de dos capas ocultas, con convergencia exponencial para funciones analíticas y cotas explícitas de ancho y de pesos que superan a las de redes ReLU profundas; el precio es que los pesos teóricos crecen rápidamente y las cotas sufren la maldición de la dimensionalidad~\cite{de2021approximation}. La misma idea se extiende de funciones a operadores: DeepONet se apoya en el teorema de aproximación universal de operadores para aprender aplicaciones no lineales entre espacios de funciones~\cite{lu2019deeponet}.
+
+% -----------------------------------------------------------------
+\subsection{La PINN como método numérico}
+\label{subsec:ea-numerico}
+
+La idea de resolver EDP minimizando el residuo sobre una red no es nueva. Dissanayake y Phan-Thien transformaron la EDP y sus condiciones de frontera en un problema de minimización sin restricciones sobre puntos de colocación, optimizado con un método cuasi-Newton; obtuvieron un error relativo de $1{,}21\times10^{-4}$ en Poisson 2D y errores menores que $10^{-5}$ en conducción de calor no lineal, aunque el método no convergió en la malla más gruesa ($5\times5$) del problema no lineal y la arquitectura se eligió de forma arbitraria~\cite{dissanayake1994neural}. La diferencia principal en el trabajo de Raissi, Perdikaris y Karniadakis es la diferenciación automática: las derivadas espaciotemporales del residuo se calculan exactamente, la pérdida combina el error cuadrático medio en datos iniciales, de frontera y de colocación, y se minimiza con L-BFGS~\cite{raissi2017physics,raissi2019physics}. El marco tiene una versión continua y una discreta en tiempo con esquemas de Runge--Kutta implícitos de hasta 500 etapas, y resuelve tanto problemas directos (Burgers con error $L^2$ relativo de $6{,}7\times10^{-4}$ usando 100 datos; Schrödinger, $1{,}97\times10^{-3}$; Allen--Cahn discreto, $6{,}99\times10^{-3}$) como inversos (parámetros de Burgers con error menor que $0{,}1\,\%$ y robustez a un $10\,\%$ de ruido, y el campo de presión de Navier--Stokes sin datos de presión)~\cite{raissi2017physics,raissi2017physicsII,raissi2019physics}. Las revisiones posteriores resumen el atractivo del método en su carácter libre de malla y en que resuelve problemas directos e inversos con la misma formulación, sin datos etiquetados en el interior del dominio~\cite{cuomo2022scientific,luo2025physics}, y lo sitúan dentro de un movimiento más amplio de modelado guiado por datos, capaz de descubrir ecuaciones constitutivas y leyes físicas a partir de observaciones~\cite{montans2019data}. Bibliotecas como DeepXDE estandarizaron su uso~\cite{lu2021deepxde}.
+
+Considerada como método numérico, la PINN debe responder las mismas preguntas que DF o FEM: si converge, a qué velocidad y si el error se puede estimar. La teoría ha avanzado por casos. Para EDP lineales elípticas y parabólicas de segundo orden, Shin, Darbon y Karniadakis demostraron la consistencia: los minimizadores de una pérdida con regularización de Hölder convergen a la solución en $C^0$, y en $H^1$ cuando se cumplen las condiciones iniciales y de frontera, con tasas que los experimentos confirman; el análisis supone, sin embargo, que el entrenamiento alcanza el minimizador global~\cite{shin2020convergence}. Doumèche, Biau y Boyer mostraron que sin regularización la PINN estándar sobreajusta sistemáticamente, que la regularización ridge le devuelve la consistencia y que una penalización de Sobolev da convergencia fuerte en EDP lineales, con tasas casi óptimas~\cite{doumeche2025convergence}. Para EDP con segunda derivada temporal (onda, Sine--Gordon y elastodinámica lineal), Qian et al.\ acotaron el error por la pérdida de entrenamiento y el número de puntos de cuadratura, y derivaron de ese análisis nuevas pérdidas que incluyen el gradiente de los residuos iniciales y derivadas temporales en la frontera~\cite{qian2023error}.
+
+Un segundo grupo de resultados muestra que la PINN puede escapar de la maldición de la dimensionalidad que sufren los métodos de malla. De Ryck y Mishra probaron que, para las EDP de Kolmogorov (calor, Black--Scholes), el tamaño de la red y el número de puntos de entrenamiento crecen solo polinomialmente con la dimensión, y que un error de entrenamiento pequeño garantiza un error de generalización pequeño si la muestra es suficientemente grande~\cite{de2022error}; luego propusieron un marco general que extiende cotas de este tipo a DeepONet y FNO, incluidas EDP parabólicas no lineales~\cite{de2022generic}. Liu, Huang y Protopapas aportaron la pieza a posteriori: algoritmos que acotan rigurosamente el error usando solo el residuo y la estructura diferencial de la ecuación, aunque restringidos a EDO y a EDP lineales de primer orden~\cite{liu2023residual}. Finalmente, la teoría del núcleo tangente neuronal (NTK) mostró que, en el límite de ancho infinito, entrenar una red equivale a un descenso de gradiente en el espacio de funciones con un núcleo determinista y constante~\cite{jacot2018neural}, lo que abrió la puerta a analizar la dinámica de entrenamiento de las PINN (Sección~\ref{subsec:ea-opt}).
+
+La revisión de De Ryck y Mishra en \emph{Acta Numerica} ordena todo lo anterior: el error se descompone en aproximación, estabilidad, generalización y optimización; hay cotas para EDP elípticas, parabólicas e hiperbólicas (incluidas cotas $L^1$ para soluciones con choques mediante wPINN), y el error de optimización aparece como el cuello de botella; en particular, el mal condicionamiento del operador $\mathcal{A}=\mathcal{L}^{*}\mathcal{L}$ frena el entrenamiento y su precondicionamiento lo acelera~\cite{de2024numerical}. Las cotas son, en general, holgadas y exigen alta regularidad de la solución~\cite{de2022error,de2022generic,de2024numerical}.
+
+% -----------------------------------------------------------------
+\subsection{Implementaciones según el tipo de EDP}
+\label{subsec:ea-tipos}
+
+La formulación original es la misma para cualquier EDP, pero la literatura ha tenido que adaptarla a cada tipo. La Tabla~\ref{tab:ea-tipos} resume el cruce.
+
+\paragraph{Elípticas.} Son el caso con la teoría de convergencia más completa~\cite{shin2020convergence,doumeche2025convergence}. Las adaptaciones buscan sobre todo reducir el costo de las derivadas y mejorar la estimación del error. Las VPINN usan la forma débil en un marco de Petrov--Galerkin, con la red como espacio de ensayo y polinomios de Legendre o funciones trigonométricas como espacio de prueba: la integración por partes reduce el orden de derivación, se reemplazan los puntos de colocación por pocos puntos de cuadratura, y se obtiene mayor precisión y velocidad que la PINN en Poisson y Burgers en 1D y 2D, incluso con capas límite agudas~\cite{kharazmi2019vpinns}. Las RVPINN van un paso más allá: minimizan la norma dual discreta del residuo débil usando el representante de Riesz y la matriz de Gram del espacio de prueba, de modo que la pérdida es un estimador confiable y eficiente del error en la norma de energía, independiente de la base de prueba; funcionan con fuentes de baja regularidad (delta) y advección dominante, aunque invertir la matriz de Gram es costoso con bases no ortonormales y la robustez se deteriora en regímenes fuertemente advectivos~\cite{rojas2024robust}.
+
+\paragraph{Parabólicas.} Aquí la PINN muestra su ventaja más clara frente a los métodos de malla: la alta dimensión. Han, Jentzen y E reformularon las EDP parabólicas semilineales como ecuaciones diferenciales estocásticas retrógradas y aproximaron el gradiente de la solución con una red por paso de tiempo; resolvieron Black--Scholes con riesgo de impago, Hamilton--Jacobi--Bellman y Allen--Cahn en 100 dimensiones con errores relativos de $0{,}46\,\%$, $0{,}17\,\%$ y $0{,}30\,\%$~\cite{han2018solving}. Hu et al.\ escalaron la PINN misma con un descenso de gradiente estocástico por dimensiones, que muestrea un subconjunto insesgado de las dimensiones del residuo en cada iteración; resolvieron EDP no lineales en hasta $100\,000$ dimensiones en 12 horas en una sola GPU, con memoria lineal en lugar de cuadrática, superando a DeepBSDE y a otros métodos de referencia~\cite{hu2024tackling}. En dimensión baja, el reto parabólico es la evolución temporal larga, que se aborda con entrenamiento causal (Sección~\ref{subsec:ea-opt}): con él, Allen--Cahn baja a un error de $1{,}39\times10^{-4}$~\cite{wang2022respecting}.
+
+\paragraph{Hiperbólicas de primer orden y leyes de conservación.} Es el caso más difícil. Chaumet y Giesselmann demostraron analíticamente que la PINN clásica falla ante discontinuidades~\cite{chaumet2024improving}: el residuo fuerte no está definido en un choque. Por eso esta línea abandona la forma fuerte y trabaja con formulaciones débiles y de entropía, que se tratan en detalle en la Sección~\ref{subsec:ea-cons}. La más influyente, wPINN, plantea un problema min-max sobre el residuo de entropía de Kružkov y reduce el error relativo en Burgers a entre $0{,}5\,\%$ y $5{,}7\,\%$, frente al $24\,\%$ de la PINN tradicional~\cite{de2024wpinns}. En la misma familia están las cPINN, propuestas para leyes de conservación en dominios discretos~\cite{jagtap2020conservative} y extendidas a formas no conservativas de la ecuación de Buckley--Leverett generalizada, donde superan a WENO5 en las formas no conservativas y en estados críticos, pero no en el caso conservativo no crítico~\cite{quita2023conservative}. Desde la teoría, De Ryck y Mishra probaron que redes ReLU pueden aproximar leyes de conservación escalares paramétricas sin maldición de la dimensionalidad, aunque solo en aprendizaje supervisado~\cite{de2024error}. En mecánica de fluidos, la PINN infiere velocidad y presión en flujos supersónicos con choques a partir de gradientes de densidad, pero en problemas directos es menos precisa y eficiente que los solucionadores CFD de alto orden~\cite{cai2021physics}.
+
+\paragraph{Hiperbólicas de segundo orden (ondas).} Su dificultad no es el choque sino la oscilación: soluciones de alta frecuencia que se propagan sin amortiguarse. La teoría específica es reciente~\cite{qian2023error}. En la práctica, la ecuación de onda 1D aparece como caso de prueba de los diagnósticos de entrenamiento: la ponderación adaptativa basada en el NTK reduce el error $L^2$ relativo hasta en dos órdenes de magnitud~\cite{wang2022and}, y con características de Fourier espacio-temporales el error baja a $9{,}83\times10^{-4}$, mientras que la PINN estándar se queda en torno al $100\,\%$~\cite{wang2021eigenvector}. La ecuación de Klein--Gordon se usa como caso de prueba en el estudio de patologías de gradiente~\cite{wang2021understanding}, y la de convección, con coeficientes altos, es uno de los modos de falla canónicos~\cite{krishnapriyan2021characterizing,rathore2024challenges}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{PINN según el tipo de EDP en la literatura revisada.}
+\label{tab:ea-tipos}
+\begin{tabularx}{\textwidth}{@{}l Y Y Y@{}}
+\toprule
+Tipo & Adaptación principal & Mejor evidencia & Límite que persiste \\
+\midrule
+Elíptica & Forma débil y variacional (VPINN, RVPINN); regularización para la consistencia & Convergencia demostrada en EDP lineales~\cite{shin2020convergence,doumeche2025convergence}; estimador del error en norma de energía~\cite{rojas2024robust} & Teoría solo lineal; costo de la matriz de Gram~\cite{rojas2024robust} \\
+Parabólica & Reformulación estocástica (BSDE); muestreo por dimensiones; entrenamiento causal & 100 a $100\,000$ dimensiones~\cite{han2018solving,hu2024tackling}; Allen--Cahn $1{,}39\times10^{-4}$~\cite{wang2022respecting} & Solo semilineales en BSDE~\cite{han2018solving}; error acumulado en tiempos largos~\cite{wang2022respecting} \\
+Hiperbólica (1.\textsuperscript{er} orden) & Formas débiles con entropía (wPINN y variantes); forma conservativa (cPINN) & Burgers $0{,}5$--$5{,}7\,\%$ frente a $24\,\%$~\cite{de2024wpinns}; Euler 1D (Sod) $1{,}2$--$3{,}8\,\%$~\cite{chaumet2024improving} & Min-max costoso; validación 1D; sistemas sin entropías de Kružkov~\cite{de2024wpinns,chaumet2024improving} \\
+Hiperbólica (2.\textsuperscript{o} orden) & Pesos adaptativos (NTK); características de Fourier; pérdidas con derivadas temporales & Onda 1D $9{,}83\times10^{-4}$ frente a ${\sim}100\,\%$~\cite{wang2021eigenvector} & Teoría limitada a tres ecuaciones y a redes de dos capas~\cite{qian2023error} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% -----------------------------------------------------------------
+\subsection{Arquitecturas y sus resultados}
+\label{subsec:ea-arq}
+
+La aproximación universal garantiza que existe una red adecuada, pero no dice cuál. La investigación en arquitecturas ha respondido, sobre todo, a un problema concreto: el sesgo espectral, una preferencia de la red por las frecuencias bajas que dificulta resolver comportamientos multiescala~\cite{cuomo2022scientific}. Wang, Wang y Perdikaris lo explicaron con el NTK y propusieron incrustaciones con características de Fourier aleatorias multiescala, cuyo parámetro $\sigma$ modula las frecuencias del núcleo; resolvieron Poisson 1D, calor 1D y onda 1D con errores del orden de $10^{-3}$ e infirieron las tasas de difusión de Gray--Scott 2D con errores de $3\,\%$ y $8\,\%$, aunque el número y la escala de las características se eligen a mano, con conocimiento previo de las frecuencias del problema~\cite{wang2021eigenvector}. Una alternativa es cambiar la activación: SIREN usa activaciones senoidales con una inicialización que preserva la distribución entre capas y resuelve Poisson, Helmholtz y la ecuación de onda supervisando solo derivadas~\cite{sitzmann2020implicit}; ABU-PINN aprende combinaciones adaptativas de activaciones suaves (seno, $\tanh$, GELU, Swish, Softplus), reduce el error $L^2$ promedio a $0{,}37\,\%$ en un conjunto de EDP 1D y 2D y eleva el valor medio del espectro del NTK, a cambio de un costo 3,1 veces mayor y de dificultades con choques fuertes~\cite{wang2023learning}. Ambas propuestas son coherentes con el resultado de Leshno et al.: cualquier activación no polinomial es universal~\cite{leshno1993multilayer}, de modo que la elección de la activación no decide si la red puede aproximar la solución, sino qué tan fácil es entrenarla.
+
+Un mismo grupo de investigación ha construido, sobre esa base, una línea incremental que permite seguir cómo mejora la precisión. Primero introdujo una red con conexiones residuales y multiplicativas inspiradas en los transformadores, que junto con la ponderación adaptativa de la pérdida mejora la precisión entre 50 y 100 veces~\cite{wang2021understanding}; luego, el entrenamiento causal~\cite{wang2022respecting}; después, un procedimiento que integra todo (adimensionalización, características de Fourier, factorización aleatoria de pesos, la red modificada, ponderación adaptativa y entrenamiento causal) y que captura por primera vez el desprendimiento de vórtices alrededor de un cilindro~\cite{wang2023expert}; y finalmente PirateNets, con conexiones residuales adaptativas que se inicializan en cero para que la red profunda empiece comportándose como una superficial, de modo que la precisión mejora con la profundidad~\cite{wang2024piratenets}. En la ecuación de Allen--Cahn, que aparece en casi todos estos trabajos, el error $L^2$ relativo reportado pasa de $6{,}99\times10^{-3}$ en la PINN original~\cite{raissi2019physics} a $1{,}39\times10^{-4}$ con entrenamiento causal~\cite{wang2022respecting}, $5{,}37\times10^{-5}$ con el procedimiento integrado~\cite{wang2023expert} y $2{,}24\times10^{-5}$ con PirateNets~\cite{wang2024piratenets}. La comparación es solo indicativa, porque las configuraciones de cada trabajo no son idénticas. El precio es el costo: la marcha en el tiempo y el entrenamiento por currículo encarecen el entrenamiento~\cite{wang2023expert}, y PirateNets exige alto costo computacional y se satura por encima de unas 20 capas en algunos problemas~\cite{wang2024piratenets}.
+
+Otra línea cambia la pregunta: en lugar de resolver una EDP, aprende el operador que asigna datos a soluciones. DeepONet separa una red para la función de entrada y otra para las coordenadas de salida, y alcanza errores cuadráticos medios del orden de $10^{-5}$ en difusión-reacción con solo 100 muestras~\cite{lu2019deeponet}. El operador neuronal de Fourier (FNO) parametriza el núcleo de convolución en el espacio de Fourier, es invariante a la malla, permite superresolución y acelera la inferencia hasta tres órdenes de magnitud frente a los solucionadores tradicionales, pero requiere mallas uniformes y depende de la cantidad y la calidad de los datos de entrenamiento~\cite{li2020fourier}. Ambos dependen de datos de soluciones; la PINN, no. Las revisiones recientes añaden arquitecturas KAN y transformadores y la descomposición de dominio, que permite resolver en paralelo~\cite{luo2025physics}.
+
+El banco de pruebas PINNacle pone estas propuestas en perspectiva: con 22 EDP y más de diez variantes, la PINN estándar resolvió solo 10 de los 22 problemas; la reponderación y la activación adaptativa ayudaron en geometrías complejas, la formulación variacional destacó en problemas inversos y la descomposición de dominio aumentó la expresividad, pero todos los métodos fallaron en EDP caóticas (Kuramoto--Sivashinsky), de alta dimensión o con dominios temporales largos~\cite{hao2024pinnacle}.
+
+% -----------------------------------------------------------------
+\subsection{Limitaciones actuales}
+\label{subsec:ea-lim}
+
+La primera limitación es la precisión por unidad de costo. Las revisiones coinciden en que la PINN es más lenta que los métodos clásicos en problemas directos~\cite{cuomo2022scientific,lu2021deepxde}: DeepXDE reconoce que es más lenta que FEM~\cite{lu2021deepxde}, y en mecánica de fluidos es menos precisa y eficiente que los solucionadores CFD de alto orden~\cite{cai2021physics}. Su precisión típica ronda $10^{-3}$, con convergencia lenta~\cite{luo2025physics}. Los propios autores del método advierten que no pretende reemplazar a los métodos numéricos consolidados~\cite{raissi2017physics}. Zhang et al.\ resumen el panorama en tres limitaciones (baja precisión con alto costo, pobre generalización y sensibilidad a parámetros empíricos) y les atribuyen tres causas: mala aproximación multiescala y mal condicionamiento inducidos por la pérdida de la EDP, escaso rigor en el análisis de convergencia, y un desajuste entre los residuos y los errores reales causado por las restricciones blandas~\cite{zhang2026physics}.
+
+La segunda es la teoría. Las garantías de convergencia cubren sobre todo EDP lineales~\cite{shin2020convergence,doumeche2025convergence}, suponen minimizadores globales que el entrenamiento no garantiza~\cite{shin2020convergence}, se debilitan al aumentar la profundidad de la red~\cite{doumeche2025convergence} o se apoyan en coeficientes constantes~\cite{de2022error}. El marco general de cotas de aproximación deja fuera el error de optimización~\cite{de2022generic}, y no existe una teoría de convergencia aplicable a redes finitas reales~\cite{zhang2026physics}. Tampoco hay, en la formulación estándar, cuantificación de la incertidumbre de las predicciones~\cite{raissi2017physics,raissi2019physics}.
+
+La tercera depende del tipo de problema. En multiescala y alta frecuencia, el sesgo espectral obliga a conocer de antemano las frecuencias~\cite{wang2021eigenvector}. En sistemas caóticos y horizontes largos, el error se acumula: incluso con entrenamiento causal supera el $10\,\%$ en tiempos tardíos~\cite{wang2022respecting}, y persisten discrepancias cerca del tiempo final~\cite{wang2023expert}. En leyes de conservación, los métodos débiles cuestan más que la PINN estándar, no se han probado en problemas de dos o tres dimensiones~\cite{de2024wpinns,chaumet2024improving}, y la wPINN original no se extiende con facilidad a sistemas, porque estos carecen de entropías de Kružkov~\cite{de2024wpinns}; en variedades, el error crece exponencialmente con el horizonte temporal~\cite{zhou2025weak}. En alta dimensión, el muestreo por dimensiones requiere lotes grandes para controlar la varianza del gradiente~\cite{hu2024tackling}. Y el benchmark PINNacle confirma que las EDP no lineales, caóticas o de alta dimensión siguen fuera del alcance de las variantes actuales~\cite{hao2024pinnacle}.
+
+% -----------------------------------------------------------------
+\subsection{Problemas de optimización}
+\label{subsec:ea-opt}
+
+La conclusión que más se repite en la literatura es que la PINN falla por optimización, no por expresividad. Krishnapriyan et al.\ lo mostraron en ecuaciones de convección, reacción y reacción-difusión: con coeficientes altos la PINN no aprende la solución, aunque la arquitectura tiene capacidad suficiente, porque la regularización blanda que impone la EDP produce un paisaje de pérdida complejo y mal condicionado; un entrenamiento por currículo y una formulación secuencia a secuencia reducen el error en uno o dos órdenes de magnitud~\cite{krishnapriyan2021characterizing}. Es, en lenguaje moderno, el diagnóstico de Hornik et al.~\cite{hornik1989multilayer}. Rathore et al.\ precisaron la causa: el operador diferencial empeora el condicionamiento del paisaje de pérdida, y la combinación de Adam con L-BFGS supera a cada optimizador por separado; tras el estancamiento de L-BFGS, un método de Newton-gradiente conjugado con precondicionador de Nyström reduce la pérdida y la norma del gradiente en más de diez veces, aunque es más lento por iteración~\cite{rathore2024challenges}. Basir mostró que los operadores de alto orden amplifican el ruido y contaminan los gradientes, y propuso reducir el orden de la EDP con variables auxiliares y multiplicadores de Lagrange adaptativos, con mejoras de varios órdenes de magnitud en convección-difusión, Stokes y Navier--Stokes~\cite{basir2022investigating}.
+
+El segundo problema es el desbalance entre los términos de la pérdida. Wang, Yu y Perdikaris derivaron el NTK de la PINN y mostraron que los términos de frontera y de residuo convergen a velocidades muy distintas; calibrar los pesos con las trazas de los bloques del NTK equilibra esas velocidades y reduce el error hasta en dos órdenes de magnitud, aunque la teoría vale para redes de una capa y EDP lineales y la ponderación no elimina el sesgo espectral~\cite{wang2022and}. Wang, Teng y Perdikaris llegaron a un remedio parecido desde la rigidez de la dinámica del gradiente, con pesos ajustados por estadísticas de los gradientes de cada término~\cite{wang2021understanding}, y Xiang et al.\ lo formularon de manera probabilística, con un modelo gaussiano por término cuyo parámetro de ruido se aprende por descenso de gradiente~\cite{xiang2022self}.
+
+El tercero es la causalidad. Al minimizar el residuo en todo el dominio espacio-temporal a la vez, la red puede ajustar tiempos tardíos antes de resolver los tempranos. Wang, Sankaran y Perdikaris reponderaron el residuo con pesos que decaen exponencialmente con la pérdida acumulada en los tiempos anteriores, con mejoras de 10 a 100 veces que permitieron simular por primera vez los sistemas de Lorenz, Kuramoto--Sivashinsky y Navier--Stokes turbulento~\cite{wang2022respecting}; el método es sensible al parámetro de causalidad~\cite{wang2023expert}. La misma necesidad aparece en las formulaciones débiles hiperbólicas, que segmentan el tiempo para preservar la causalidad~\cite{chaumet2024improving}.
+
+El cuarto es el muestreo. Con puntos de colocación fijos, la red puede ignorar las regiones donde la solución cambia más. DeepXDE propuso el refinamiento adaptativo por residuo, que captura gradientes abruptos con menos puntos~\cite{lu2021deepxde}, y FI-PINN define una probabilidad de falla a partir del residuo y añade puntos por muestreo de importancia, con menor error que el muestreo uniforme y que el refinamiento por residuo en Poisson, Burgers y dominios no acotados~\cite{gao2023failure}.
+
+Los cuatro remedios atacan síntomas de una misma causa, que la teoría ya identifica: el mal condicionamiento del problema de optimización~\cite{de2024numerical,zhang2026physics}. Ese diagnóstico conduce a los métodos de segundo orden y, en particular, a los gradientes naturales (Sección~\ref{subsec:ea-ngd}).
+
+% -----------------------------------------------------------------
+\subsection{Herramientas para respetar la conservación}
+\label{subsec:ea-cons}
+
+Una EDP de evolución suele llevar asociada una cantidad que se conserva o se disipa (masa, energía, entropía), y un método numérico que no la respeta puede converger a una solución sin sentido físico. Para la PINN el problema es concreto. En leyes de conservación hiperbólicas las soluciones débiles no son únicas y la física elige la entropía. De Ryck et al.\ mostraron que una formulación débil sin residuo de entropía converge a soluciones no entrópicas, físicamente incorrectas~\cite{de2024wpinns}. Imponer la ley de conservación en el residuo fuerte tampoco basta, porque ese residuo no existe en un choque~\cite{chaumet2024improving}. La literatura ha respondido con tres familias de herramientas, que la Tabla~\ref{tab:ea-cons} compara.
+
+La primera es la \emph{forma integral o conservativa}. Las cPINN plantean la ley de conservación sobre dominios discretos~\cite{jagtap2020conservative}, y su extensión a la ecuación de Buckley--Leverett generalizada obtiene la misma precisión en las formas conservativa y no conservativa, con un reescalamiento de variables para los estados críticos cercanos al vacío~\cite{quita2023conservative}. WE-PINN usa directamente el teorema de la divergencia: el residuo es el balance de flujos sobre volúmenes de control muestreados dinámicamente a varias escalas e integrados con cuadratura de Gauss--Legendre, de modo que no hace falta derivar el residuo~\cite{oubarka2026weak}.
+
+La segunda es la \emph{forma débil con funciones de prueba}. En VPINN las funciones de prueba son polinomios fijos~\cite{kharazmi2019vpinns}; en RVPINN la pérdida se mide en la norma dual del espacio de prueba y equivale al error en la norma de energía~\cite{rojas2024robust}; en WF-PINN las funciones de prueba son gaussianas y se resuelven problemas directos e inversos en Burgers con gradientes abruptos, reduciendo el error $L^2$ en más del $55\,\%$ frente a la PINN estándar y capturando el choque sin oscilaciones~\cite{wang2025wf}.
+
+La tercera es la \emph{condición de entropía}, que selecciona la solución física. wPINN la impone a través de las entropías de Kružkov con funciones de prueba que son a su vez redes neuronales, en un problema min-max resuelto por descenso y ascenso de gradiente, y demuestra que el error $L^1$ se reduce arbitrariamente con suficientes puntos de colocación~\cite{de2024wpinns}. Chaumet y Giesselmann estimaron la norma dual $W^{-1,p}$ resolviendo un problema elíptico dual (un $q$-laplaciano por el método de Deep Ritz), lo que acelera y estabiliza el entrenamiento aunque mantiene la estructura min-max; además separaron las pérdidas de la EDP y de la entropía, añadieron condiciones de frontera débiles y segmentación temporal, y extendieron el método a sistemas: en la onda senoidal el error $L^1$ relativo bajó del $21{,}4\,\%$ al $1{,}53\,\%$ a las $10\,000$ épocas ($1{,}19\,\%$ al final), y en el tubo de choque de Sod para Euler 1D quedó entre $1{,}2\,\%$ y $3{,}8\,\%$~\cite{chaumet2024improving}. Zhou y Shi llevaron wPINN a leyes de conservación sobre variedades riemannianas, con cotas que dependen solo de la dimensión intrínseca y errores entre $0{,}26\,\%$ y $5{,}1\,\%$ sobre la esfera~\cite{zhou2025weak}. WE-PINN combina el balance integral con desigualdades de entropía muestreadas de la familia de Kružkov y una regularización suave tipo TVD~\cite{oubarka2026weak}, y WF-PINN penaliza las violaciones de la entropía con una función ReLU de peso dinámico~\cite{wang2025wf}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Herramientas para que la PINN respete la estructura de conservación.}
+\label{tab:ea-cons}
+\begin{tabularx}{\textwidth}{@{}l Y Y Y@{}}
+\toprule
+Método & Cómo impone la conservación & Resultado reportado & Precio o límite \\
+\midrule
+cPINN~\cite{jagtap2020conservative,quita2023conservative} & Ley de conservación en subdominios; reescalamiento en estados críticos & Igual precisión en formas conservativa y no conservativa; supera a WENO5 en estados críticos & Reescalamiento empírico; peor que WENO5 en el caso conservativo no crítico \\
+WE-PINN~\cite{oubarka2026weak} & Teorema de la divergencia sobre volúmenes de control; entropía de Kružkov; TVD suave & Resolución precisa de choques en regímenes suaves y dominados por choques & Prueba de convergencia solo escalar; TVD sin garantía estricta \\
+VPINN / RVPINN~\cite{kharazmi2019vpinns,rojas2024robust} & Forma débil; norma dual equivalente a la de energía & Estimador confiable del error en energía & Inversión de la matriz de Gram; advección fuerte \\
+WF-PINN~\cite{wang2025wf} & Funciones de prueba gaussianas; penalización ReLU de la entropía & $-55\,\%$ en error $L^2$ en Burgers & Más memoria; sin teoría de convergencia \\
+wPINN~\cite{de2024wpinns} & Residuo de entropía de Kružkov en un problema min-max & Burgers $0{,}5$--$5{,}7\,\%$; cota de error $L^1$ & Costo del min-max; solo 1D; no se extiende directamente a sistemas \\
+wPINN mejorada~\cite{chaumet2024improving} & Norma dual por problema elíptico; fronteras débiles; segmentación temporal & Onda senoidal $1{,}19\,\%$; Sod $1{,}2$--$3{,}8\,\%$ & Sigue siendo adversaria; sin pruebas en 2D/3D \\
+wPINN en variedades~\cite{zhou2025weak} & Kružkov sobre variedades riemannianas & $0{,}26$--$5{,}1\,\%$ en la esfera & Error que crece como $e^{C_1T}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Las tres familias comparten un rasgo: todas fueron diseñadas para leyes de conservación de primer orden, donde la cantidad que hay que respetar es la entropía. En la literatura revisada no aparecen herramientas equivalentes para ecuaciones de onda de segundo orden, como la de Klein--Gordon, cuya estructura natural es la conservación de una energía: allí las propuestas se limitan a pérdidas con derivadas temporales que mejoran las cotas de error~\cite{qian2023error}, sin imponer la conservación de la energía física.
+
+% -----------------------------------------------------------------
+\subsection{Gradientes naturales}
+\label{subsec:ea-ngd}
+
+Si el problema de fondo es el mal condicionamiento, la respuesta natural es un método que lo corrija en cada paso. El gradiente natural lo hace midiendo el paso en el espacio de funciones y no en el de parámetros: precondiciona el gradiente con una matriz que describe cómo cambia la función cuando cambian los parámetros. Müller y Zeinhofer introdujeron el gradiente natural de energía (E-NGD), en el que esa matriz se construye a partir de la Hessiana del funcional objetivo, y demostraron que equivale a un paso de Newton proyectado en el espacio de funciones; alcanzaron errores $L^2$ relativos de $10^{-7}$ a $10^{-8}$, muy por debajo de Adam, del descenso de gradiente y de BFGS, con menos iteraciones y menos tiempo total~\cite{muller2023achieving}. El precio es un costo por iteración $O(p^3)$ en el número de parámetros $p$, que dificulta su uso en problemas de gran escala, y fallos ocasionales de convergencia según la inicialización~\cite{muller2023achieving}.
+
+Los trabajos posteriores atacan ese costo por dos caminos (Tabla~\ref{tab:ea-ngd}). El primero aproxima la matriz en el espacio de parámetros. KFAC la factoriza con productos de Kronecker, usando diferenciación automática en modo Taylor para capturar la contribución del operador diferencial; supera a los métodos de primer orden y a L-BFGS en Poisson, calor y Fokker--Planck de hasta 100 dimensiones y escala a redes de más de $100\,000$ parámetros~\cite{dangel2024kronecker}. SNGD la comprime con un bosquejo aleatorizado y truncamiento espectral, apoyado en que los autovalores de la matriz de Gram decaen exponencialmente; entrena redes de más de un millón de parámetros en minutos donde E-NGD y BFGS fallan por memoria, y reduce el error de E-NGD en uno o dos órdenes de magnitud, a costa de exigir doble precisión y de ser sensible a la tolerancia de truncamiento~\cite{mckay2025near}.
+
+El segundo camino cambia de espacio: en lugar de invertir una matriz de tamaño igual al número de parámetros, trabaja con una del tamaño del número de puntos de muestreo. Guzmán-Cordero et al.\ lo hicieron con la identidad de Woodbury y obtuvieron la misma precisión que E-NGD hasta 75 veces más rápido; añadiendo momentum, el algoritmo SPRING logró un orden de magnitud menos de error que los métodos de primer orden y que KFAC en EDP de hasta 100 dimensiones~\cite{guzman2025improving}. Jnini y Vella formularon el mismo cambio como un problema dual en el espacio de residuos, con un resolvedor de gradiente conjugado precondicionado por Nyström y una corrección de aceleración geodésica; escalaron a 12,8 millones de parámetros en una sola GPU, con errores de $10^{-5}$ a $10^{-7}$ en calor, Kovásznay, Fokker--Planck, Allen--Cahn y Poisson de alta dimensión~\cite{jnini2025dual}. ANaGRAM llegó a una formulación equivalente desde la geometría: reinterpreta la PINN como una regresión por mínimos cuadrados en el espacio de funciones, con complejidad $O(\min(P^2S,S^2P))$, establece una equivalencia entre el gradiente natural y la función de Green del operador, y alcanza errores de hasta $10^{-9}$, por encima de E-NGD, L-BFGS y Adam~\cite{schwencke2024anagram}. AMStraMGRAM, su sucesor, elige de forma adaptativa el corte espectral a partir de los valores singulares y del error de reconstrucción, y reduce el error de ANaGRAM hasta en ocho órdenes de magnitud, cerca de la precisión de máquina~\cite{schwencke2025amstramgram}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Gradientes naturales para PINN: estrategia, escala y problemas de prueba.}
+\label{tab:ea-ngd}
+\begin{tabularx}{\textwidth}{@{}l Y Y Y@{}}
+\toprule
+Método & Estrategia & Escala o precisión reportada & EDP de prueba \\
+\midrule
+E-NGD~\cite{muller2023achieving} & Matriz de Gram exacta (paso de Newton proyectado) & $L^2$ de $10^{-7}$ a $10^{-8}$; costo $O(p^3)$ & Poisson (hasta 5D), calor, variacional no lineal \\
+KFAC~\cite{dangel2024kronecker} & Factorización de Kronecker en el espacio de parámetros & Más de $100\,000$ parámetros & Poisson, calor, Fokker--Planck (hasta 100D) \\
+SNGD~\cite{mckay2025near} & Bosquejo aleatorizado y truncamiento espectral & Más de $10^6$ parámetros; 1--2 órdenes mejor que E-NGD & Incluye la ecuación de transporte \\
+Woodbury / SPRING~\cite{guzman2025improving} & Núcleo en el espacio de muestras; momentum & Hasta $75\times$ más rápido que E-NGD & EDP de hasta 100D \\
+D-NGD~\cite{jnini2025dual} & Problema dual en el espacio de residuos; aceleración geodésica & $12{,}8\times10^6$ parámetros; $L^2$ de $10^{-5}$ a $10^{-7}$ & Calor, Kovásznay, Fokker--Planck, Allen--Cahn, Poisson \\
+ANaGRAM~\cite{schwencke2024anagram} & Mínimos cuadrados en el espacio de funciones; corte espectral & $L^2$ hasta $10^{-9}$ & Laplace, calor, Allen--Cahn, Burgers \\
+AMStraMGRAM~\cite{schwencke2025amstramgram} & Corte espectral adaptativo & Hasta 8 órdenes mejor que ANaGRAM & Calor, Laplace, Allen--Cahn, Burgers, Poisson \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Al cruzar estos trabajos aparecen tres coincidencias. La primera es que los métodos más escalables convergen en la misma idea, trabajar en el espacio de muestras o de residuos en lugar del de parámetros, a la que llegan por caminos distintos: el álgebra lineal (Woodbury), la dualidad (D-NGD) y la geometría del espacio de funciones (ANaGRAM)~\cite{guzman2025improving,jnini2025dual,schwencke2024anagram}. La segunda es que varios dependen de un truncamiento espectral cuyo parámetro se fija a mano o con heurísticas~\cite{mckay2025near,schwencke2024anagram,schwencke2025amstramgram}, y que su rendimiento depende de la estrategia de muestreo: AMStraMGRAM puede sobreajustar y oscilar entre los puntos de muestreo en regiones de alta curvatura~\cite{schwencke2025amstramgram}, y ANaGRAM selecciona sus puntos con heurísticas simples~\cite{schwencke2024anagram}. La tercera, y la más relevante para esta tesis, es el tipo de EDP de prueba: casi todas son elípticas o parabólicas. Las únicas de carácter hiperbólico o advectivo son la ecuación de transporte en SNGD~\cite{mckay2025near} y la de Burgers en ANaGRAM y AMStraMGRAM, donde ANaGRAM no converge con viscosidad baja ($\nu=10^{-3}$)~\cite{schwencke2024anagram,schwencke2025amstramgram}. Ninguno de los trabajos revisados aplica gradientes naturales a ecuaciones de onda de segundo orden.
+
+% -----------------------------------------------------------------
+\subsection*{Síntesis}
+
+La teoría de aproximación garantiza que la red puede representar la solución~\cite{cybenko1989approximation,hornik1989multilayer,leshno1993multilayer}, y el análisis numérico de las PINN garantiza, en casos cada vez más amplios, que un residuo pequeño implica un error pequeño~\cite{shin2020convergence,doumeche2025convergence,de2022error,de2024numerical}. Lo que falla es encontrar ese residuo pequeño: la PINN falla por optimización y no por expresividad~\cite{krishnapriyan2021characterizing}, y el mal condicionamiento es la causa común de los síntomas que la literatura ha tratado por separado~\cite{de2024numerical,rathore2024challenges,zhang2026physics}. Las arquitecturas modernas y el entrenamiento causal mejoran mucho la precisión~\cite{wang2023expert,wang2024piratenets}, y los gradientes naturales atacan directamente el condicionamiento, con errores de hasta $10^{-9}$~\cite{schwencke2024anagram}. Sin embargo, dos vacíos se cruzan en las ecuaciones hiperbólicas de segundo orden. Las herramientas de conservación se diseñaron para la entropía de las leyes de conservación de primer orden y no para la energía de las ecuaciones de onda~\cite{de2024wpinns,chaumet2024improving}, y en los trabajos revisados los gradientes naturales no se han probado en ecuaciones de onda~\cite{muller2023achieving,jnini2025dual,schwencke2025amstramgram}. La ecuación de Klein--Gordon está justo en ese cruce y es el caso de estudio de los capítulos siguientes.
+
+
+\end{hyphenrules}
+
+% --- Solo cuando se compila este capítulo por aparte (no afecta la tesis completa) ---
+\ifSubfilesClassLoaded{\bibliography{Referencias}}{}
+\end{document}

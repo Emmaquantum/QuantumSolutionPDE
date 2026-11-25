@@ -41,13 +41,15 @@
 % TESIS: se reemplaza "subfigure" por "subcaption" (la tesis usa el entorno subfigure de subcaption)
 \usepackage{epsfig,epic,eepic,threeparttable,amscd,here,lscape,tabularx}
 \usepackage{subcaption}
-\usepackage{tabu,array}
+\usepackage{array} % TESIS: se quita tabu (no se usa en la tesis y da problemas en MiKTeX)
 \usepackage[rgb,table]{xcolor} % TESIS: opción "table" (la usaba la tesis)
 
 % Permite ver y configurar los parámetros de la página
 \usepackage{layout}
 %Hyperref permite ver las secciones del texto
 \usepackage[hidelinks]{hyperref}
+% TESIS: subfiles permite compilar cada capítulo por aparte (abra el capítulo y pulse Ctrl+Alt+B)
+\usepackage{subfiles}
 
 %Permite incluir código de cualquier lenguaje dentro del texto del documento
 % TESIS: minted desactivado porque la tesis no lo usa y exige compilar con -shell-escape.
@@ -111,6 +113,7 @@
 
 % Estilo de los encabezados y pies de página
 \usepackage{fancyhdr}
+\usepackage[fit]{truncate} % TESIS: recorta con "..." los títulos largos del encabezado para que no se monten
 \fancyhf{}%
 \pagestyle{fancyplain}
 \textheight22.5cm \topmargin0cm \textwidth16.5cm \headheight22pt
@@ -124,8 +127,8 @@
 \fancyhf{}%
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\; #1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\; #1}{}}
-\fancyhead[LO,RE]{\leftmark}
-\fancyhead[RO,LE]{\rightmark}
+\fancyhead[LO,RE]{\truncate{0.38\headwidth}{\leftmark}}  % TESIS: capítulo, máx. 38 % del ancho
+\fancyhead[RO,LE]{\truncate{0.58\headwidth}{\rightmark}} % TESIS: sección, máx. 58 % del ancho
 \fancyfoot[CO,CE]{\thepage}
 \thispagestyle{fancy}%
 
@@ -206,6 +209,7 @@ myedge/.style={->, -{Latex[#1]}}
 \else
   % Si se compila con pdfLaTeX, cargar la fuente apropiada aquí
   \usepackage[T1]{fontenc}
+  \usepackage{lmodern} % TESIS: fuente vectorial; sin ella microtype falla ("auto expansion is only possible with scalable fonts")
 \fi
 % Metadatos del documento
 \AtBeginDocument{%
@@ -239,7 +243,7 @@ myedge/.style={->, -{Latex[#1]}}
 \tcbuselibrary{breakable}
 
 % Ubicación de las figuras (como en la plantilla, en la carpeta 00Figuras)
-\graphicspath{{00Figuras/}}
+\graphicspath{{00Figuras/}{../00Figuras/}} % TESIS: tambien ../00Figuras/ para compilar capitulos sueltos
 \setlength{\emergencystretch}{2em} % evita líneas que se salen del margen
 % Páginas que solo tienen figuras: las figuras arriba, no centradas en la página
 \makeatletter
@@ -398,9 +402,9 @@ myedge/.style={->, -{Latex[#1]}}
 {\pagestyle{plain} \pagenumbering{roman}
 \setlength{\parskip}{1mm}
 % TESIS: Agradecimientos y Abreviaturas aún están vacíos; quitar el % cuando se completen.
-%\include{00Agradecimientos}
-%\include{00Abreviaturas}
-\include{00ResumenAbstract}
+%\include{00_Preliminares/00Agradecimientos}
+%\include{00_Preliminares/00Abreviaturas}
+\include{00_Preliminares/00ResumenAbstract}
 % Dejar esta parte así para que genere correctamente la página de la tabla de contenido
 \addcontentsline{toc}{chapter}{Lista de figuras}
 \listoffigures
@@ -419,23 +423,24 @@ myedge/.style={->, -{Latex[#1]}}
 %Use \include para incluir desde una página nueva e \input para incluir sin salto de página
 % TESIS: los objetivos están en la Introducción (sección "Justificación y objetivos").
 % Planteamiento del problema, Hipótesis y Objetivos como capítulos aparte son opcionales:
-%\include{00HipotesisPlanteamiento}
-%\include{00Objetivos}
-\include{01Seccion01} % Introducción
-\include{02Seccion02} % About Partial Differential Equations
-\include{03Seccion03} % Physics-Informed Neural Networks - PINN
-\include{04Seccion04} % Experimentation and Results
-\include{05Seccion05} % Redes Neuronales Informadas por la física en un frame cuántico
-\include{06Seccion06} % Conclusiones y recomendaciones
+%\include{00_Preliminares/00HipotesisPlanteamiento}
+%\include{00_Preliminares/00Objetivos}
+\subfile{Cap01_Introduccion/01Seccion01_Introduccion} % Introducción
+\subfile{Cap02_EstadoDelArte/02Seccion01_EstadoDelArte} % Estado del Arte
+\subfile{Cap03_MarcoTeorico/02Seccion02_MarcoTeorico} % Marco Teórico
+\subfile{Cap04_PINNs/03Seccion03} % Physics-Informed Neural Networks - PINN
+\subfile{Cap05_Experimentacion_y_Resultados/04Seccion04} % Experimentation and Results
+\subfile{Cap06_PINNs_Cuanticas/05Seccion05} % Redes Neuronales Informadas por la física en un frame cuántico
+\subfile{Cap07_Conclusiones/06Seccion06} % Conclusiones y recomendaciones
 
 %Inicio del apéndice o anexos
 \begin{appendix}
-\include{08Apendice01}% Derivations of the Classical Representation Formulas
-\include{08Apendice02}% Energy Estimates and Convergence Bound for Hyperbolic PDEs
-\include{08Apendice03}% Derivations for the Optimization Problem of PINNs
-\include{08Apendice04}% Tasks of the PINNacle Benchmark
-\include{08Apendice05}% Error Maps and Training Curves of Experiment 1
-\include{08Apendice06}% Código y repositorio
+\subfile{Anexos/08Apendice01}% Derivations of the Classical Representation Formulas
+\subfile{Anexos/08Apendice02}% Energy Estimates and Convergence Bound for Hyperbolic PDEs
+\subfile{Anexos/08Apendice03}% Derivations for the Optimization Problem of PINNs
+\subfile{Anexos/08Apendice04}% Tasks of the PINNacle Benchmark
+\subfile{Anexos/08Apendice05}% Error Maps and Training Curves of Experiment 1
+\subfile{Anexos/08Apendice06}% Código y repositorio
 \end{appendix}
 
 %Permite visualizar la bibliografía en la tabla de contenido

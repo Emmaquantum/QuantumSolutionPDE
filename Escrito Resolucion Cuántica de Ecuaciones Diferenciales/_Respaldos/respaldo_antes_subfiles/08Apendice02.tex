@@ -1,0 +1,115 @@
+% !TEX root = 0000.tex
+% Anexo B
+% Contenido tomado de main_2.tex (líneas 3579-3684) sin cambios de texto.
+
+% El texto está en inglés: reglas de corte de palabra del inglés
+\begin{hyphenrules}{english}
+
+\chapter{Anexo: Energy Estimates and Convergence Bound for Hyperbolic PDEs}\chaptermark{Energy Estimates}\label{app:derivations}
+
+% ---------------------------------------------------------------------
+\section{Energy Estimate for a Klein--Gordon PINN}\label{app:energy}
+
+We prove Theorem~\ref{thm:energy-estimate}. Multiply the error equation \eqref{eq:error-pde},
+$\partial_t^2e-\Delta e+m^2e=r$, by $\partial_te$ and integrate over $\Omega$. We analyze each term
+separately.
+
+\paragraph{Term with $\partial_t^2e$.}
+Since $\partial_t\big((\partial_te)^2\big)=2\,\partial_te\,\partial_t^2e$,
+\[
+  \int_\Omega\partial_t^2e\,\partial_te\,d\mathbf{x}=\frac12\frac{\,d}{\,d t}\int_\Omega(\partial_te)^2\,d\mathbf{x}.
+\]
+
+\paragraph{Term with $-\Delta e$ (spatial integration by parts).}
+We apply Green's first identity:
+\[
+  -\int_\Omega\Delta e\,\partial_te\,d\mathbf{x}=\int_\Omega\nabla e\cdot\nabla(\partial_te)\,d\mathbf{x}
+  -\int_{\partial\Omega}\frac{\partial e}{\partial\mathbf{n}}\,\partial_te\,d S,
+\]
+where $\partial e/\partial\mathbf{n}=\nabla e\cdot\mathbf{n}$ is the outward normal derivative. In addition,
+$\nabla e\cdot\nabla(\partial_te)=\frac12\partial_t\abs{\nabla e}^2$; therefore,
+\begin{equation}
+  -\int_\Omega\Delta e\,\partial_te\,d\mathbf{x}=\frac12\frac{\,d}{\,d t}\int_\Omega\abs{\nabla e}^2\,d\mathbf{x}
+  -\int_{\partial\Omega}\frac{\partial e}{\partial\mathbf{n}}\,\partial_te\,d S.
+  \label{eq:app-lap}
+\end{equation}
+
+\paragraph{Term with $m^2e$.}
+\[
+  \int_\Omega m^2e\,\partial_te\,d\mathbf{x}=\frac12\frac{\,d}{\,d t}\int_\Omega m^2e^2\,d\mathbf{x}.
+\]
+
+\paragraph{Assembly and energy identity.}
+Adding the three terms and using the energy $E(t)$ of Equation~\eqref{eq:error-energy}, the integrated equation is
+\begin{equation}
+  \frac{\,d E}{\,d t}=\int_\Omega r\,\partial_te\,d\mathbf{x}+\int_{\partial\Omega}\frac{\partial e}{\partial\mathbf{n}}\,\partial_te\,d S.
+  \label{eq:app-identity}
+\end{equation}
+With $r=0$ and periodic or homogeneous boundary conditions, this is the conservation of energy
+Equation~\eqref{eq:kg-energy}.
+
+\paragraph{Bounds for the source and boundary terms.}
+For the interior term we use Young's inequality ($ab\le\frac12a^2+\frac12b^2$):
+\[
+  \int_\Omega r\,\partial_te\,d\mathbf{x}\le\frac12\norm{r}^2_{L^2(\Omega)}+\frac12\norm{\partial_te}^2_{L^2(\Omega)}
+  \le\frac12\norm{r}^2_{L^2(\Omega)}+E(t),
+\]
+since $\frac12\norm{\partial_te}^2_{L^2}\le E(t)$. For the boundary integral we use that
+$\partial_te|_{\partial\Omega}=\partial_tB$ and apply Young's inequality again:
+\[
+  \int_{\partial\Omega}\frac{\partial e}{\partial\mathbf{n}}\,\partial_tB\,d S
+  \le\frac12\Big\|\frac{\partial e}{\partial\mathbf{n}}\Big\|^2_{L^2(\partial\Omega)}+\frac12\norm{\partial_tB}^2_{L^2(\partial\Omega)}.
+\]
+Substituting in Equation~\eqref{eq:app-identity} we obtain
+\begin{equation}
+  \frac{\,d E}{\,d t}\le E(t)+\frac12\Big(\norm{r}^2_{L^2(\Omega)}+\norm{\partial_tB}^2_{L^2(\partial\Omega)}
+  +\Big\|\frac{\partial e}{\partial\mathbf{n}}\Big\|^2_{L^2(\partial\Omega)}\Big)=:E(t)+\frac12\rho(t).
+  \label{eq:app-differential}
+\end{equation}
+
+\paragraph{Gronwall's inequality.}
+Multiplying by $e^{-t}$, $\frac{\,d}{\,d t}\big(e^{-t}E(t)\big)\le\frac12e^{-t}\rho(t)\le\frac12\rho(t)$, and
+integrating from $0$ to $t$,
+\[
+  E(t)\le\Big(E(0)+\frac12\int_0^t\rho(s)\,d s\Big)e^{t},
+\]
+which is Equation~\eqref{eq:energy-bound}. (A cruder use of Young's inequality gives the factor $e^{2t}$ with a constant $C$, which is also
+a valid, but weaker, bound.) The initial energy is
+\[
+  E(0)=\frac12\int_\Omega\Big(\abs{I_1}^2+\abs{\nabla I_0}^2+m^2\abs{I_0}^2\Big)\,d\mathbf{x}
+  =\frac12\Big(\norm{I_1}^2_{L^2}+\norm{\nabla I_0}^2_{L^2}+m^2\norm{I_0}^2_{L^2}\Big).
+\]
+With this, we obtain a bound of the energy of the error in terms of the $L^2$ norms of the residuals, of the
+gradient of the initial position residual, and of the boundary terms. In practice, for the convergence of
+the PINN in the energy norm, the loss must control $\norm{r}^2_{L^2}$, $\norm{I_1}^2_{L^2}$,
+$\norm{I_0}^2_{L^2}$ and $\norm{\nabla I_0}^2_{L^2}$ (plus the boundary terms for non-periodic boundaries),
+which guarantees $E(t)\to0$ and, therefore, convergence in $H^1$; in one spatial dimension, by the Sobolev
+embedding $H^1\subset C^{0,1/2}$, the convergence is also uniform.
+
+% ---------------------------------------------------------------------
+\section{From the Dirac Equation to the Klein--Gordon Equation}\label{app:dirac}
+
+Since each component of the Dirac spinor individually satisfies the Klein--Gordon equation
+\cite{bjorken1964}, the study of the dynamics of wave packets and relativistic dispersion can be done
+validly in the scalar formalism of Klein--Gordon. Let the Dirac equation (natural units, metric signature
+$(+,-,-,-)$) be
+\begin{equation}
+  (i\gamma^{\mu}\partial_\mu-m)\psi=0.
+  \label{eq:dirac}
+\end{equation}
+We apply the operator $(i\gamma^{\nu}\partial_\nu+m)$:
+\begin{align*}
+  0&=(i\gamma^{\nu}\partial_\nu+m)(i\gamma^{\mu}\partial_\mu-m)\psi\\
+   &=\underbrace{-\gamma^{\nu}\gamma^{\mu}\partial_\nu\partial_\mu\psi}_{\text{kinetic term}}
+     \underbrace{-\,i m\gamma^{\nu}\partial_\nu\psi+i m\gamma^{\mu}\partial_\mu\psi}_{\text{cancel}}
+     \underbrace{-\,m^2\psi}_{\text{mass term}}.
+\end{align*}
+Since $\partial_\nu\partial_\mu$ is symmetric, only the symmetric part of $\gamma^{\nu}\gamma^{\mu}$ survives,
+$\frac12\{\gamma^{\nu},\gamma^{\mu}\}=g^{\nu\mu}$, and $g^{\nu\mu}\partial_\nu\partial_\mu=\partial^{\mu}\partial_\mu$.
+So we are left with
+\[
+  (\partial^{\mu}\partial_\mu+m^2)\psi=0\iff(\partial_t^2-\nabla^2+m^2)\psi=0,
+\]
+and we arrive at the Klein--Gordon equation for each component of $\psi$.
+
+\end{hyphenrules}
